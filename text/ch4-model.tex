@@ -6,13 +6,13 @@ This chapter describes a dependence graph model that is used in this thesis for 
  
 \section{\label{sec:4-depgrph}FMU Dependence Graph}
 
-Automatic parallelization of computer programs embodies the adaptation of the potential parallelism inherent in the program to the effective parallelism that is provided by the hardware. Because computer programs are usually complex, this process of adaptation requires the use of a model for abstracting the program to be parallelized. The aim of using such model is to identify which parts of the program can be executed in parallel. The model has also to represent other features of the program such as data dependency between different pieces of the code. Dependence Graphs are commonly used for this purpose. A task dependence graph is a DAG denoted $G(V,A)$ where:
+Automatic parallelization of computer programs embodies the adaptation of the potential parallelism inherent in the program to the effective parallelism that is provided by the hardware. Because computer programs are usually complex, this process of adaptation requires the use of a model for abstracting the program to be parallelized. The aim of using such model is to identify which parts of the program can be executed in parallel. The model has also to represent other features of the program such as data dependence between different pieces of the code. Dependence Graphs are commonly used for this purpose. A task dependence graph is a DAG denoted $G(V,A)$ where:
 \begin{itemize}
 \item $V$ is the set of vertices of the graph. The size of the graph $n$ is equal to the number of its vertices. Each vertex $v_i: 0 \leq i < n$ represents a task which is an atomic unit of computation.
 \item $A$ is the set of arcs of the graph. An arc is denoted as a pair $(v_i,v_j)$ and describes a precedence constraint between $v_i$ and $v_j$, i.e. $v_i$ has to finish its execution before $v_j$ can start its execution. $v_i$ is called the \textit{head} vertex and $v_j$ is called the \textit{tail} vertex. 
 \end{itemize}
 
-The dependence graph defines the partial order of execution of the tasks which describes the potential parallelism of the program. Figure \ref{} shows an example of a task dependence graph of size $5$.
+The dependence graph defines the partial order of execution of the tasks which describes the potential parallelism of the program. %Figure \ref{} shows an example of a task dependence graph of size $5$.
 
 The co-simulation of FMUs lends itself to the dependence graph representation as shown hereafter. According to the FMI standard, the code of an FMU can be exported in the form of source code or as precompiled binaries. However, most FMU providers tend to adopt the latter option for proprietary reasons. We are thus interested in this case. The method for automatic parallelization of FMU co-simulation that we propose in this thesis is based on representing the co-simulation as a dependence graph. We present in the rest of this section how this graph is constructed and a set of attributes that characterize it. The graph construction and characterization method is part of the RCOSIM approach as presented in \cite{benkhaled:2014}.
 
@@ -86,7 +86,7 @@ The latest end time from end $\overline{E}(o_i)$ and the latest start time form 
 	\label{eq:sfe}
 \end{equation}
 
-The critical path of the graph is the longest path in the graph. The length of a path is computed by accumulating the execution times of the operations that belong to it. The length of the critical path of the graph $R$ is defined by equation \ref{eq:crit}. The critical path is a very important characteristic of the dependence graph. It defines a lower bound on the execution time of the graph, i.e. in in the best case the time needed to execute the whole graph is equal to the length of the critical path. 
+The critical path of the graph is the longest path in the graph. The length of a path is computed by accumulating the execution times of the operations, that belong to it. The length of the critical path of the graph $R$ is defined by equation \ref{eq:crit}. The critical path is a very important characteristic of the dependence graph. It defines a lower bound on the execution time of the graph, i.e. in the best case the time needed to execute the whole graph is equal to the length of the critical path. 
 
 \begin{equation}
 	R = \max_{o_i \in V_I}(E(o_i)) 
@@ -102,9 +102,9 @@ The flexibility $F(o_i)$ is defined by equation \ref{eq:flex}. The flexibility e
 
 \section{Multi-rate FMU Dependence Graphs}
 
-The FMU dependence graph model presented in the previous section allows elementary modeling of FMU co-simulation programs. For some applications this model is sufficient to be used for multi-core scheduling. However, many industrial co-simulation applications feature behaviors that cannot be captured by this model. In particular, many industrial applications involve FMUs that are executed according to different communication steps. This is especially true when some FMUs of one co-simulation are provided by different parties. It is very common that FMU providers design the FMU in such a way that its proper functioning depends on the use of specific values of the communication step. It is therefore highly unrecommended, and in some cases even impossible, to change the communication step of the FMU. In other cases, even if it is possible and acceptable to change the communication step of a given FMU, better performance and/or accuracy could be obtained when using specific communication steps. As a consequence, our FMU dependence graph model has to be extended in order to accommodate multi-rate data exchange between operations. 
+The FMU dependence graph model presented in the previous section allows elementary modeling of FMU co-simulation programs. For some applications this model is sufficient to be used for multi-core scheduling. However, many industrial co-simulation applications feature behaviors that cannot be captured by this model. In particular, many industrial applications involve FMUs that are executed according to different communication steps. This is especially true when some FMUs of one co-simulation are provided by different parties. It is very common that FMU providers design the FMU in such One way that its proper functioning depends on the use of specific values of the communication step. It is therefore highly unrecommended, and in some cases even impossible, to change the communication step of the FMU. In other cases, even if it is possible and acceptable to change the communication step of a given FMU, better performance and/or accuracy could be obtained when using specific communication steps. As a consequence, our FMU dependence graph model has to be extended in order to accommodate multi-rate data exchange between operations. 
 
-Consider a dependence graph that is constructed as described in the previous section from a multi-rate co-simulation, i.e. some FMUs have different communication steps. Such graph is referred to as a multi-rate dependence graph. A way for making such dependence graph suitable for multi-core scheduling is to tranform it to a mono-rate graph. This section presents an algorithm that transforms the initial multi-rate operation graph $G(V,A)$ into a mono-rate operation graph $G_M(V_M,A_M)$. The aim of this transformation is to ensure that each operation is executed according to the communication step of its respective FMU and also to maintain a correct data exchange between the different FMUs, whether they have different or identical communication steps. Similar algorithms have been used in the real-time scheduling literature \cite{kermia:2009, ramamritham:1995}.
+Consider a dependence graph that is constructed as described in the previous section from a multi-rate co-simulation, i.e. some FMUs have different communication steps. Such graph is referred to as a multi-rate dependence graph. One way for making such dependence graph suitable for multi-core scheduling is to transform it into a mono-rate graph. This section presents an algorithm that transforms the initial multi-rate operation graph $G(V,A)$ into a mono-rate operation graph $G_M(V_M,A_M)$. The aim of this transformation is to ensure that each operation is executed according to the communication step of its respective FMU and also to maintain a correct data exchange between the different FMUs, whether they have different or identical communication steps. Similar algorithms have been used in the real-time scheduling literature \cite{kermia:2009, ramamritham:1995}.
 
 We define the \textit{Hyper-Step (HS)} as the least common multiple ($lcm$) of the communication steps of all the operations: $HS=lcm(H(o_1),H(o_2), \dots ,H(o_n))$ where $n = |V_I|$ is the number of operations in the initial graph. The Hyper-Step is the smallest interval of time for describing a repeatable pattern of all the operations. The transformation algorithm consists first of all in repeating each operation $o_i$, $r_i$ times where $r_i$ is called the repetition factor of $o_i$ and $r_i = \frac{HS}{H(o_i)}$. Each repetition of the operation $o_i$ is called an occurrence of $o_i$ and corresponds to the execution of $o_i$ at a certain simulation step. We use a superscript to denote the number of each occurrence, for instance $o_i^s$ denotes the $s^{th}$ occurrence of $o_i$. Then, arcs are added between operations following the rules presented hereafter. Consider two operations $o_i, o_j \in V_I$ connected by an arc $(o_i,o_j) \in A_I$, then adding an arc $(o_i^s,o_j^u)$ to $A_M$, depends on the simulation steps (time) at which $o_i^s$ and $o_j^u$ are executed. In other words, if $k_{s}$ and $k_{u}$ are the simulation steps associated with $o_i^s$ and $o_j^u$ respectively, then the inequality $k_{s} \leq k_{u}$ is a necessary condition to add the arc $(o_i^s,o_j^u)$ to $A_M$. In addition, $o_j^u$ is connected with the latest occurrence of $o_i$ that satisfies this condition, i.e. with the occurrence $o_i^s$ such that $s=\max(0,1, \dots ,r_i-1) : k_{s} \leq k_{u}$. In the case where $H(o_i) = H(o_j)$ (and therefore $r_i = r_j$), occurrences $o_i^s$ and $o_j^u$ which correspond to the same number, i.e. $s = u$, are connected by an arc. On the other hand, if $H(o_i) \neq H(o_j)$, we distinguish between two types of dependencies: we call the arc $(o_i,o_j) \in A_I$ a \textit{slow to fast} (resp. \textit{fast to slow}) dependence if $H(o_i) > H(o_j)$ (resp. $H(o_i) < H(o_j)$). For a slow to fast dependence $(o_i,o_j) \in A_I$, one occurrence of $o_i$ is executed while several occurrences of $o_j$ are executed. In this case, arcs are added between each occurrence $o_i^s: s \in \{0,1, \dots ,r_i-1\}$, and the occurrence $o_j^u$ such that:
 
@@ -181,20 +181,88 @@ Figure \ref{fig:dagmr} shows the graph obtained by applying the multi-rate trans
 
 The FMI standard states that \textit{``FMI functions of one instance don't need to be thread safe''}. Therefore, the FMU does not implement any service to support concurrent access to its functions from multiple threads, and it is up to the executing environment to ensure the calling sequences of functions are respected as specified in the FMI standard. These restrictions introduce mutual exclusion constraints on the operations of the same FMU.
 
-In order to study the impact of these constraints, we have tested two mutual exclusion strategies and the performance obtained using each of them has been evaluated. The first one uses a dedicated mutex (system object that guarantees mutual exclusion) for each FMU: Every time an FMU function call is made at runtime, the associated mutex has to be acquired before the execution of the function code can be started. The second solution is explained in \cite{BenKhaled201479} and consists in allocating the operations of a same FMU to the same core (constrained allocation). Thanks to SynDEx, it is easily possible to theoretically estimate the impact of using the constrained allocation in the multi-core scheduling heuristic. Results are given in Figure \ref{fig:theoretical-speedup}. It shows that the expected speed-up in the case of constrained allocation is less than the one using unconstrained allocation, when the number of cores is less than 5, but similar when 5 cores or more are available. When using less than 5 cores, the large number of $update_{output}$ operations can be efficiently allocated only if the unconstrained allocation is used: The speed-up difference between the constrained and unconstrained allocation cases is due to this restriction on the allocation. Five is the minimal number of cores for enabling the execution of each $update_{state}$ operation on a different core. Due to the predominant execution times of the $update_{state}$ operations, their impact on the speed-up overrides the possibility of optimizing the allocation of the other operations. This explains why the speed-up difference between the unconstrained and the constrained allocation cases becomes very small with 5 cores or more.
+In order to study the impact of these constraints, we have tested two mutual exclusion strategies and the performance obtained using each of them has been evaluated. The first one uses a dedicated mutex (system object that guarantees mutual exclusion) for each FMU: Every time an FMU function call is made at runtime, the associated mutex has to be acquired before the execution of the function code can be started. The second solution is explained in \cite{BenKhaled201479} and consists in allocating the operations of a same FMU to the same core (constrained allocation). The theoretical speed-up was estimated by computing the makespan of the graph. Results are given in Figure \ref{fig:theoretical-speedup}. It shows that the expected speed-up in the case of constrained allocation is less than the one using unconstrained allocation, when the number of cores is less than 5, but similar when 5 cores or more are available. When using less than 5 cores, the large number of $update_{output}$ operations can be efficiently allocated only if the unconstrained allocation is used: The speed-up difference between the constrained and unconstrained allocation cases is due to this restriction on the allocation. Five is the minimal number of cores for enabling the execution of each $update_{state}$ operation on a different core. Due to the predominant execution times of the $update_{state}$ operations, their impact on the speed-up overrides the possibility of optimizing the allocation of the other operations. This explains why the speed-up difference between the unconstrained and the constrained allocation cases becomes very small with 5 cores or more.
 
-In order to compare the two mutual exclusion strategies, we implemented them in xMOD. Execution times measurements were performed by getting the system time stamp at the beginning of the simulation and after 30 seconds of the simulated time. As previously, we compare the speed-up by dividing the mono-core simulation execution time by the simulation execution time on a fixed number of cores. Figure \ref{fig:real-speedup} sums up the results, where unconstrained allocation corresponds to the use of mutex objects. It shows the impact of mutex overhead on the speed-up. Whatever the number of the available cores, the speed-up remains close to 1,3. On the contrary, the implementation in xMOD of the constrained allocation gives similar results in terms of speed-up improvement when increasing the number of cores until 5. Nevertheless, the maximum measured speed-up (2,4) remains smaller than the theoretical one (3,5). In fact, the theoretical speed-up computation considers the makespan ratio without estimating any synchronization cost between cores. The real implementation in xMOD contains synchronization objects between operations to ensure the consistency of data dependencies which certainly have an important impact on the speed-up. 
-
-\begin{figure}[htbp]
+\begin{figure}[phbt]
 \centering
-\includegraphics{figures/realspeedup.pdf}
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Number of cores,
+        ylabel=Speed-up,legend style={at={(0.5,-0.2)},anchor=north}]
+    \addplot[mark=*,blue,label=const] plot coordinates {
+        (2,     1.097909998)
+        (3,    1.463604418)
+        (4,    1.924422442)
+        (5,   3.568543452)
+        (6,   3.579496624)
+        (7,   3.579496624)
+        (8,  3.579496624)
+    };
+    \addlegendentry{Speed-up with constrained allocation of operations}
+
+    \addplot[color=red,mark=square*,label=unconst]
+        plot coordinates {
+        (2,     1.904310908)
+        (3,    2.15962963)
+        (4,   2.91987982)
+        (5,   3.521135266)
+        (6,  3.575107296)
+        (7,  3.603831891)
+        (8,  3.633021807)
+        }; 
+    \addlegendentry{Speed-up with unconstrained allocation of operations}
+    \end{axis}
+    \end{tikzpicture}
+\caption{Theoretical speed-up.}
+\label{fig:theoretical-speedup}
+\end{figure}
+
+We implemented and tested both mutual exclusion strategies in order to compare their runtime performance. Execution times measurements were performed by getting the system time stamp at the beginning of the execution and after 30 seconds of the simulated time. As previously, we compare the speed-up by dividing the mono-core co-simulation execution time by the co-simulation execution time on a fixed number of cores. Figure \ref{fig:real-speedup} sums up the results, where unconstrained allocation corresponds to the use of mutex objects. It shows the impact of mutex overhead on the speed-up. Whatever the number of the available cores, the speed-up remains close to 1,3. On the contrary, the implementation of the constrained allocation gives similar results in terms of speed-up improvement when increasing the number of cores until 5. Nevertheless, the maximum measured speed-up (2,4) remains smaller than the theoretical one (3,5). In fact, the theoretical speed-up computation considers the makespan ratio without estimating any synchronization cost between cores. The real implementation in xMOD contains synchronization objects between operations to ensure the consistency of data dependencies which certainly have an important impact on the speed-up. 
+
+
+
+
+
+
+
+
+\begin{figure}[phbt]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Number of cores,
+        ylabel=Speed-up,legend style={at={(0.5,-0.2)},anchor=north}]
+    \addplot[mark=*,blue,label=const] plot coordinates {
+        (2,     1.223967163)
+        (3,    1.368187328)
+        (4,    2.005976773)
+        (5,   2.301174325)
+        (6,   2.306397786)
+        (7,   2.306397786)
+        (8,  2.306397786)
+    };
+    \addlegendentry{Speed-up with constrained allocation of operations}
+
+    \addplot[color=red,mark=square*,label=unconst]
+        plot coordinates {
+        (2,     1.253126949)
+        (3,    1.203511837)
+        (4,   1.332430943)
+        (5,   1.211351319)
+        (6,  1.247650948)
+        (7,  1.095957175)
+        (8,  1.253420685)
+        }; 
+    \addlegendentry{Speed-up with unconstrained allocation of operations}
+    \end{axis}
+    \end{tikzpicture}
 \caption{Measured speed-up.}
 \label{fig:real-speedup}
 \end{figure} 
 
 \subsection{Acyclic Orientation of Mixed Graphs}
 
-The restrictions introduced by employing the mutual exclusion techniques shown in the previous section makes it highly desirable to find an alternative solution that could satisfy the mutual exclusion constraints while: i) leaving as much flexibility as possible for allocating the operations to the cores and; ii) introducing lower synchronization overhead. As such, the mutual exclusion constraints need to be modeled in the dependence graph of the co-simulation. This is possible using \textit{mixed graphs}. A mixed graph is a graph which has both directed and undirected edges connecting pairs of its vertices. In the scheduling literature, these graphs are know as disjunctive graphs also. In order to distinguish between the two types of the edges, we conventionally refer to directed edges as arcs and to undirected edges as edges. In addition to the precedence constraints represented by arcs as described in section \ref{sec:4-depgrph}, mutual exclusion relations are represented by edges in a mixed graph. Operations that are connected by an edge can be executed in either order but not in parallel. In order to compute a schedule for a mixed graph, an execution order has to be defined for each pair of operations connected by an edge which is interpreted by assigning a direction to this edge. Cycles must not be introduced in the graph while assigning directions to edges, otherwise, the scheduling problem becomes infeasible. Since the final goal is to accelerate the execution of the co-simulation, and in other words, minimize the makespan of the execution of the dependence graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the graph. 
+The restrictions introduced by employing the mutual exclusion techniques shown in the previous section makes it highly desirable to find an alternative solution that could satisfy the mutual exclusion constraints while: i) leaving as much flexibility as possible for allocating the operations to the cores and; ii) introducing lower synchronization overhead. As such, the mutual exclusion constraints need to be modeled in the dependence graph of the co-simulation. This is possible using \textit{mixed graphs}. A mixed graph is a graph which has both directed and undirected edges connecting pairs of its vertices. In the scheduling literature, these graphs are known as disjunctive graphs also. In order to distinguish between the two types of the edges, we conventionally refer to directed edges as arcs and to undirected edges as edges. In addition to the precedence constraints represented by arcs as described in section \ref{sec:4-depgrph}, mutual exclusion relations are represented by edges in a mixed graph. Operations that are connected by an edge can be executed in either order but not in parallel. In order to compute a schedule for a mixed graph, an execution order has to be defined for each pair of operations connected by an edge which is interpreted by assigning a direction to this edge. Cycles must not be introduced in the graph while assigning directions to edges, otherwise, the scheduling problem becomes infeasible. Since the final goal is to accelerate the execution of the co-simulation, and in other words, minimize the makespan of the execution of the dependence graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the graph. 
 % Talk about Gallai–Hasse–Roy–Vitaver theorem
 The acyclic orientation problem is NP-hard and is equivalent to finding an optimal coloring of the initial graph. In its general form, i.e. when all edges of the graph are undirected, graph coloring consists in labeling the vertices of the graph with integers, called colors, such that adjacent vertices (connected by an edge) are labeled with different colors. The orientation can than be performed by orienting each edge from the vertex with the smaller color to the vertex with the greater color.
  
@@ -224,39 +292,45 @@ Mutual exclusion relations between operations of the same  FMU are represented b
 \end{tabular}
 \end{table}
 
-
 \subsection{Resolution using Linear Programming}
 
-We present here an ILP formulation for solving the problem of acyclic orientation of mixed graphs. We express the problem as a graph coloring problem where the operations can have different execution times.  Tables \ref{table:varilporient} and \ref{table:consilporient} summarize the variables and the constants that are used respectively.
+We present here an ILP formulation for solving the problem of acyclic orientation of mixed graphs. We express the problem as a graph coloring problem where the operations can have different execution times. 
 
-\begin{table}
+\subsubsection{Variables and Constants}
+
+Tables \ref{table:varilporient} and \ref{table:consilporient} summarize the variables and the constants that are used respectively.
+
+\begin{table}[!htbp]
 \caption{Variables used in the ILP formulation of acyclic orientation of mixed graphs}
 \centering
 \label{table:varilporient}
-\begin{tabular}{c c c}
+\begin{tabular}{c c}
 \toprule
-Variable & Type & Description   \\
+Variable & Type   \\
 \midrule
- $x(o_i)$ & Integer & Color assigned to operation $o_i$  \\
-
+ $x(o_i)$ & Integer \\
+ $y_{ij}$ & Binary \\
+ $S(o_i)$ & Integer \\
+ $E(o_i)$ & Integer \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[!htbp]
 \caption{Constants used in the ILP formulation of acyclic orientation of mixed graphs}
 \centering
 \label{table:consilporient}
-\begin{tabular}{c c c}
+\begin{tabular}{c c}
 \toprule
-Constant & Type & Description   \\
+Constant & Type \\
 \midrule
-
- &  &   \\
-
+ $C(o_i)$ & Integer \\
+ $M$ & Integer \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsubsection{Constraints}
 
 We define an integer variable $x(o_i)$, which represents the color that is assigned to operation $o_i$. The inequality \ref{orient:const_1} expresses the constraint that every operations must be assigned a color that is greater than the colors of all its predecessors.
 
@@ -265,15 +339,15 @@ x(o_i) > x(o_j): \forall (o_j,o_i) \in A
 \label{orient:const_1}
 \end{equation}
 
-The binary variable $y_{ij}$ is associated with the edge $[o_i,o_j]$ and indicates whether operation $o_i$ is assigned a color greater than the color assigned to $o_j$ or not, i.e. $y_{ij} = 1\ if x(o_i) > x(o_j), 0\ otherwise$. Note that $y_{ij}$ is the complement of $y_{ji}$. For every edge $[o_i,o_j] \ in E$, the colors assigned to $o_i$ and $o_j$ must be different. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint. $M_1$ is a big constant.
+The binary variable $y_{ij}$ is associated with the edge $[o_i,o_j]$ and indicates whether operation $o_i$ is assigned a color greater than the color assigned to $o_j$ or not, i.e. $y_{ij} = 1\ if x(o_i) > x(o_j), 0\ otherwise$. Note that $y_{ij}$ is the complement of $y_{ji}$. For every edge $[o_i,o_j] \in E$, the colors assigned to $o_i$ and $o_j$ must be different. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint. $M$ is a big constant.
 
 \begin{equation}
-x(o_i) > x(o_j) - M_1 \times (1-y_{ij}) + 1: \forall [o_i,o_j] \in E
+x(o_i) > x(o_j) - M \times (1-y_{ij}) + 1: \forall [o_i,o_j] \in E
 \label{orient:const_2}
 \end{equation} 
 
 \begin{equation}
-x(o_j) > x(o_i) - M_1 \times y_{ij} + 1: \forall [o_i,o_j] \in E
+x(o_j) > x(o_i) - M \times y_{ij} + 1: \forall [o_i,o_j] \in E
 \label{orient:const_3}
 \end{equation}
 
@@ -285,7 +359,7 @@ S(o_i) \geq E(o_j): \forall (o_j,o_i) \in A
 \end{equation} 
 
 \begin{equation}
-S(o_i) \geq E(o_j) - M2 \times (1-y_{ij}): \forall [o_i,o_j] \in E
+S(o_i) \geq E(o_j) - M \times (1-y_{ij}): \forall [o_i,o_j] \in E
 \label{orient:const_5}
 \end{equation}
 
@@ -301,6 +375,8 @@ P \geq E(o_i): \forall o_i \in V
 \label{orient:const_7}
 \end{equation}
 
+\subsubsection{Objective}
+
 The objective of this linear program is to minimize the critical path of the dependence graph.
 
 \begin{equation}
@@ -313,11 +389,9 @@ min(P)
 
 We describe in this section a heuristic for handling mutual exclusion constraints between operations belonging to the same FMU. Without loss of generality, the superscript which denotes the number of the occurrence of an operation is not used in this section for the sake of clarity. Each vertex of the graph $G_M(V_M,A_M)$ represents an operation that we refer to using the notation $o_i$.
 
-This mixed graph is obtained from the graph $G_M(V_M,A_M)$ by adding edges between operations belonging to the same FMU. Note that $V_X = V_M$.
+This mixed graph is obtained from the graph $G_M(V_M,A_M)$ by adding edges between operations belonging to the same FMU. Note that $V_X = V_M$. The orientation of the edges of $D_X$ means applying a function $\alpha :  \{[o_i,o_j] \in D_X\} \rightarrow \{(o_i,o_j),(o_j,o_i)\}$. Without loss of generality, consider that $\alpha([o_i,o_j]) = (o_i,o_j)$, then $o_i$ is added to $pred(o_j)$ and $o_j$ is added to $succ(o_i)$. Consequently, the inequality $E(o_i) \leq S(o_j)$ holds and therefore $o_i$ and $o_j$ are executed in disjoint time intervals. The first step of the heuristic consists in building the mixed graph $G_X(V_X,A_X,D_X)$ by adding edges between operations belonging to the same FMU. The output of the heuristic is a topological ordering of the operations of each FMU. This can be interpreted for each FMU $\mathcal{M}$ as an assignment of integers $\phi : V_F \rightarrow \{1,2, \dots ,m\}$ defining the order of execution for these operations, where $m$ is the number of operations of the FMU $\mathcal{M}$. We call the integer assigned to an operation its rank.
 
-The orientation of the edges of $D_X$ means applying a function $\alpha :  \{[o_i,o_j] \in D_X\} \rightarrow \{(o_i,o_j),(o_j,o_i)\}$. Without loss of generality, consider that $\alpha([o_i,o_j]) = (o_i,o_j)$, then $o_i$ is added to $\overline{\Gamma}(o_j)$ and $o_j$ is added to $\Gamma(o_i)$. Consequently, the inequality $E(o_i) \leq S(o_j)$ holds and therefore $o_i$ and $o_j$ are executed in disjoint time intervals. The first step of the heuristic consists in building the mixed graph $G_X(V_X,A_X,D_X)$ by adding edges between operations belonging to the same FMU. The output of the heuristic is a topological ordering of the operations of each FMU. This can be interpreted for each FMU $\mathcal{M}$ as an assignment of integers $\phi : V_F \rightarrow \{1,2, \dots ,m\}$ defining the order of execution for these operations, where $m$ is the number of operations of the FMU $\mathcal{M}$. We call the integer assigned to an operation its rank.
-
-Algorithm \ref{algo:ao} details the acyclic orientation heuristic. After adding the edges to the graph, the heuristic iteratively assigns ranks to the operations. It keeps a list of already ordered operations $l$ for each FMU $\mathcal{M}$ and at each main iteration it selects the operation which has the earliest start time $S(o_i)$ to be added to the list of its FMU. Ties are broken by selecting the operation with the least flexibility $F(o_i)$. We call the operation to be ordered at a given iteration, the pending operation. The the pending operation $o_i$ is assigned the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$ in ascending order, where \mbox{$x = \max_{o_j \in {\overline{\Gamma}}(o_i)}(\phi(o_j)+1)\; (1 \; if \; {\overline{\Gamma}}(o_i) = \emptyset)$}. For each rank $\tau$, the assignment $\phi(o_i)=\tau$ is made and the ranks assigned to all the already ordered operations $o_{i'} \in l$ such that $\phi(o_{i'}) \geq \phi(o_{i})$ are increased $\phi(o_{i'}) = \phi(o_{i'})+1$. Then, every edge $[o_i,o_i'] \in D_X : o_i' \in l$ is assigned a direction from the operation with the lower rank to the operation with the higher rank. At this point, the increase in $R$, the critical path of the graph, is evaluated. Next, the operations $o_{i'} \in l$ such that $\phi(o_{i'}) > \phi(o_{i})$ are reassigned their previous ranks $\phi(o_{i'}) = \phi(o_{i'})-1$, and the pending operation is assigned the next rank $\phi(o_i)=\phi(o_i)+1$. The increase in the critical path is evaluated again similarly. After repeating this for all the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$, the pending operation is finally ordered at the rank which leads to the least increase in the critical path and edges $[o_i,o_i'] \in D_X : o_i' \in l$ are assigned directions as described before. The heuristic begins another iteration by selecting a new operation to be ordered. The heuristic assigns a rank to one operation at each iteration. Every operation is assigned a rank higher than the ranks of all its predecessors which guarantees that no cycle is generated. The heuristic finally stops when all the operations have been assigned ranks.
+Algorithm \ref{algo:ao} details the acyclic orientation heuristic. After adding the edges to the graph, the heuristic iteratively assigns ranks to the operations. It keeps a list of already ordered operations $l$ for each FMU $\mathcal{M}$ and at each main iteration it selects the operation which has the earliest start time $S(o_i)$ to be added to the list of its FMU. Ties are broken by selecting the operation with the least flexibility $F(o_i)$. We call the operation to be ordered at a given iteration, the pending operation. The the pending operation $o_i$ is assigned the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$ in ascending order, where \mbox{$x = \max_{o_j \in pred(o_i)}(\phi(o_j)+1)\; (1 \; if \; pred(o_i) = \emptyset)$}. For each rank $\tau$, the assignment $\phi(o_i)=\tau$ is made and the ranks assigned to all the already ordered operations $o_{i'} \in l$ such that $\phi(o_{i'}) \geq \phi(o_{i})$ are increased $\phi(o_{i'}) = \phi(o_{i'})+1$. Then, every edge $[o_i,o_i'] \in D_X : o_i' \in l$ is assigned a direction from the operation with the lower rank to the operation with the higher rank. At this point, the increase in $R$, the critical path of the graph, is evaluated. Next, the operations $o_{i'} \in l$ such that $\phi(o_{i'}) > \phi(o_{i})$ are reassigned their previous ranks $\phi(o_{i'}) = \phi(o_{i'})-1$, and the pending operation is assigned the next rank $\phi(o_i)=\phi(o_i)+1$. The increase in the critical path is evaluated again similarly. After repeating this for all the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$, the pending operation is finally ordered at the rank which leads to the least increase in the critical path and edges $[o_i,o_i'] \in D_X : o_i' \in l$ are assigned directions as described before. The heuristic begins another iteration by selecting a new operation to be ordered. The heuristic assigns a rank to one operation at each iteration. Every operation is assigned a rank higher than the ranks of all its predecessors which guarantees that no cycle is generated. The heuristic finally stops when all the operations have been assigned ranks.
 
 \begin{algorithm}[htb]		
 	  %Initialization\;
@@ -335,7 +409,7 @@ Algorithm \ref{algo:ao} details the acyclic orientation heuristic. After adding 
 			Select the operation $o_i \in \Omega$ whose start time $S(o_i) = \max_{o_j \in \Omega}(S(o_j))$. Break ties by selecting the operation with the least flexibility\;
 			Set $\mathcal{M} \leftarrow M(o_i)$ and $l$ the list of the already ordered operations of FMU $\mathcal{M}$\;
 			Set $\sigma \leftarrow \infty$; (Initialize the increase in the critical path)\;
-			Set $x = \max_{o_j \in {\overline{\Gamma}}(o_i)}(\phi(o_j)+1)\; (1 \; if \; {\overline{\Gamma}}(o_i) = \emptyset)$\;
+			Set $x = \max_{o_j \in pred(o_i)}(\phi(o_j)+1)\; (1 \; if \; pred(o_i) = \emptyset)$\;
 			\For{$\tau=x$ to $length(l) + 1$}
 			{
 				$\phi(o_i)=\tau$\;

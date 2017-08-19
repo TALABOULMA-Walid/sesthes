@@ -89,7 +89,7 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame4_View0,0]
-TopLine=179
+TopLine=213
 Cursor=9919
 
 [Frame5]
@@ -107,8 +107,8 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame5_View0,0]
-TopLine=113
-Cursor=5702
+TopLine=183
+Cursor=10684
 
 [Frame6]
 Flags=0
@@ -238,5 +238,5 @@ Cursor=570
 
 [SessionInfo]
 FrameCount=13
-ActiveFrame=4
+ActiveFrame=5
 

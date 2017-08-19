@@ -1,4 +1,4 @@
-\chapter{\label{ch:5-rtsim}Multi-core Scheduling of Dependence Graphs} 
+\chapter{\label{ch:5-rtsim}Multi-core Scheduling of FMU Dependence Graphs} 
 
 \minitoc
 
@@ -100,16 +100,16 @@ The end time of each operation $o_i$ is computed using the expression \ref{sched
 For operations that are allocated to the same core and that are completely independent, i.e. no path exists between them, we have to ensure that they are executed in non overlapping time intervals. Expressions \ref{sched:const_11} and \ref{sched:const_12} capture this constraint. $b_{ij}$ is a binary variable that is set to one if $o_i$ is executed before $o_j$.
 
 \begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V: (o_i,o_j), (o_j,o_i) \notin A_F, E(o_i) \leq S(o_j) + M \times (3 - x_{ip} - x_{jp} - b_{ij}) 
+\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_i) \leq S(o_j) + M \times (3 - x_{ip} - x_{jp} - b_{ij}) 
 \label{sched:const_11}
 \end{equation}
 
 \begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V: (o_i,o_j), (o_j,o_i) \notin A_F, E(o_j) \leq S(o_i) + M \times (2 - x_{ip} - x_{jp} + b_{ij}) 
+\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_j) \leq S(o_i) + M \times (2 - x_{ip} - x_{jp} + b_{ij}) 
 \label{sched:const_12}
 \end{equation}
 
-The cost of synchronization is taken into account according to the synchronization model described in section \ref{}. In other words, a synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor that is allocated to a different core and if its start time is the earliest among the successors of this predecessor that are allocated to the same core as the operation $o_j$. $sync_{ijp}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p$. Therefore, $sync_{ijp} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = max_{o_{j'} \in succ(o_i)\ \text{and}\ \alpha(o_{j'}) = p}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ip}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors, in other words, if the successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ip}$ denotes the earliest start time among the start times of all successors of $o_i$ that are allocated to processor $p$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
+The cost of synchronization is taken into account according to the synchronization model described in chapter \ref{ch:3-state}. In other words, a synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor that is allocated to a different core and if its start time is the earliest among the successors of this predecessor that are allocated to the same core as the operation $o_j$. $sync_{ijp}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p$. Therefore, $sync_{ijp} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = max_{o_{j'} \in succ(o_i)\ \text{and}\ \alpha(o_{j'}) = p}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ip}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors, in other words, if the successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ip}$ denotes the earliest start time among the start times of all successors of $o_i$ that are allocated to processor $p$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
 
 
 \begin{equation}
@@ -145,14 +145,14 @@ The cost of synchronization is taken into account according to the synchronizati
 The start time of each operation is computed using expression \ref{sched:const_9}. The synchronization cost is introduced taking into account the synchronizations with all predecessors of $o_j$ that are allocated to different cores. 
 
 \begin{equation}
-\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \big[E(o_i) + \sum_{\forall p \in P, \forall o_{i'} \in pred(o_j)}sync_{ijp}\times synCost\big]
+\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p \in P, \forall o_{i'} \in pred(o_j)}sync_{ijp}\times synCost\Big]
 \label{sched:const_9}
 \end{equation}
 
 The makespan is equal to the latest end time among the end times of all the operations as captured by expession \ref{sched:const_10}
 
 \begin{equation}
-mkp \geq E(o_i): \forall o_i \in V
+\forall o_i \in V, mkp \geq E(o_i) 
 \label{sched:const_10}
 \end{equation}
 

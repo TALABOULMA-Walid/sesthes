@@ -2,6 +2,8 @@
 
 \minitoc
 
+This chapter describes fundamental concepts and gives literature review about research topics that are involved in this thesis. Topics covered include modeling and simulation, co-simualtion, parallel computing, scheduling in the context of parallel computing, and parallelization approaches related to (co-simulation). 
+
 \section{Modeling and Simulation}
 
 The complex nature of Cyber Physical Systems impose the study of their behavior before building them with the objective of allowing preliminary evaluation, tuning and possibly redesign of the solution. Simulation has proven successful in responding to this need and is becoming an indisputable step in the design process of complex systems. Simulation is performed by providing models which describe the behavior of the system and then running these models in order to produce the behavior of the simulated system on a computer.   
@@ -10,11 +12,28 @@ The complex nature of Cyber Physical Systems impose the study of their behavior 
 
 Modeling a system consists in creating an abstraction of its behavior. The first step is to choose a modeling formalism. This choice depends on the properties of the system, the objective of the simulation, and the aimed level of detail in the simulation. For instance, models can be built using continuous-time variables to represent continuous dynamics of a physical process. Such mathematical models consist of a set of differential equations which describe the continuously changing physical quantities of a process such as electrical circuits, fluid dynamics, chemical reactions, etc. Other systems feature a behavior which evolves between a finite set of states. These systems can be modeled as discrete event systems using formalisms such as DEVS (Discrete Event System Specification), Statecharts, or Petri nets. Finally, hybrid modeling allows the modeling of systems with both continuous variables and discrete states.
 
-In this thesis, we focus on the the modeling of dynamical systems using Ordinary Differential Equations (ODEs). Given these equations, the system can be characterized by a number of state variables. The time derivative of each variable is then expressed as a function of the other variables and the inputs. As a simple example, the fall of a punctual body subject only to gravity can be described by the differential equation:
+In this thesis, we focus on the the modeling of dynamical systems using Ordinary Differential Equations (ODEs). Given these equations, the system can be characterized by a number of state variables. The time derivative of each variable is then expressed as a function of the other variables and the inputs. %As a simple example, the fall of a punctual body subject only to gravity can be described by the differential equation:
 o
 \subsection{Simulation}
 
 \subsection{Co-simulation}
+
+The following definition is taken from~\cite{Sicklinger:2014}:
+
+\textit{
+In co-simulation the different subsystems which form a coupled problem are modeled and simulated in a segregated manner. Hence, the modeling is done on the subsystem level without having the coupled problem in mind. Furthermore, the coupled simulation is carried out by running the subsystems in a blackbox manner. During the simulation the subsystems will exchange data.}
+
+
+Co-simulation is an alternative approach to monolithic simulation where a complex system is modeled as a whole using differential equations and simulated by numerically solving these equations. In a CPS, the controlled physical process constitutes a multi-physics system and is modeled in the continuous-time domain using (hybrid) Ordinary Differential Equations (ODEs). Because they are implemented on embedded computers, numerical laws that control the physical process are modeled in the discrete-time domain. All of these features add to the complexity of the numerical models. Co-simulation has a number of advantages over the monolithic approach. It allows modeling each part of the system using the most appropriate tool instead of using a single modeling software. Also, it allows a better intervention of the experts of different fields at the subsystem level. Furthermore, co-simulation facilitates the upgrade, the reuse, and the exchange of models. 
+
+In co-simulation, the equations of each model are integrated using a solver separately. Models exchange data by updating their inputs and outputs according to their communication steps. Figure~\ref{fig:cosim} shows the evolution of time and data exchange between two models. For simplicity, the shown models A and B have identical communication steps $H_A$ and $H_B$ respectively. On the other hand, models A and B have different integration steps $h_A$ and $h_B$ respectively.
+
+\begin{figure}[htb]
+\centering
+  \includegraphics[scale=0.7]{figures/Co-Simulation}
+\caption{Evolution of time and data exchange between two models during co-simulation}
+\label{fig:cosim}
+\end{figure}
 
 \subsection{Co-simulation with Real-time Constraints}
 
@@ -141,13 +160,13 @@ In order to implement real-time applications, first, \textit{real-time tasks} ar
 \item Aperiodic tasks: The minimum delay between two activations is not known.
 \end{itemize} 
 
-%\begin{figure}[h]
-%\centering
-%\captionsetup{justification=centering}
-%\includegraphics{figures/taskmodel}
-%\caption{Parameters of a real-time task.}
-%\label{fig:taskmodel}
-%\end{figure} 
+\begin{figure}[h]
+\centering
+\captionsetup{justification=centering}
+\includegraphics{figures/taskmodel}
+\caption{Parameters of a real-time task.}
+\label{fig:taskmodel}
+\end{figure} 
 
 Real-time systems can be classified based on the impact of missing deadlines. Hard real-time systems are systems where all deadlines must be met. Violating this constraint leads to the failure of the system and may result in a great loss such as serious injuries, threatening human life, or damaging the surroundings. Soft real-time systems can tolerate some deadlines to be missed but the quality of the result degrades consequently. Firm real-time systems allow few deadlines to be missed but if a task's deadline is missed, its result is no more useful. We consider that HiL simulation falls within the category of firm real-time systems. In fact, in order to have correct HiL results, deadlines must be met. If a task misses its deadline, it produces erroneous results and probably causes the failure of the system but the consequences are not as catastrophic and harming as in the case of hard real-time systems.   
 

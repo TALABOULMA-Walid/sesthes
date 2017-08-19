@@ -2120,7 +2120,7 @@
     <bcf:datasource type="file" datatype="bibtex">references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Sicklinger:2014</bcf:citekey>
+    <bcf:citekey order="1">sicklinger:2014</bcf:citekey>
     <bcf:citekey order="2">openmp</bcf:citekey>
     <bcf:citekey order="3">mpi</bcf:citekey>
     <bcf:citekey order="4">davis:2011</bcf:citekey>

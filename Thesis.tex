@@ -37,7 +37,8 @@
 % your corrected thesis to your examiners for review.  Turn it off, and the blue disappears.
 \correctionstrue
 
-
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 %%%%% BIBLIOGRAPHY SETUP
 % Note that your bibliography will require some tweaking depending on your department, preferred format, etc.
 % The options included below are just very basic "sciencey" and "humanitiesey" options to get started.
@@ -54,6 +55,7 @@
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
 % The humanities-type option: author-year in-text citation with an alphabetical works cited.
 %\usepackage[style=authoryear, sorting=nyt, backend=biber, maxcitenames=2, useprefix, doi=false, isbn=false]{biblatex}
 %\newcommand*{\bibtitle}{Works Cited}

@@ -89,8 +89,13 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame4_View0,0]
+<<<<<<< HEAD
 TopLine=228
 Cursor=17710
+=======
+TopLine=213
+Cursor=9919
+>>>>>>> db48daa8bea6f3bac084eeda3f9f166fca7b3312
 
 [Frame5]
 Flags=0
@@ -107,8 +112,13 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame5_View0,0]
+<<<<<<< HEAD
 TopLine=179
 Cursor=11958
+=======
+TopLine=183
+Cursor=10684
+>>>>>>> db48daa8bea6f3bac084eeda3f9f166fca7b3312
 
 [Frame6]
 Flags=0
@@ -238,5 +248,5 @@ Cursor=570
 
 [SessionInfo]
 FrameCount=13
-ActiveFrame=4
+ActiveFrame=5
 

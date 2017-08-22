@@ -53,7 +53,7 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame2_View0,0]
-TopLine=333
+TopLine=362
 Cursor=33032
 
 [Frame3]
@@ -89,13 +89,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame4_View0,0]
-<<<<<<< HEAD
-TopLine=228
-Cursor=17710
-=======
-TopLine=213
+TopLine=340
 Cursor=9919
->>>>>>> db48daa8bea6f3bac084eeda3f9f166fca7b3312
 
 [Frame5]
 Flags=0
@@ -112,13 +107,8 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame5_View0,0]
-<<<<<<< HEAD
-TopLine=179
-Cursor=11958
-=======
-TopLine=183
-Cursor=10684
->>>>>>> db48daa8bea6f3bac084eeda3f9f166fca7b3312
+TopLine=214
+Cursor=11335
 
 [Frame6]
 Flags=0

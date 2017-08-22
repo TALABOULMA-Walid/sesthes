@@ -89,7 +89,7 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame4_View0,0]
-TopLine=340
+TopLine=407
 Cursor=9919
 
 [Frame5]
@@ -238,5 +238,5 @@ Cursor=570
 
 [SessionInfo]
 FrameCount=13
-ActiveFrame=5
+ActiveFrame=0
 

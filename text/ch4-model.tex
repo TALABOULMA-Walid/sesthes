@@ -6,13 +6,15 @@ This chapter describes a dependence graph model that is used in this thesis for 
  
 \section{\label{sec:4-depgrph}Dependence Graph of an FMU Co-simulation}
 
-Automatic parallelization of computer programs embodies the adaptation of the potential parallelism inherent in the program to the effective parallelism that is provided by the hardware. Because computer programs are usually complex, this process of adaptation requires the use of a model for abstracting the program to be parallelized. The aim of using such model is to identify which parts of the program can be executed in parallel. The model has also to represent other features of the program such as data dependences between different pieces of the code. Dependence Graphs are commonly used for this purpose. A task dependence graph is a DAG denoted $G(V,A)$ where:
+Automatic parallelization of computer programs embodies the adaptation of the potential parallelism inherent in the program to the effective parallelism that is provided by the hardware. Because computer programs are usually complex, this process of adaptation requires the use of a model for abstracting the program to be parallelized. The aim of using such model is to identify which parts of the program can be executed in parallel. The model has also to represent other features of the program such as data dependence between different pieces of the code. Task dependence graphs are commonly used for this purpose. A task dependence graph is a DAG denoted $G(V,A)$ where:
 \begin{itemize}
 \item $V$ is the set of vertices of the graph. The size of the graph $n$ is equal to the number of its vertices. Each vertex $v_i: 0 \leq i < n$ represents a task which is an atomic unit of computation.
 \item $A$ is the set of arcs of the graph. An arc is denoted as a pair $(v_i,v_j)$ and describes a precedence constraint between $v_i$ and $v_j$, i.e. $v_i$ has to finish its execution before $v_j$ can start its execution. $v_i$ is called the \textit{head} vertex and $v_j$ is called the \textit{tail} vertex. 
 \end{itemize}
 
-The dependence graph defines the partial order of execution of the tasks which describes the potential parallelism of the program. %Figure \ref{} shows an example of a task dependence graph of size $5$.
+In the remainder of the thesis, we shall use the term dependence graph instead of task dependence graph.
+
+The dependence graph defines the partial order to be respected when executing the set of tasks. This partial order describes the potential parallelism of the program. %Figure \ref{} shows an example of a task dependence graph of size $5$.
 
 The co-simulation of FMUs lends itself to the dependence graph representation as shown hereafter. According to the FMI standard, the code of an FMU can be exported in the form of source code or as precompiled binaries. However, most FMU providers tend to adopt the latter option for proprietary reasons. We are thus interested in this case. The method for automatic parallelization of FMU co-simulation that we propose in this thesis is based on representing the co-simulation as a dependence graph. We present in the rest of this section how this graph is constructed and a set of attributes that characterize it. The graph construction and characterization method is part of the RCOSIM approach as presented in \cite{benkhaled:2014}.
 
@@ -43,7 +45,7 @@ The entry point for the construction of a dependence graph of an FMU co-simulati
 \label{fig:2mdls}
 \end{figure}
 
-FMU information on input/output dependencies allows building a graph with an increased granularity. The co-simulation is described by a DAG $G(V,A)$ called the operation graph where each vertex $o_i \in V$ represents one operation and each arc $(o_i,o_j) \in A$, represents a precedence relation between two operations. The operation graph is built by exploring the relations between the FMUs and between the operations of the same FMU. A vertex is created for each operation and arcs are then added between vertices if a precedence dependence exists between the corresponding operations. If FMI 1.0, which does not give information about the dependencies between the state variables computation and the input and output variables computations, is used, we must add arcs between all input operations and the state operation of the same FMU. Furthermore, arcs connect all output operations and the state operation of the same FMU because the computation at the simulation step $k$ of an output must be performed with the same value of the state as for all the outputs belonging to the same FMU. Running the co-simulation consists in executing the graph repeatedly. A new execution of the graph cannot be started unless the previous one was totally finished. The operation graph corresponding to the FMUs of Figure~\ref{fig:2mdls} is shown in Figure~\ref{fig:dag}.
+FMU information on input/output dependencies allows building a graph with an increased granularity. The co-simulation is described by a dependence graph $G(V,A)$ called the operation graph where each vertex $o_i \in V: 0 \leq i < n$ represents one operation, each arc $(o_i,o_j) \in A: 0 \leq i,j < n$ represents a precedence relation between operations $o_i$ and $o_j$, and $n = |V|$ is the size of the operation graph. The operation graph is built by exploring the relations between the FMUs and between the operations of the same FMU. A vertex is created for each operation and arcs are then added between vertices if a precedence dependence exists between the corresponding operations. If FMI 1.0, which does not give information about the dependencies between the state variables computation and the input and output variables computations, is used, we must add arcs between all input operations and the state operation of the same FMU. Furthermore, arcs connect all output operations and the state operation of the same FMU because the computation at the simulation step $k$ of an output must be performed with the same value of the state (computed at simulation step $k$) as for all the outputs belonging to the same FMU. Running the co-simulation consists in executing the graph repeatedly. A new execution of the graph cannot be started unless the previous one was totally finished. The operation graph corresponding to the FMUs of Figure~\ref{fig:2mdls} is shown in Figure~\ref{fig:dag}.
 
 \begin{figure}[htb]
 \centering
@@ -56,7 +58,7 @@ FMU information on input/output dependencies allows building a graph with an inc
 
 The dependence graph is used as input to the scheduling algorithm. In addition to the structure of the graph, the scheduling algorithm uses a number of attributes to compute an efficient schedule of the dependence graph. Many list scheduling algorithms use attributes that are computed by the Critical Path Method. We define a set of attributes and notations to characterize the FMU dependence graph.
 
-The notation $f_m(o_i)$ is used to refer to the FMU to which the operation $o_i$ belongs, and $T(o_i)$ to denote the type of the operation $o_i$, i.e. $T(o_i) \in \{input,output,state\}$. $o_j$ is a predecessor of $o_i$ if there is an arc from $o_j$ to $o_i$, i.e. $(o_j, o_i) \in A$. We denote the set of predecessors of $o_i$ by $pred(o_i)$. $o_j$ is an ancestor of $o_i$ if there is a path in $G$ from $o_j$ to $o_i$. The set of ancestors of $o_i$ is denoted by $ance(o_i)$. $o_j$ is a successor of $o_i$ if there is an arc from $o_i$ to $o_j$, i.e. $(o_i, o_j) \in A$. We denote the set of successors of $o_i$ by $succ(o_i)$. $o_j$ is a descendant of $o_i$ if there is a path in $G$ from $o_i$ to $o_j$. The set of descendants of $o_i$ is denoted by $desc(o_i)$. A profiling phase allows measuring the execution time $C(o_i)$. For each operation, the average execution time of multiple co-simulation runs is used. When real-time execution is aimed, Worst Case Execution Times (WCET) are used instead. An operation $o_i$ is characterized by its communication step $H(o_i)$ which is equal to the communication step of its FMU. The earliest start time from start $S(o_i)$ and the earliest end time form start $E(o_i)$ are defined by equations \ref{eq:sfs} and \ref{eq:efs} respectively. $S(o_i)$ defines the earliest time at which the operation $o_i$ can start its execution. $S(o_i)$ is constrained by the precedence relations. The earliest time the operation $o_i$ can finish its execution is defined by $E(o_i)$.
+The notation $f_m(o_i)$ is used to refer to the FMU to which the operation $o_i$ belongs, and $T(o_i)$ to denote the type of the operation $o_i$, i.e. $T(o_i) \in \{update_{input}, update_{output}, update_{state}\}$. $o_j$ is a predecessor of $o_i$ if there is an arc from $o_j$ to $o_i$, i.e. $(o_j, o_i) \in A$. We denote the set of predecessors of $o_i$ by $pred(o_i)$. $o_j$ is an ancestor of $o_i$ if there is a path in $G$ from $o_j$ to $o_i$. The set of ancestors of $o_i$ is denoted by $ance(o_i)$. $o_j$ is a successor of $o_i$ if there is an arc from $o_i$ to $o_j$, i.e. $(o_i, o_j) \in A$. We denote the set of successors of $o_i$ by $succ(o_i)$. $o_j$ is a descendant of $o_i$ if there is a path in $G$ from $o_i$ to $o_j$. The set of descendants of $o_i$ is denoted by $desc(o_i)$. A profiling phase allows measuring the execution time $C(o_i)$. For each operation, the average execution time of multiple co-simulation runs is used. When real-time execution is aimed, Worst Case Execution Times (WCET) are used instead. An operation $o_i$ is characterized by its communication step $H(o_i)$ which is equal to the communication step of its FMU. The earliest start time from start $S(o_i)$ and the earliest end time form start $E(o_i)$ are defined by equations \ref{eq:sfs} and \ref{eq:efs} respectively. $S(o_i)$ defines the earliest time at which the operation $o_i$ can start its execution. $S(o_i)$ is constrained by the precedence relations. The earliest time the operation $o_i$ can finish its execution is defined by $E(o_i)$.
 
 \begin{equation}
 S(o_i)=\begin{cases}
@@ -180,88 +182,49 @@ The FMI standard states that \textit{``FMI functions of one instance don't need 
 
 \subsection{Motivation for Offline Handling of Mutual Exclusion Constraints}
 
-In order to study the impact of mutual exclusion constraints, we have evaluated the performance obtained using two mutual exclusion strategies. The first one uses a dedicated lock (system object that guarantees mutual exclusion) for each FMU: every time an FMU function call is made at runtime, the associated lock has to be acquired before the execution of the function code can be started. The second solution is explained in \cite{benkhaled:2014} and consists in allocating the operations of a same FMU to the same core (constrained allocation). The theoretical speed-up was estimated by computing the makespan of the graph. Results are given in Figure \ref{fig:theoretical-speedup}. It shows that the expected speed-up in the case of constrained allocation is less than the one using unconstrained allocation, when the number of cores is less than five, but similar when five cores or more are available. When using less than 5 cores, the large number of $update_{output}$ operations can be efficiently allocated only if the unconstrained allocation is used: The speed-up difference between the constrained and unconstrained allocation cases is due to this restriction on the allocation. Five is the minimal number of cores for enabling the execution of each $update_{state}$ operation on a different core. Due to the predominant execution times of the $update_{state}$ operations, their impact on the speed-up overrides the possibility of optimizing the allocation of the other operations. This explains why the speed-up difference between the unconstrained and the constrained allocation cases becomes very small with five cores or more.
+In order to study the impact of mutual exclusion constraints, we have evaluated the performance obtained using two mutual exclusion strategies. The first one uses a dedicated lock (system object that guarantees mutual exclusion) for each FMU: every time an FMU function call is made at runtime, the associated lock has to be acquired before the execution of the function code can be started. The second solution is explained in \cite{benkhaled:2014} and consists in allocating the operations of a same FMU to the same core (constrained allocation). The scheduling heuristic that was used in these tests is presented in chapter \ref{ch:5-sched}. The theoretical speed-up was estimated by computing the makespan of the graph. Results are given in Figure \ref{fig:theoretical-speedup}. It shows that the expected speed-up in the case of constrained allocation is less than the one using unconstrained allocation, when the number of cores is less than five, but similar when five cores or more are available. When using less than five cores, the large number of $update_{output}$ operations can be efficiently allocated only if the unconstrained allocation is used: the speed-up difference between the constrained and unconstrained allocation cases is due to this restriction on the allocation. Five is the minimal number of cores for enabling the execution of each $update_{state}$ operation on a different core. Due to the predominant execution times of the $update_{state}$ operations, their impact on the speed-up overrides the possibility of optimizing the allocation of the other operations. This explains why the speed-up difference between the unconstrained and the constrained allocation cases becomes very small with five cores or more.
 
 \begin{figure}[phbt]
 \centering
-\begin{tikzpicture}
-    \begin{axis}[
-        xlabel=Number of cores,
-        ylabel=Speed-up,legend style={at={(0.5,-0.2)},anchor=north}]
-    \addplot[mark=*,blue,label=const] plot coordinates {
-        (2,     1.097909998)
-        (3,    1.463604418)
-        (4,    1.924422442)
-        (5,   3.568543452)
-        (6,   3.579496624)
-        (7,   3.579496624)
-        (8,  3.579496624)
-    };
-    \addlegendentry{Speed-up with constrained allocation of operations}
-
-    \addplot[color=red,mark=square*,label=unconst]
-        plot coordinates {
-        (2,     1.904310908)
-        (3,    2.15962963)
-        (4,   2.91987982)
-        (5,   3.521135266)
-        (6,  3.575107296)
-        (7,  3.603831891)
-        (8,  3.633021807)
-        }; 
-    \addlegendentry{Speed-up with unconstrained allocation of operations}
-    \end{axis}
-    \end{tikzpicture}
+\input{figures/theoreticalspeedup.tikz}
 \caption{Theoretical speed-up.}
 \label{fig:theoretical-speedup}
 \end{figure}
 
-We implemented and tested both mutual exclusion strategies in order to compare their runtime performance. Tests were performed using the industrial use case described in chapter \ref{ch:6-eval}. Execution times measurements were performed by getting the system time stamp at the beginning of the execution and after $30$ seconds of the simulated time. As previously, we compared the speed-up by dividing the mono-core co-simulation execution time by the co-simulation execution time on a fixed number of cores. Figure \ref{fig:real-speedup} sums up the results, where unconstrained allocation corresponds to the use of lock objects. It shows the impact of mutex overhead on the speed-up. Whatever the number of the available cores, the speed-up remains close to $1.3$. On the contrary, the implementation of the constrained allocation gives similar results in terms of speed-up improvement when increasing the number of cores until five. Nevertheless, the maximum measured speed-up ($2.4$) remains smaller than the theoretical one ($3.5$). In fact, the theoretical speed-up computation considers the makespan ratio without any estimation of runtime overhead which certainly has an important impact on the speed-up.
+We implemented and tested both mutual exclusion strategies in order to compare their runtime performance. Tests were performed using the industrial use case described in chapter \ref{ch:6-eval}. Execution times measurements were performed by getting the system time stamp at the beginning of the execution and after $30$ seconds of the simulated time. As previously, we compared the speed-up by dividing the mono-core co-simulation execution time by the co-simulation execution time on a fixed number of cores. Figure \ref{fig:real-speedup} sums up the results, where unconstrained allocation corresponds to the use of lock objects. It shows the impact of mutex overhead on the speed-up. Whatever the number of the available cores, the speed-up remains close to $1.3$. On the contrary, the implementation of the constrained allocation gives similar results in terms of speed-up improvement when increasing the number of cores until five. Nevertheless, the maximum measured speed-up ($2.4$) remains smaller than the theoretical one ($3.5$). In fact, the theoretical speed-up computation considers the makespan ratio without any estimation of the runtime overhead which certainly has an important impact on the speed-up.
 
 
 \begin{figure}[phbt]
 \centering
-\begin{tikzpicture}
-    \begin{axis}[
-        xlabel=Number of cores,
-        ylabel=Speed-up,legend style={at={(0.5,-0.2)},anchor=north}]
-    \addplot[mark=*,blue,label=const] plot coordinates {
-        (2,     1.223967163)
-        (3,    1.368187328)
-        (4,    2.005976773)
-        (5,   2.301174325)
-        (6,   2.306397786)
-        (7,   2.306397786)
-        (8,  2.306397786)
-    };
-    \addlegendentry{Speed-up with constrained allocation of operations}
-
-    \addplot[color=red,mark=square*,label=unconst]
-        plot coordinates {
-        (2,     1.253126949)
-        (3,    1.203511837)
-        (4,   1.332430943)
-        (5,   1.211351319)
-        (6,  1.247650948)
-        (7,  1.095957175)
-        (8,  1.253420685)
-        }; 
-    \addlegendentry{Speed-up with unconstrained allocation of operations}
-    \end{axis}
-    \end{tikzpicture}
+\input{figures/realspeedup.tikz}
 \caption{Measured speed-up.}
 \label{fig:real-speedup}
 \end{figure}
 
 %The obtained results show the importance of employing a mutual exclusion strategy that is efficient with regards to the limitations of allocating the operations and the introduced synchronization overhead. In the rest of this section, we attempt to attain this objective.
 
-The restrictions introduced by employing the tested mutual exclusion techniques makes it highly desirable to find an alternative solution that could satisfy the mutual exclusion constraints while: \begin{inlinelist} \item leaving as much flexibility as possible for allocating the operations to the cores and; \item introducing lower synchronization overhead \end{inlinelist}. In the rest of this section, we suggest a method for offline handling of mutual exclusion constraints. The proposed method is based on modeling the mutual exclusion constraints in the dependence graph of the co-simulation. This is possible using \textit{mixed graphs}.
+The restrictions introduced by employing the tested mutual exclusion techniques makes it highly desirable to find an alternative solution that could satisfy the mutual exclusion constraints while: \begin{inlinelist} \item leaving as much flexibility as possible for allocating the operations to the cores and; \item introducing lower synchronization overhead \end{inlinelist}. In the rest of this section, we suggest a method for offline handling of mutual exclusion constraints. The proposed method is based on modeling the mutual exclusion constraints in the dependence graph of the co-simulation.
 
 \subsection{Acyclic Orientation of Mixed Graphs}
 
-A mixed graph is a graph which has both directed and undirected edges connecting pairs of its vertices. In the scheduling literature, these graphs are known as disjunctive graphs also. In order to distinguish between the two types of the edges, we conventionally refer to directed edges as arcs and to undirected edges as edges. In addition to the precedence constraints represented by arcs as described in section \ref{sec:4-depgrph}, mutual exclusion relations are represented by edges in a mixed graph. Operations that are connected by an edge can be executed in either order but not in parallel. In order to compute a schedule for a mixed graph, an execution order has to be defined for each pair of operations connected by an edge which is interpreted by assigning a direction to this edge. Cycles must not be introduced in the graph while assigning directions to edges, otherwise, the scheduling problem becomes infeasible. Since the final goal is to accelerate the execution of the co-simulation, and in other words, minimize the makespan of the execution of the dependence graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the graph. 
+The dependence graph model can be extended in order to represent scheduling problems that involve precedence constraints and mutual exclusion constraints. This is commonly done using \textit{mixed graphs}. A mixed graph $G(V,A,D)$ is a graph which contains a set $A$ of directed arcs denoted $(o_i,o_j): 0 \leq i, j < n$ and a set $D$ of undirected edges denoted $[o_i,o_j]: 0 \leq i, j < n$. In the scheduling literature, these graphs are known as disjunctive graphs also. In addition to the precedence constraints represented by arcs as described in section \ref{sec:4-depgrph}, mutual exclusion relations are represented by edges in a mixed graph such that: 
+\begin{itemize}
+\item \textit{Precedence constraints:} $\forall (o_i,o_j) \in A, o_i$ must finish its execution before $o_j$ can start its execution.  
+\item \textit{Mutual exclusion constraints:} $\forall [o_i,o_j] \in D, o_i$ and $o_j$ must be executed in strictly disjoint time intervals.
+\end{itemize}
+
+Operations that are connected by an edge can be executed in either order but not in parallel. In order to compute a schedule for a mixed graph, an execution order has to be defined for each pair of operations connected by an edge which is interpreted by assigning a direction to this edge. Cycles must not be introduced in the graph while assigning directions to edges, otherwise, the scheduling problem becomes infeasible. Since the final goal is to accelerate the execution of the co-simulation, and in other words, minimize the makespan of the execution of the dependence graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the graph.
+
+%\subsubsection{Graph Coloring of Undirected Graphs}
 % Talk about Gallai–Hasse–Roy–Vitaver theorem
-The acyclic orientation problem is NP-hard and is equivalent to finding an optimal coloring of the initial graph. In its general form, i.e. when all edges of the graph are undirected, graph coloring consists in labeling the vertices of the graph with integers, called colors, such that adjacent vertices (connected by an edge) are labeled with different colors. The orientation can than be performed by orienting each edge from the vertex with the smaller color to the vertex with the greater color.
+The acyclic orientation problem is closely related to vertex coloring. In its general form, i.e. when all edges of the graph are undirected, vertex coloring is a labeling: $\phi: V \rightarrow \{1, 2, \ldots, k\}$ of the vertices of the graph with integers, called colors, such that the inequality \ref{eq:color} holds.
+
+\begin{equation}
+\phi(o_i) \neq \phi(o_j): \forall\ [o_j,o_i] \in A
+\label{eq:color}
+\end{equation}
+
+The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of directed graph is at least $\chi(G)$ where $\chi(G)$ is the chromatic number of the graph $G$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph.
 
 \subsection{Problem Formulation}
 

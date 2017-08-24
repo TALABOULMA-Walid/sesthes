@@ -217,14 +217,20 @@ Operations that are connected by an edge can be executed in either order but not
 
 %\subsubsection{Graph Coloring of Undirected Graphs}
 % Talk about Gallai–Hasse–Roy–Vitaver theorem
-The acyclic orientation problem is closely related to vertex coloring. In its general form, i.e. when all edges of the graph are undirected, vertex coloring is a labeling: $\phi: V \rightarrow \{1, 2, \ldots, k\}$ of the vertices of the graph with integers, called colors, such that the inequality \ref{eq:color} holds.
+The acyclic orientation problem is closely related to vertex coloring. In its general form, i.e. when all edges of the graph are undirected, vertex coloring is a labeling: $\phi: V \rightarrow \{1, 2, \ldots, k\}$ of the vertices of the graph with integers, called colors, such that the inequality \ref{eq:color1} holds.
 
 \begin{equation}
-\phi(o_i) \neq \phi(o_j): \forall\ [o_j,o_i] \in A
-\label{eq:color}
+\forall\ [o_i,o_j] \in A,\ \phi(o_i) \neq \phi(o_j)
+\label{eq:color1}
 \end{equation}
 
-The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of directed graph is at least $\chi(G)$ where $\chi(G)$ is the chromatic number of the graph $G$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph.
+The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. A graph coloring with $k$ colors is referred to as \textit{k-coloring}. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The minimum number of colors required to color an undirected graph is called the chromatic number and denoted $\chi(G)$. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of a directed graph is at least $\chi(G)$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph. Computing the chromatic number of a graph is NP-complete.
+Vertex coloring of a mixed graph takes into account both arcs and edges of the graph. In addition to the inequality \ref{eq:color1}, inequality \ref{eq:color2} must hold.
+
+\begin{equation}
+\forall\ (o_i,o_j) \in A,\ \phi(o_i) < \phi(o_j)
+\label{eq:color2}
+\end{equation}
 
 \subsection{Problem Formulation}
 

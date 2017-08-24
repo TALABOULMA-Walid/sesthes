@@ -1,4 +1,4 @@
-\chapter{\label{ch:4-accel}Dependence Graph Models for FMU Co-simulation} 
+\chapter{\label{ch:4-accel}Dependence Graph Model for FMU Co-simulation} 
 
 \minitoc
 
@@ -102,7 +102,7 @@ The flexibility $F(o_i)$ is defined by equation \ref{eq:flex}. $F(o_i)$ expresse
 	\label{eq:flex}
 \end{equation}
 
-\section{Dependence Graphs of a Multi-rate FMU Co-simulation}
+\section{Dependence Graph of a Multi-rate FMU Co-simulation}
 
 The FMU dependence graph model presented in the previous section allows elementary modeling of FMU co-simulation programs. For some applications this model is sufficient to be used for multi-core scheduling. However, many industrial co-simulation applications feature behaviors that cannot be captured by this model. In particular, many industrial applications involve FMUs that are executed according to different communication steps. This is especially true when some FMUs of one co-simulation are provided by different parties. It is very common that an FMU provider designs the FMU in such a way that its proper functioning depends on the use of specific values of the communication step. It is therefore highly unrecommended, and in some cases even impossible, to change the communication step of the FMU. In other cases, even if it is possible and acceptable to change the communication step of a given FMU, better performance and/or accuracy could be obtained when using specific communication steps. As a consequence, our FMU dependence graph model has to be extended in order to accommodate multi-rate data exchange between operations. 
 
@@ -217,24 +217,43 @@ Operations that are connected by an edge can be executed in either order but not
 
 %\subsubsection{Graph Coloring of Undirected Graphs}
 % Talk about Gallai–Hasse–Roy–Vitaver theorem
-The acyclic orientation problem is closely related to vertex coloring. In its general form, i.e. when all edges of the graph are undirected, vertex coloring is a labeling: $\phi: V \rightarrow \{1, 2, \ldots, k\}$ of the vertices of the graph with integers, called colors, such that the inequality \ref{eq:color1} holds.
+The acyclic orientation problem is closely related to vertex coloring. In its general form, i.e. when all edges of the graph are undirected, vertex coloring is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ which labels the vertices of the graph with integers, called colors, such that the inequality \ref{eq:color1} holds.
 
 \begin{equation}
-\forall\ [o_i,o_j] \in A,\ \phi(o_i) \neq \phi(o_j)
+\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)
 \label{eq:color1}
 \end{equation}
 
-The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. A graph coloring with $k$ colors is referred to as \textit{k-coloring}. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The minimum number of colors required to color an undirected graph is called the chromatic number and denoted $\chi(G)$. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of a directed graph is at least $\chi(G)$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph. Computing the chromatic number of a graph is NP-complete.
-Vertex coloring of a mixed graph takes into account both arcs and edges of the graph. In addition to the inequality \ref{eq:color1}, inequality \ref{eq:color2} must hold.
+The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. A graph coloring with $k$ colors is referred to as \textit{k-coloring}. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The minimum number of colors required to color an undirected graph is called the chromatic number and is denoted $\chi(G)$. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of a directed graph is at least $\chi(G)$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph. Computing the chromatic number of a graph is NP-complete.
+
+The acyclic orientation of a mixed graph can be obtained similarly. However, vertex coloring of a mixed graph has to take into account both arcs and edges of the graph. More precisely, a vertex coloring of a mixed graph is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ such that inequalities \ref{eq:color1} and \ref{eq:color2} hold.
 
 \begin{equation}
-\forall\ (o_i,o_j) \in A,\ \phi(o_i) < \phi(o_j)
+\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)
 \label{eq:color2}
 \end{equation}
 
+A coloring of a mixed graph $G(V,A,D)$ exists only if it is cycle-free \cite{ries:2007}, i.e. the induced directed graph $G(V,A,\emptyset)$ does not contain any cycle. The problem of acyclic orientation of mixed graphs has been studied in the literature in \cite{andreev:2000,sotskov:2002,al-anzi:2006}. Efficient algorithms have been proposed for special types of graphs, however in the general case it has been shown that the problem is NP-Hard.
+
 \subsection{Problem Formulation}
 
-Mutual exclusion relations between operations of the same  FMU are represented by edges in the mixed graph $G_X(V_X,A_X,D_X)$, where $V_X$ is the set of vertices (operations), $A_X$ the set of arcs, and $D_X$ the set of edges. A mutual exclusion relation between the pair of vertices $o_p$ and $o_q$ is denoted by an edge $[o_p,o_q] \in D_X$ which means that $o_p$ and $o_q$ have to be executed in disjoint time intervals but in either order ($[o_p,o_q]=[o_q,o_p]$). Choosing one order or another does not impact the numerical results of the co-simulation since these operations do not have data dependencies. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. The goal here is to assign directions to the edges of $D_X$ in order to define an order of execution between each pair of operations joined by an edge with the aim of minimizing the length of the critical path of the resulting graph, and subject to the constraint that no cycle is generated in the obtained graph. The output of the heuristic is a graph $G_F(V_F,A_F,\emptyset) = G_F(V_F,A_F)$. The problem of acyclic orientation of mixed graphs has been studied and shown to be NP-Hard in \cite{andreev:2000,sotskov:2002,al-anzi:2006}. In these studies, only the case of operations with unit (or equal) execution times were considered and the acyclic orientation problem was interpreted as a graph coloring problem. We consider operations with different execution times and use an approach which takes into account that only operations belonging to the same FMU are joined by edges. The problem can be stated as an optimization formulation as follows:
+In order to represent mutual exclusion constraints between FMU operations, the initial dependence graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$ , where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges.
+Once the mixed graph is constructed, directions have to be assigned to its edge in order define an order of execution for mutually exclusive operations. This transformation of the dependence graph does not impact the timing attributes of the operations. The timing constraints represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. On the other hand, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
+
+\begin{equation}
+\forall\ (o_i,o_j) \in A,\ S(o_j) \leq \alpha(o_j)
+\label{eq:color4}
+\end{equation}
+
+\begin{equation}
+\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset
+\label{eq:color5}
+\end{equation}
+
+It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependencies. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. 
+
+
+The problem can be stated as an optimization formulation as follows:
 
 \begin{table}[h]
 \centering

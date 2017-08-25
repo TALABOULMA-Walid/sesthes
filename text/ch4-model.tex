@@ -237,7 +237,7 @@ A coloring of a mixed graph $G(V,A,D)$ exists only if it is cycle-free \cite{rie
 
 \subsection{Problem Formulation}
 
-In order to represent mutual exclusion constraints between FMU operations, the initial dependence graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$ , where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges. Once the mixed graph is constructed, directions have to be assigned to its edges in order define an order of execution for mutually exclusive operations. The timing constraints represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. Otherwise, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
+Let $G(V,A)$ be a dependence graph of an FMU co-simulation constructed as described in section \ref{sec:4-depgrph}. In order to represent mutual exclusion constraints between FMU operations, the initial dependence graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$ , where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges. Once the mixed graph is constructed, directions have to be assigned to its edges in order define an order of execution for mutually exclusive operations. The timing constraints represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. Otherwise, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
 
 \begin{equation}
 \forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)
@@ -261,27 +261,26 @@ E(o_i) > S(o_j)\ \text{and}\ E(o_j) > S(o_i)
 It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependencies. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. Following the definition given the previous section, the corresponding coloring is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ which is equivalent to mapping the operations $o_i \in V$ to the time intervals $[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]$.
 
 The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated as an optimization formulation as follows:
-						
-\begin{table}[h]
-\begin{tabular}{ll}
-	
-  \textbf{Input:} & Mixed graph $G(V,A,D)$\\ \\
-	%\rule{0pt}{3ex}									  
-	
-  \textbf{Output:} & DAG $G(V,A)$\\
-	%\rule{0pt}{3ex}									  
-  
-	\textbf{Find:} & Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$\\
-	%\rule{0pt}{3ex}									 
-	
-	\textbf{Minimize:} & Number of colors $k$\\
-	%\rule{0pt}{3ex}									 
-	
-	\textbf{Subject to:} & $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\\
-											& $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$\\
-										 
-\end{tabular}
-\end{table}
+
+\begin{itemize}[label={},topsep=1pt,parsep=1pt,partopsep=1pt,leftmargin=*]	
+\item \textbf{Input:} Mixed graph $G(V,A,D)$
+\item \textbf{Output:} DAG $G(V,A)$
+\item \textbf{Find:} Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$
+\item \textbf{Minimize:} Number of colors $k$
+\item \begin{subjecto}
+			      \item $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$
+				   	\item $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$
+       \end{subjecto}
+\end{itemize}
+
+This formulation is stated as a vertex coloring problem, however, it is possible to state the problem and its solution using either vertex coloring notation or the scheduling notation. Thus, we note the following equivalence:
+
+\begin{itemize}[label={},topsep=1pt,parsep=1pt,partopsep=1pt,leftmargin=*]	
+\item \big(Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$\big) $\equiv$ \big(Mapping $\alpha: V \rightarrow \{[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]\}$\big)
+\item \big($\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\big) $\equiv$ \big($\forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)$\big)
+\item \big($\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$\big) $\equiv$ \big($\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$\big)
+\item \big(Optimal coloring $min(k)$\big) $\equiv$ \big(Optimal length of the critical path $min(R)$\big)
+\end{itemize}
 
 \subsection{Resolution using Linear Programming}
 

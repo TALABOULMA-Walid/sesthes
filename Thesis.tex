@@ -56,6 +56,7 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.15}
+\usepackage{enumitem}
 % The humanities-type option: author-year in-text citation with an alphabetical works cited.
 %\usepackage[style=authoryear, sorting=nyt, backend=biber, maxcitenames=2, useprefix, doi=false, isbn=false]{biblatex}
 %\newcommand*{\bibtitle}{Works Cited}
@@ -98,6 +99,14 @@
 \setlist*[inlinelist,1]{%
   label=\roman*),
 }
+
+\newlength{\jeroenlen}
+\newenvironment{subjecto}
+ {\settowidth{\jeroenlen}{\textbf{Subject to:}}%
+  \begin{description}[leftmargin=\jeroenlen,labelwidth=0pt,labelsep=0pt]
+  \item[\textbf{Subject to:}]%
+  \begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,label={},leftmargin=\fontdimen2\font]}
+ {\end{itemize}\end{description}}
 
 % To make text superscripts shortcuts
 	\renewcommand{\th}{\textsuperscript{th}} % ex: I won 4\th place

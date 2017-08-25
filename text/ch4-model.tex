@@ -9,7 +9,7 @@ This chapter describes a dependence graph model that is used in this thesis for 
 Automatic parallelization of computer programs embodies the adaptation of the potential parallelism inherent in the program to the effective parallelism that is provided by the hardware. Because computer programs are usually complex, this process of adaptation requires the use of a model for abstracting the program to be parallelized. The aim of using such model is to identify which parts of the program can be executed in parallel. The model has also to represent other features of the program such as data dependence between different pieces of the code. Task dependence graphs are commonly used for this purpose. A task dependence graph is a DAG denoted $G(V,A)$ where:
 \begin{itemize}
 \item $V$ is the set of vertices of the graph. The size of the graph $n$ is equal to the number of its vertices. Each vertex $v_i: 0 \leq i < n$ represents a task which is an atomic unit of computation.
-\item $A$ is the set of arcs of the graph. An arc is denoted as a pair $(v_i,v_j)$ and describes a precedence constraint between $v_i$ and $v_j$, i.e. $v_i$ has to finish its execution before $v_j$ can start its execution. $v_i$ is called the \textit{head} vertex and $v_j$ is called the \textit{tail} vertex. 
+\item $A$ is the set of arcs of the graph. An arc is denoted as a pair $(v_i,v_j)$ and describes a precedence constraint between $v_i$ and $v_j$, i.e. $v_i$ has to finish its execution before $v_j$ can start its execution. $v_i$ is called the \textit{tail} vertex and $v_j$ is called the \textit{head} vertex. 
 \end{itemize}
 
 In the remainder of the thesis, we shall use the term dependence graph instead of task dependence graph.
@@ -224,7 +224,7 @@ The acyclic orientation problem is closely related to vertex coloring. In its ge
 \label{eq:color1}
 \end{equation}
 
-The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding head vertex is smaller than the color of the corresponding tail vertex. A graph coloring with $k$ colors is referred to as \textit{k-coloring}. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The minimum number of colors required to color an undirected graph is called the chromatic number and is denoted $\chi(G)$. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of a directed graph is at least $\chi(G)$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph. Computing the chromatic number of a graph is NP-complete.
+The acyclic orientation of the graph can then be obtained by assigning a direction to every edge such that the color of the corresponding tail vertex is smaller than the color of the corresponding head vertex. A graph coloring with $k$ colors is referred to as \textit{k-coloring}. In its general form, vertex coloring aims at finding a \textit{minimum vertex coloring}, i.e. minimizing $k$ the number of the used colors. The minimum number of colors required to color an undirected graph is called the chromatic number and is denoted $\chi(G)$. The Gallai–Hasse–Roy–Vitaver theorem \cite{gallai:1968,roy:1967,hasse:1966,vitaver:1962} links the length of the longest path in orientations of the graph to vertex coloring of the graph. It states that the length of the longest path of a directed graph is at least $\chi(G)$. Thus, a minimum vertex coloring leads to an acyclic orientation that minimizes the length of the critical path of the resulting graph. Computing the chromatic number of a graph is NP-complete.
 
 The acyclic orientation of a mixed graph can be obtained similarly. However, vertex coloring of a mixed graph has to take into account both arcs and edges of the graph. More precisely, a vertex coloring of a mixed graph is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ such that inequalities \ref{eq:color1} and \ref{eq:color2} hold.
 
@@ -233,15 +233,14 @@ The acyclic orientation of a mixed graph can be obtained similarly. However, ver
 \label{eq:color2}
 \end{equation}
 
-A coloring of a mixed graph $G(V,A,D)$ exists only if it is cycle-free \cite{ries:2007}, i.e. the induced directed graph $G(V,A,\emptyset)$ does not contain any cycle. The problem of acyclic orientation of mixed graphs has been studied in the literature in \cite{andreev:2000,sotskov:2002,al-anzi:2006}. Efficient algorithms have been proposed for special types of graphs, however in the general case it has been shown that the problem is NP-Hard.
+A coloring of a mixed graph $G(V,A,D)$ exists only if it is cycle-free \cite{ries:2007}, i.e. the directed graph $G(V,A,\emptyset)$ does not contain any cycle. The problem of acyclic orientation of mixed graphs has been studied in the literature in \cite{andreev:2000,sotskov:2002,al-anzi:2006}. Efficient algorithms have been proposed for special types of graphs, however in the general case it has been shown that the problem is NP-Hard.
 
 \subsection{Problem Formulation}
 
-In order to represent mutual exclusion constraints between FMU operations, the initial dependence graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$ , where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges.
-Once the mixed graph is constructed, directions have to be assigned to its edge in order define an order of execution for mutually exclusive operations. This transformation of the dependence graph does not impact the timing attributes of the operations. The timing constraints represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. On the other hand, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
+In order to represent mutual exclusion constraints between FMU operations, the initial dependence graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$ , where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges. Once the mixed graph is constructed, directions have to be assigned to its edges in order define an order of execution for mutually exclusive operations. The timing constraints represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. Otherwise, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
 
 \begin{equation}
-\forall\ (o_i,o_j) \in A,\ S(o_j) \leq \alpha(o_j)
+\forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)
 \label{eq:color4}
 \end{equation}
 
@@ -250,28 +249,36 @@ Once the mixed graph is constructed, directions have to be assigned to its edge 
 \label{eq:color5}
 \end{equation}
 
-It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependencies. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. 
+The timing attributes of the operations in the mixed graph $G(V,A,D)$ are the same as in the initial graph $G(V,A)$ because the added set of edges $[o_i, o_j] \in D$ does not impact the computation of these attributes. The attributes of an operation $o_i$, connected by an edge with another operation, may change only when this edge is assigned a direction. 
 
+An edge $[o_i,o_j]$ is called a conflict edge if the intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ as computed in the graph $G(V,A)$ overlap (equation \ref{eq:conflict}). If for a given edge $[o_i,o_j]$ either $E(o_i) \leq S(o_j)$ or $E(o_j) \leq S(o_i)$, there is no conflict and the edge can be assigned a direction. 
 
-The problem can be stated as an optimization formulation as follows:
+\begin{equation}
+E(o_i) > S(o_j)\ \text{and}\ E(o_j) > S(o_i)
+\label{eq:conflict}
+\end{equation}
 
+It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependencies. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. Following the definition given the previous section, the corresponding coloring is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ which is equivalent to mapping the operations $o_i \in V$ to the time intervals $[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]$.
+
+The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated as an optimization formulation as follows:
+						
 \begin{table}[h]
-\centering
-\begin{tabular}{l  l}
+\begin{tabular}{ll}
 	
-  \textit{Input} & Mixed dependence graph of operations $G_X(V_X,A_X,D_X)$\\
-	\rule{0pt}{5ex}									  
+  \textbf{Input:} & Mixed graph $G(V,A,D)$\\ \\
+	%\rule{0pt}{3ex}									  
 	
-  \textit{Output} & DAG $G_F(V_F,A_F)$\\
-	\rule{0pt}{5ex}									  
+  \textbf{Output:} & DAG $G(V,A)$\\
+	%\rule{0pt}{3ex}									  
   
-	\textit{Find} & Assignment of colors $cr_i$ to vertices $o_i$, $\alpha: V \rightarrow \mathbb{N}$\\
-	\rule{0pt}{5ex}									 
+	\textbf{Find:} & Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$\\
+	%\rule{0pt}{3ex}									 
 	
-	\textit{Minimize} & Critical path of graph $G_F(V_F,A_F): P = max(E(o_i))_{o_i \in V}$\\
-	\rule{0pt}{5ex}									 
+	\textbf{Minimize:} & Number of colors $k$\\
+	%\rule{0pt}{3ex}									 
 	
-	\textit{Subject to} & No cycle generated in $G_F(V_F,A_F)$\\
+	\textbf{Subject to:} & $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\\
+											& $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$\\
 										 
 \end{tabular}
 \end{table}

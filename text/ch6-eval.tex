@@ -2,7 +2,7 @@
 
 \minitoc
 
-In this chapter, we evaluate our proposed approach. We start by describing a method for randomly generating benchmark FMU dependency graphs. Then, we present the obtained results. Finally, we give the speedup and accuracy results obtained by applying our approach on an industrial use case.
+In this chapter, we evaluate our proposed approach. We start by describing a method for randomly generating benchmark operation graphs. Then, we present the obtained results. Finally, we give the speedup and accuracy results obtained by applying our approach on an industrial use case.
 
 \section{Random Generator of Dependence Graphs}
 
@@ -10,7 +10,7 @@ Due to the difficulty in acquiring enough industrial FMU co-simulation applicati
 
 \subsection{Random Dependence Graph Generation}
 
-The random generator that we have implemented is inspired by the work of [Kalla:04]. However it differs from this work because the generation is done in two stages. In fact, we have to generate, first, the different FMUs of the co-simulation and their internal structures. Second, we generate the dependence graph by creating inter-FMU dependencies in such a way that the resulting operation graph is a DAG. Our generator is based on a technique of assignment of operations to levels. The dependence graph can then be visualized on a grid of levels as depicted in figure \ref{}. The generator uses of the following parameters:
+The random generator that we have implemented is inspired by the work of [Kalla:04]. However it differs from this work because the generation is done in two stages. In fact, we have to generate, first, the different FMUs of the co-simulation and their internal structures. Second, we generate the dependence graph by creating inter-FMU dependence in such a way that the resulting operation graph is a DAG. Our generator is based on a technique of assignment of operations to levels. The level of an operation is the number operations on the longest path from a source operation to this operation. The dependence graph can then be visualized on a grid of levels as depicted in figure \ref{}. The generator uses of the following parameters:
 \begin{itemize}
 \item The graph size $n$: The number of operations;
 \item The number of FMUs $m$;
@@ -30,7 +30,7 @@ Note that parameters $n$ and $m$ are related. In other words, for a given size o
 \item Assign the remaining input operations (each of which is not connected with any output operation) to the level $h-2$ of the grid. These operations will be connected only with the state operations of their respective FMUs.
 \item Add the state operations to the last level of the grid.
 \end{enumerate}
-\item \textbf{Step 4:} Create the arcs of the dependence graph. At this step we randomly generate inter-FMU dependencies. For each operation $o_i$ on the level $lvl$ of grid, we randomly select an output operation $o_j$ from the preceding level $lvl-1$ and which belongs to a different FMU than $o_i$. We create an arc from $o_j$ to $o_i$. If no such output operation is found at level $lvl-1$, we select randomly an output operation from any level $lvl' < lvl-1$ and connect it with the operation $o_i$. Finally the arcs from input and output operations to state operations are created. 
+\item \textbf{Step 4:} Create the arcs of the dependence graph. At this step we randomly generate inter-FMU dependence. For each operation $o_i$ on the level $lvl$ of grid, we randomly select an output operation $o_j$ from the preceding level $lvl-1$ and which belongs to a different FMU than $o_i$. We create an arc from $o_j$ to $o_i$. If no such output operation is found at level $lvl-1$, we select randomly an output operation from any level $lvl' < lvl-1$ and connect it with the operation $o_i$. Finally the arcs from input and output operations to state operations are created. 
 \end{itemize}
 
 \subsection{Random Dependence Graph Characterization}

@@ -12,7 +12,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\abstract.tex
 
@@ -30,13 +30,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame1_View0,0]
-TopLine=476
-Cursor=30993
+TopLine=458
+Cursor=38581
 
 [Frame2]
 Flags=0
@@ -48,7 +48,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=ociamthesis.cls
 
@@ -66,7 +66,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=Thesis.tex
 
@@ -84,7 +84,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch1-intro.tex
 
@@ -102,13 +102,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
-TopLine=0
-Cursor=375
+TopLine=344
+Cursor=35685
 
 [Frame6]
 Flags=0
@@ -120,7 +120,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch3-state.tex
 
@@ -138,13 +138,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame7_View0,0]
-TopLine=0
-Cursor=16
+TopLine=168
+Cursor=11037
 
 [Frame8]
 Flags=0
@@ -156,7 +156,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch7-concl.tex
 
@@ -174,7 +174,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\appendix-1.tex
 
@@ -192,7 +192,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\appendix-2.tex
 
@@ -210,7 +210,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\abbreviations.tex
 
@@ -228,13 +228,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame12_View0,0]
 TopLine=0
-Cursor=25
+Cursor=1288
 
 [Frame13]
 Flags=0
@@ -246,7 +246,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1893
-NormalPos.bottom=904
+NormalPos.bottom=724
 Class=LaTeXView
 Document=text\title-page.tex
 
@@ -256,5 +256,5 @@ Cursor=92
 
 [SessionInfo]
 FrameCount=14
-ActiveFrame=5
+ActiveFrame=12
 

@@ -274,98 +274,94 @@ The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated a
 This formulation is stated as a vertex coloring problem, however, it is possible to state the problem and its solution using either vertex coloring notation or the scheduling notation. Thus, we note the following equivalence:
 
 \begin{itemize}[label={},topsep=1pt,parsep=1pt,partopsep=1pt,leftmargin=*]	
-\item \big(Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$\big) $\equiv$ \big(Mapping $\alpha: V \rightarrow \{[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]\}$\big)
-\item \big($\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\big) $\equiv$ \big($\forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)$\big)
-\item \big($\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$\big) $\equiv$ \big($\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$\big)
-\item \big(Optimal coloring $min(k)$\big) $\equiv$ \big(Optimal length of the critical path $min(R)$\big)
+\item Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\} \equiv$ Mapping $\alpha: V \rightarrow \{[S(o_1), E(o_1)],$ $[S(o_2), E(o_2)],$ $\ldots,$ $[S(o_n), E(o_n)]\} \equiv$ Assignment $\alpha: D \rightarrow \{(o_i,o_j),(o_j,o_i): [o_i,o_j] \in D\}$
+\item $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j) \equiv \forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)$
+\item $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$ $\equiv$ $\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$
+\item Optimal coloring $min(k)$ $\equiv$ Optimal length of the critical path $min(R)$
 \end{itemize}
 
-\subsection{Resolution using Linear Programming}
+\subsection{Resolution using Integer Linear Programming}
 
-We present here an ILP formulation for solving the problem of acyclic orientation of mixed graphs. We express the problem as a graph coloring problem where the operations can have different execution times. 
+Let $G(V,A,D)$ be a mixed graph constructed form the operation graph $G(V,A)$ as described in the previous sections to represent precedence and mutual exclusion constraints between operations of an FMU co-simulation. In the following, we present an Integer Linear Programming formulation for the problem of acyclic orientation of $G(V,A,D)$. The proposed formulation is based on the scheduling notation which gives a more compact set of constraints compared to a formulation that uses the vertex coloring notation.
 
 \subsubsection{Variables and Constants}
 
-Tables \ref{table:varilporient} and \ref{table:consilporient} summarize the variables and the constants that are used respectively.
+Tables \ref{table:varilporient} and \ref{table:consilporient} summarize the variables and the constants that are used in the ILP formulation respectively.
 
 \begin{table}[!htbp]
-\caption{Variables used in the ILP formulation of acyclic orientation of mixed graphs}
+\caption{Variables used in the ILP formulation of the acyclic orientation problem}
 \centering
 \label{table:varilporient}
-\begin{tabular}{c c}
+\begin{tabular}{l l l}
 \toprule
-Variable & Type   \\
+Variable & Type & Description  \\
 \midrule
- $x(o_i)$ & Integer \\
- $y_{ij}$ & Binary \\
- $S(o_i)$ & Integer \\
- $E(o_i)$ & Integer \\
+ $S(o_i)$ & Integer & Start time of operation $o_i$\\
+ $E(o_i)$ & Integer & End time of operation $o_i$\\
+ $b_{ij}$ & Binary & Orientation decision variable associated with edge $[o_i,o_j] \in D$\\
+ $P$ & Integer & Length of the critical path of the graph\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[!htbp]
-\caption{Constants used in the ILP formulation of acyclic orientation of mixed graphs}
+\caption{Constants used in the ILP formulation of acyclic orientation problem}
 \centering
 \label{table:consilporient}
-\begin{tabular}{c c}
+\begin{tabular}{l l l}
 \toprule
-Constant & Type \\
+Constant & Type & Decription\\
 \midrule
- $C(o_i)$ & Integer \\
- $M$ & Integer \\
+ $C(o_i)$ & Integer & Execution time of operation $o_i$\\
+ $M$ & Integer & Large positive number\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsubsection{Constraints}
 
-We define an integer variable $x(o_i)$, which represents the color that is assigned to operation $o_i$. The inequality \ref{orient:const_1} expresses the constraint that every operations must be assigned a color that is greater than the colors of all its predecessors.
+The following set of constraints is used in the ILP formulation of the acyclic orientation problem:
+
+\begin{itemize}
+
+\item \textit{Precedence constraints:} The start time of each operation is equal to the maximum of the end times of all its predecessors. Expression \ref{orient:const_1} captures this constraint. Note that expression $orient:const_1$ indicates that the start time of operation $o_j$ if greater or equal to the end time of each predecessor $o_i$. This is sufficient to express $S(o_j) = max_{o_i \in pred(o_j)}(E(o_i))$ since the formulated problem is a minimization problem.
 
 \begin{equation}
-x(o_i) > x(o_j): \forall (o_j,o_i) \in A
+\forall (o_i,o_j) \in A: S(o_j) \geq E(o_i):
 \label{orient:const_1}
 \end{equation}
 
-The binary variable $y_{ij}$ is associated with the edge $[o_i,o_j]$ and indicates whether operation $o_i$ is assigned a color greater than the color assigned to $o_j$ or not, i.e. $y_{ij} = 1\ if x(o_i) > x(o_j), 0\ otherwise$. Note that $y_{ij}$ is the complement of $y_{ji}$. For every edge $[o_i,o_j] \in E$, the colors assigned to $o_i$ and $o_j$ must be different. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint. $M$ is a big constant.
+\item \textit{Mutual exclusion constraints:} We define the binary variable $b_{ij}$ which is associated with the direction that is assigned to edge $[o_i,o_j]$. $b_{ij}$ is set to $1$ if the edge $[o_i,o_j]$ is assigned a direction from $o_i$ to $o_j$, i.e. $\alpha([o_i,o_j]) = (o_i,o_j)$ and to $0$ otherwise. Note that $b_{ij}$ is the complement of $b_{ji}$. For every pair of operations that are connected by and edge, we have to ensure that their time intervals are strictly disjoint, i.e. $\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint where $M$ is a large positive integer.
 
 \begin{equation}
-x(o_i) > x(o_j) - M \times (1-y_{ij}) + 1: \forall [o_i,o_j] \in E
+\forall [o_i,o_j] \in E: S(o_i) \geq E(o_j) - M \times (1-b_{ij})
 \label{orient:const_2}
 \end{equation} 
 
 \begin{equation}
-x(o_j) > x(o_i) - M \times y_{ij} + 1: \forall [o_i,o_j] \in E
+\forall [o_i,o_j] \in E: S(o_j) \geq E(o_i) - M \times b_{ij}
 \label{orient:const_3}
 \end{equation}
 
-Next, we need to express the computations of the timing parameters of the operations, i.e. start and end times. Recall that for a given edge $[o_i,o_j]$, if $o_j$ is assigned a color greater than the color assigned to $o_i$, then the edge $[o_i, o_j]$ is assigned a direction form $o_i$ to $o_j$. Expressions \ref{orient:const_4} and \ref{orient:const_5} are used to compute the start time of each operation and expression \ref{orient:const_6} is used to compute the end time of each operation.
+\item \textit{Time intervals:} Expression \ref{orient:const_4} is used to compute the end time of each operation.
 
 \begin{equation}
-S(o_i) \geq E(o_j): \forall (o_j,o_i) \in A
+\forall o_i \in V: E(o_i) = S(o_i) + C(o_i)
 \label{orient:const_4}
 \end{equation} 
 
+\item \textit{Length of the critical path:} The critical path $P$ is equal to the maximum of the end times of all the operations (expression \ref{orient:const_5}).
+
 \begin{equation}
-S(o_i) \geq E(o_j) - M \times (1-y_{ij}): \forall [o_i,o_j] \in E
+\forall o_i \in V: P \geq E(o_i)
 \label{orient:const_5}
 \end{equation}
 
-\begin{equation}
-E(o_i) = S(o_i) + C(o_i): \forall o_i \in V
-\label{orient:const_6}
-\end{equation}
- 
-The critical path $P$ is computed using the inequality \ref{orient:const_7}
-
-\begin{equation}
-P \geq E(o_i): \forall o_i \in V
-\label{orient:const_7}
-\end{equation}
+\end{itemize}
 
 \subsubsection{Objective}
 
-The objective of this linear program is to minimize the critical path of the operation graph.
+The objective of this linear program is to minimize the length of the critical path of the operation graph (expression \ref{orient:obj}).
 
 \begin{equation}
 min(P)

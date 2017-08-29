@@ -51,7 +51,7 @@ Different kinds of parallelism exist: bit-level, instruction-level, data, and ta
 Bit-level parallelism is the lowest level of parallelism and is related to the word size of the processor. If a 8-bit processor needs to perform computation on 16-bit data, it has to execute it in at least two steps, first on the 8 lower-order bits of the data and then on the 8 higher-order bits. Increasing the word size of the processor to 16 would allow the computation to be executed in one instruction. 
 
 \subsubsection{Instruction-level parallelism}
-Instruction-level parallelism allows the execution of more than one instruction per clock cycle if the instructions don't depend on each other. An example of instruction-level parallelism is instruction pipeline in which an instruction is divided into several steps that can be executed in parallel.
+Instruction-level parallelism allows the execution of more than one instruction per clock cycle if the instructions do not depend on each other. An example of instruction-level parallelism is instruction pipeline in which an instruction is divided into several steps that can be executed in parallel.
 
 \subsubsection{Data parallelism}
 Data parallelism is characterized by performing the same computation on a large set of data. If several processors are available, the data can be distributed across them and the same computation is executed on each processor.  

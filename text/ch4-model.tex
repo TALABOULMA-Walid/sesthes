@@ -391,9 +391,17 @@ D = \bigcup_{k=1}^d D_k, \forall\ [o_i^p, o_j^q] \in D_k, k \in \{0, 1, \ldots, 
 
 In view of the above, we define the set of subgraphs which constitute the graph $G(V,\emptyset,D) = \bigcup_{k=1}^d G(V_k,D_k)$. An acyclic orientation of the mixed graph $G(V,A,D)$ can be obtained by finding an acyclic orientation for every subgraph $G_k(V_k,D_k)$ following the non decreasing order of the start times of the operations as described previously. In order to prove this, we have to show that every edge in $D$ is assigned a	direction and that the resulting orientation does not lead to the creation of a cycle. Since every edge $[o_i, o_j]$ belongs to one subset of edges $D_k$, finding acyclic orientations for all the subgraphs $G_k(V_k)$ leads to assigning a direction to every edge in $D$. The existence of a cycle in the resulting graph means that there exists at least an edge $[o_i,o_j]$ that has been transformed into the arc $(o_i,o_j)$ and $S(o_i) > S(o_j)$. However, this is not possible because the greedy acyclic orientation assigns directions to edges following a non-decreasing order of the start times of the operations.
 
-Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obtained by finding a vertex coloring. This vertex coloring can be seen as a sequence of assignments $\alpha_1, \alpha_2, \ldots, \alpha_{|D_k|}$, such that every assignment $\alpha_l$ assigns a color to one operation $o_i \in V_k$. The number of assignments needed to perform the acyclic orientation of $G_k(V_k,D_k)$ is equal to the number of edges $|D_k|$. % add that direction assignments , possible timing situations, attributes update
+Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obtained by finding a vertex coloring for this subgraph. This vertex coloring can be seen as a sequence of assignments $\alpha_1, \alpha_2, \ldots, \alpha_{|D_k|}$, such that every assignment $\alpha_l$ assigns a color to one operation $o_i \in V_k$ and leads to assigning directions to edges that connect $o_i$ with other already colored operations $o_j \in V_k$. The number of assignments needed to perform the acyclic orientation of $G_k(V_k,D_k)$ is equal to the number of edges $|D_k|$. Following the coloring of an operation and the engendered assignment of directions, the attributes of some operations may change. Two situations have to be distinguished:
 
-Once a direction is assigned to an edge, timing attributes of some operations $o_i \in V$ may have to be updated. 
+\begin{itemize}
+\item Coloring $\alpha_l$ of operation $o_i$ leads to assigning a direction to at least one conflict edge $[o_i,o_j] \in D_k$. Without loss of generality, suppose that the edge $[o_i,o_j]$ is transformed into the arc $(o_i,o_j)$, then the start time $S(o_j)$ is changed to $S(o_j) \leftarrow E(o_i)$ following changes in timing attributes occur:
+\begin{itemize}
+\item $S(o_j) \leftarrow E(o_i)$
+\item if $\overline{S(o_j)} > $
+\end{itemize}
+\item Coloring $\alpha_l$ of operation $o_i$ does not lead to assigning a direction to any conflict edge.
+\end{itemize} 
+
 
 
 

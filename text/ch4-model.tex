@@ -394,15 +394,88 @@ In view of the above, we define the set of subgraphs which constitute the graph 
 Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obtained by finding a vertex coloring for this subgraph. This vertex coloring can be seen as a sequence of assignments $\alpha_1, \alpha_2, \ldots, \alpha_{|D_k|}$, such that every assignment $\alpha_l$ assigns a color to one operation $o_i \in V_k$ and leads to assigning directions to edges that connect $o_i$ with other already colored operations $o_j \in V_k$. The number of assignments needed to perform the acyclic orientation of $G_k(V_k,D_k)$ is equal to the number of edges $|D_k|$. Following the coloring of an operation and the engendered assignment of directions, the attributes of some operations may change. Two situations have to be distinguished:
 
 \begin{itemize}
-\item Coloring $\alpha_l$ of operation $o_i$ leads to assigning a direction to at least one conflict edge $[o_i,o_j] \in D_k$. Without loss of generality, suppose that the edge $[o_i,o_j]$ is transformed into the arc $(o_i,o_j)$, then the start time $S(o_j)$ is changed to $S(o_j) \leftarrow E(o_i)$ following changes in timing attributes occur:
-\begin{itemize}
-\item $S(o_j) \leftarrow E(o_i)$
-\item if $\overline{S(o_j)} > $
+\item Coloring $\alpha_l$ of operation $o_i$ does not lead to assigning a direction to any conflict edge. In this case, no changes of the timing attributes occur.
+\item Coloring $\alpha_l$ of operation $o_i$ leads to assigning a direction to at least one conflict edge $[o_i,o_j] \in D_k$. Without loss of generality, suppose that the edge $[o_i,o_j]$ is transformed into the arc $(o_i,o_j)$, then the start time $S(o_j)$ is changed to $S(o_j) \leftarrow E(o_i)$. This leads to changing the end time $E(o_j)$ also and possibly causes a domino effect for the start times and end times of all the descendants $o_{j'} \in desc(o_j)$ (see Algorithm \ref{algo:update_s}). Moreover, if $\overline{S}(o_j) > \overline{E}(o_i)$, the end time from end $\overline{E}(o_i)$ is changed to $\overline{E}(o_i) \leftarrow \overline{S}(o_j)$. Similarly, this leads to changing the start time from end $\overline{S}(o_j)$ and possibly causes a domino effect for the start times and end times of all the ancestors $o_{i'} \in ance(o_i)$ (see Algorithm \ref{algo:update_e}).
 \end{itemize}
-\item Coloring $\alpha_l$ of operation $o_i$ does not lead to assigning a direction to any conflict edge.
-\end{itemize} 
+
+\begin{algorithm}[htb]
+	\SetKwFunction{update}{update}
+	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
+	\textbf{Output:} Update of the start and end times of a subset of operations $\{o_i\} \subset V$\;
+	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
+	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$.
+	\ForEach{$(o_t,o_h) \in A_{k,l}$}
+		{
+			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
+				{
+					$S(o_h) \leftarrow E(o_t)$\;
+					$E(o_h) \leftarrow S(o_h) + C(o_h)$\;
+					
+				}
+		}
+	\SetKwProg{myproc}{Procedure}{}{}
+	\myproc{\update{$o_h$}}
+		{
+			\If{$succ(o_h) \neq \emptyset$}
+			{
+				\ForEach{$o_h^* \in succ(o_h)$}
+						{
+							\If{$S(o_h^*) < E(o_h)$}
+							{
+								$S(o_h^*) \leftarrow E(o_h)$\;
+								$E(o_h^*) \leftarrow S(o_h^*) + C(o_h^*)$\;
+								\update{$o_h^*$}\;
+							}
+						}
+			}
+			 \KwRet\;
+		}
+	\caption{Update of the start and end times following an assignment $\alpha_l$}
+	\label{algo:update_s}
+\end{algorithm}
 
 
+\begin{algorithm}[htb]		
+	\SetKwFunction{update}{update}
+	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
+	\textbf{Output:} Update of the start and end times from end of a subset of operations $\{o_i\} \subset V$\;
+	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
+	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$.
+	\ForEach{$(o_t,o_h) \in A_{k,l}$}
+		{
+			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
+				{
+					\If{$\overline{E}(o_t) < \overline{S}(o_h)$}
+						{
+							$\overline{E}(o_t) \leftarrow \overline{S}(o_h)$\;
+							$\overline{S}(o_t) \leftarrow \overline{E}(o_t) + C(o_t)$\;
+							\update{$o_t$}\;
+						}
+					
+				}
+		}
+	\SetKwProg{myproc}{Procedure}{}{}
+	\myproc{\update{$o_t$}}
+		{
+			\If{$pred(o_t) \neq \emptyset$}
+			{
+				\ForEach{$o_t^* \in pred(o_t)$}
+						{
+							\If{$\overline{E}(o_t^*) < \overline{S}(o_t)$}
+							{
+								$\overline{E}(o_t^*) \leftarrow \overline{S}(o_t)$\;
+								$\overline{S}(o_t^*) \leftarrow \overline{E}(o_t^*) + C(o_t^*)$\;
+								\update{$o_h^*$}\;
+							}
+						}
+			}
+			 \KwRet\;
+		}
+	\caption{Update of the start and end times from end following an assignment $\alpha_l$}
+	\label{algo:update_e}
+\end{algorithm}
+
+We now describe our proposed acyclic orientation heuristic. The heuristic takes as input a mixed graph $G(V,A,D)$ and the attributes of the operations $o_i \in V$ as computed for the digraph $G(V,A,\emptyset)$, and assigns directions to all the edges $[o_i,o_j] \in D$. In the first step, the graph $G(V,\emptyset,D)$ obtained by removing all the arcs $(o_i,o_j) \in A$ from the mixed graph $G(V,A,D)$ is partitioned into $d$ subgraphs where $d$ is the number of all occurrences of all FMUs such that each subgraph contains all the operations of one FMU which correspond to the same occurrence and all the edges that connect them: $ G(V,\emptyset,D)= \bigcup_{k=1}^d G_k(V_k,\emptyset,D_k)$. Then, the set of operations $o_i \in V$ is sorted in a non decreasing order of the start times $S(o_i)$.
 
 
 Algorithm \ref{algo:ao} details the acyclic orientation heuristic. After adding the edges to the graph, the heuristic iteratively assigns ranks to the operations. It keeps a list of already ordered operations $l$ for each FMU $\mathcal{M}$ and at each main iteration it selects the operation which has the earliest start time $S(o_i)$ to be added to the list of its FMU. Ties are broken by selecting the operation with the least flexibility $F(o_i)$. We call the operation to be ordered at a given iteration, the pending operation. The pending operation $o_i$ is assigned the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$ in ascending order, where \mbox{$x = \max_{o_j \in pred(o_i)}(\phi(o_j)+1)\; (1 \; if \; pred(o_i) = \emptyset)$}. For each rank $\tau$, the assignment $\phi(o_i)=\tau$ is made and the ranks assigned to all the already ordered operations $o_{i'} \in l$ such that $\phi(o_{i'}) \geq \phi(o_{i})$, are increased $\phi(o_{i'}) = \phi(o_{i'})+1$. Then, every edge $[o_i,o_i'] \in D_X, : o_i' \in l$ is assigned a direction from the operation with the lower rank to the operation with the higher rank. At this point, the increase in $R$, the critical path of the graph, is evaluated. Next, the operations $o_{i'} \in l$ such that $\phi(o_{i'}) > \phi(o_{i})$ are reassigned their previous ranks $\phi(o_{i'}) = \phi(o_{i'})-1$, and the pending operation is assigned the next rank $\phi(o_i)=\phi(o_i)+1$. The increase in the critical path is evaluated again similarly. After repeating this for all the ranks $\tau \in \{x,x+1, \dots ,length(l)+1\}$, the pending operation is finally ordered at the rank which leads to the least increase in the critical path and edges $[o_i,o_i'] \in D_X : o_i' \in l$ are assigned directions as described before. The heuristic begins another iteration by selecting a new operation to be ordered. The heuristic assigns a rank to one operation at each iteration. Every operation is assigned a rank higher than the ranks of all its predecessors which guarantees that no cycle is generated. The heuristic finally stops when all the operations have been assigned ranks.

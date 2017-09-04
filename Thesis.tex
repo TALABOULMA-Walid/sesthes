@@ -57,6 +57,7 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.15}
 \usepackage{enumitem}
+\usepackage{amsthm}
 % The humanities-type option: author-year in-text citation with an alphabetical works cited.
 %\usepackage[style=authoryear, sorting=nyt, backend=biber, maxcitenames=2, useprefix, doi=false, isbn=false]{biblatex}
 %\newcommand*{\bibtitle}{Works Cited}
@@ -99,6 +100,10 @@
 \setlist*[inlinelist,1]{%
   label=\roman*),
 }
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
 
 \newlength{\jeroenlen}
 \newenvironment{subjecto}

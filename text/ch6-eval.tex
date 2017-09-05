@@ -20,7 +20,7 @@ The random generator that we have implemented is inspired by the work of [Kalla:
 Note that parameters $n$ and $m$ are related. In other words, for a given size of a graph $n$, an adequate number of FMUs $m$ has to be chosen. The generation of the dependence graph is performed as follows:
 \begin{itemize}
 \item \textbf{Input:} Size of the graph $n$, number of FMUs $m$, height of the graph $h$, and width of the graph $w$. The number of FMUs can be derived automatically from the size of the graph using a predefined formula. For instance, one of the formulas that we have used is $ m = 5 \times log10(n/5)$. This allows to have adequate size of the graph and number of FMUs. Suppose for example that we have a size $n = 1000$ and a number of FMUs $m = 1$. Obviously, this example does not represent a realistic application. 
-\item \textbf{Step 1:} Randomly distribute the $n$ operations to the $m$ FMUs. Given the number of operations of each FMU, we randomly determine the number of its input operations and the number of its output operations. Every operation has one state operation.
+\item \textbf{Step 1:} Randomly distribute the $n$ operations to the $m$ FMUs. Given the number of operations of each FMU, we randomly determine the number of its input operations and the number of its output operations. Every FMU has one state operation.
 \item \textbf{Step 2:} Randomly generate the intra-FMU arcs. This step is controlled by two parameters.  The number of arcs to generate and the number of NDF outputs of the FMU. These outputs are not considered when randomly generating the arcs.
 \item \textbf{Step 3:} Randomly assign the operations to the grid levels. This step is performed by assigning output operations and then input operations repeatedly.
 \begin{enumerate}

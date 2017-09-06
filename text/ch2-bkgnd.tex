@@ -28,10 +28,30 @@ f\biggl(x_1,x_2,\dots, x_n,y,\frac{\partial y}{\partial x_1},\frac{\partial y}{\
 \label{pde}
 \end{equation} 
 
-In this thesis, we are interested, in particular, in modeling dynamical systems using ODEs.
+A Differential Algebraic Equation, abbreviated DAE, is a system of equations which involves algebraic equations in addition to differential equations. A DAE can be written in the form shown in equation \ref{dae} where $f$ represents differential equations involving derivatives of variables and $g$ represents algebraic equations which do not contain derivatives.
+
+\begin{equation}
+\begin{aligned}
+&0 = f(\dot{x},x,t)\\
+&0 = g(x,t)
+\end{aligned}
+\label{dae}
+\end{equation} 
+  
+In this thesis, we are particularly interested in modeling dynamical systems using ODEs. Typically, such systems are hybrid dynamic systems modeled using hybrid ODEs. These systems exhibit continuous behavior interspersed with jumps triggered by some events. These events, called zero-crossing, arise as a result of the value of a state variable crossing a specific threshold. A classic example of such hybrid dynamic systems is the bouncing ball model where a ball is dropped from a certain height $h$ above the ground. The ball falls with a velocity subject to gravity and bounces when it hits the surface. Equation \ref{eq:bb} gives a hybrid system of equations which describe the behavior of the bouncing ball where $h$ is the height of the ball, $v$ its velocity, $g$ the gravity constant, and $\gamma$ the coefficient of restitution.
+
+\begin{equation}
+\begin{aligned}
+&\dot{h} = v\\
+&\ddot{h} = -g\\
+&\dot{h} := -\gamma \dot{h} 
+\end{aligned}
+\label{dae}
+\end{equation}  
+
+The bouncing model exhibit a continuous behavior when $h > 0$ and discontinuities occur at bounces, i.e. when $h = 0$, where the velocity of the ball is inverted and scaled down by a factor equal to $\gamma$. In other words, the motion of the ball changes from downward to upward. Figure \ref{} shows the trajectory of the ball.
 
 
-%Given these equations, the system can be characterized by a number of state variables. The time derivative of each variable is then expressed as a function of the other variables and the inputs. %As a simple example, the fall of a punctual body subject only to gravity can be described by the differential equation:
 \subsection{Simulation}
 
 \subsection{Co-simulation}

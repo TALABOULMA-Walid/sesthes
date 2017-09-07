@@ -64,26 +64,27 @@ shows the trajectory of the ball. This hybrid dynamic system can be modeled usin
 
 \subsection{Simulation}
 
-Given a model of a system under study, the simulation consists in running this model in order to produce and plot, on a computer, the time varying values of the quantities of interest. This data is used in order to assess different aspects about the functioning of the system. Technically speaking, running a model which consists of a set of ODEs means solving these equations. In practice, it is not possible to find the solution of such equations analytically which imposes the use numerical methods to solve them. Such numerical methods, called solvers, are based on the principle of discretization of the time $t$. This means that the values of the state variables $x(t)$ of an ODE in the form of equation \ref{eq:ode} evolve between discrete points of time, called time steps, $(t_k, t_{k+1}, \ldots)$ instead of an evolution in continuous time $t \in \mathbb{R}^+$. The distance between two time steps is called the integration step size. 
+Given a model of the system under study, the simulation consists in running this model in order to produce and plot, on a computer, the time varying values of the quantities of interest. This data is used in order to assess different aspects about the functioning of the system. Technically speaking, running a model which consists of a set of ODEs means solving these equations. In practice, it is not possible to find the solution of such equations analytically which imposes the use of numerical methods to solve them. Such numerical methods, called solvers, are based on the principle of discretization of the time $t$. This means that the values of the state variables $x(t)$ of an ODE in the form of equation \ref{eq:ode} evolve between discrete points of time, called \textit{time steps}, $(t_k, t_{k+1}, \ldots)$ instead of an evolution in continuous time $t \in \mathbb{R}^+$. The distance between two time steps is called the \textit{integration step size}. The smaller is the integration step size, the more accurate is the numerical resolution of the equations, i.e. the closer it is to the exact solution. However, reducing the integration step size requires more computations and thus slows down the execution of the solver. A tradeoff has to be made according to the desired quality and computation speed.
+
+The discretized time can be written as: $t_k = k \times dt$ where $dt$ is the integration step size. The solver computes a sequence: $x_{k+1} = F(x_k,t_k)$ where $x_k$ is the value of the variable $x$ at $t_k$, the $k^{th}$ time step. $F$ is the solver or the integration function. Starting from the initial time $t_0$ and having the initial condition $x_0$, which is the value of $x$ at time $t_0$, the numerical resolution consists in computing approximate values of the quantity $x$ repeatedly according to the discretized time. The time step $dt$ has to be chosen in such a way that the dynamics of the simulated system are well captured. When the system exhibits dynamics heterogeneity, e.g. fast transients with slow evolution of the state variables, a fixed time step becomes less efficient. It is therefore  more efficient to use a variable time step. A solver with variable step controls the step size using a feedback loop on the error. The step size is adapted according to an estimation of the error. 
+
+Solvers are characterized by a number of properties (e.g. order, explicit/implicit, fixed/variable integration step size, \ldots) which should be taken into consideration when choosing a solver for a specific problem. Overall, it is always desirable to choose a solver that is reliable, robust and fast.
+
 
 \subsection{Co-simulation}
 
-The following definition is taken from \cite{sicklinger:2014}:
+Complex systems may involve heterogeneous interacting parts. For instance, In a CPS, the controlled physical process constitutes a multi-physics system and is modeled in the continuous-time domain using (hybrid) Ordinary Differential Equations (ODEs). On the other hand, because they are implemented on embedded computers, numerical laws that control the physical process are modeled in the discrete-time domain. For such systems, it becomes necessary to do the modeling on the subsystem level, usually without a complete view about the the rest of the system. Models are then coupled together in order to perform simulation at the system level, known as co-simulation. In co-simulation, the different models are simulated in a black-box fashion and an orchestration of their interactions has to be ensured. The intercations between the involved models consist in data exchange.
 
-\textit{
-In co-simulation the different subsystems which form a coupled problem are modeled and simulated in a segregated manner. Hence, the modeling is done on the subsystem level without having the coupled problem in mind. Furthermore, the coupled simulation is carried out by running the subsystems in a blackbox manner. During the simulation the subsystems will exchange data.}
+Co-simulation is an alternative approach to monolithic simulation where a complex system is modeled as a whole using differential equations and simulated by numerically solving these equations. Co-simulation has a number of advantages over the monolithic approach. It allows modeling each part of the system using the most appropriate tool instead of using a single modeling software. Also, it allows a better intervention of the experts of different fields at the subsystem level. Furthermore, co-simulation facilitates the upgrade, the reuse, and the exchange of models. 
 
+In co-simulation, the equations of each model are integrated using a solver separately. Models exchange data by updating their inputs and outputs according to their communication steps. Figure shows the evolution of time and data exchange between two models. For simplicity, the shown models A and B have identical communication steps $H_A$ and $H_B$ respectively. On the other hand, models A and B have different integration steps $h_A$ and $h_B$ respectively.
 
-Co-simulation is an alternative approach to monolithic simulation where a complex system is modeled as a whole using differential equations and simulated by numerically solving these equations. In a CPS, the controlled physical process constitutes a multi-physics system and is modeled in the continuous-time domain using (hybrid) Ordinary Differential Equations (ODEs). Because they are implemented on embedded computers, numerical laws that control the physical process are modeled in the discrete-time domain. All of these features add to the complexity of the numerical models. Co-simulation has a number of advantages over the monolithic approach. It allows modeling each part of the system using the most appropriate tool instead of using a single modeling software. Also, it allows a better intervention of the experts of different fields at the subsystem level. Furthermore, co-simulation facilitates the upgrade, the reuse, and the exchange of models. 
-
-In co-simulation, the equations of each model are integrated using a solver separately. Models exchange data by updating their inputs and outputs according to their communication steps. Figure~\ref{fig:cosim} shows the evolution of time and data exchange between two models. For simplicity, the shown models A and B have identical communication steps $H_A$ and $H_B$ respectively. On the other hand, models A and B have different integration steps $h_A$ and $h_B$ respectively.
-
-\begin{figure}[htb]
-\centering
-  \includegraphics[scale=0.7]{figures/Co-Simulation}
-\caption{Evolution of time and data exchange between two models during co-simulation}
-\label{fig:cosim}
-\end{figure}
+%\begin{figure}[htb]
+%\centering
+  %\includegraphics[scale=0.7]{figures/Co-Simulation}
+%\caption{Evolution of time and data exchange between two models during co-simulation}
+%\label{fig:cosim}
+%\end{figure}
 
 \subsection{Co-simulation with Real-time Constraints}
 

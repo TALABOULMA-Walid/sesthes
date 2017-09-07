@@ -14,31 +14,31 @@ The complex nature of Cyber Physical Systems impose the study of their behavior 
 
 Modeling a system consists in creating a mathematical abstraction of its behavior. The first step is to choose a modeling formalism. This choice depends on the properties of the system, the objective of the simulation, and the aimed level of detail in the simulation. For instance, models can be built using continuous-time variables to represent continuous dynamics of a physical process. Such mathematical models consist of a set of differential equations which describe the continuously changing physical quantities of a process such as electrical circuits, fluid dynamics, chemical reactions, etc. Other systems feature a behavior which evolves between a finite set of states. These systems can be modeled as discrete event systems using formalisms such as DEVS (Discrete Event System Specification), Statecharts, or Petri nets. Finally, hybrid modeling allows the modeling of systems with both continuous variables and discrete states. In other words, the system jumps between discrete states and while it is in a certain state, it features a continuous behavior, i.e. its quantities change continuously. 
 
-In this thesis, we focus on the the modeling of dynamical systems using differential equations. A differential equation expresses a variable as a function of its derivatives. In the modeling of dynamical systems, the variables are the physical quantities and the derivatives express their rates of change. A differential equation is called Ordinary Differential Equation, abbreviated ODE, if it involves ordinary derivatives of the variables with respect to an independent variable (usually the time in the modeling of dynamical systems).  Equation \ref{ode} is an ODE where $x$ is the vector of the dependent variables of interest called the state variables, $\dot{x} = \frac{dx}{dt}$ is the vector of the time derivatives of the state variables, $t$ is the time (the independent parameter), and $f$ is a given function.
+In this thesis, we focus on the the modeling of dynamical systems using differential equations. A differential equation expresses a variable as a function of its derivatives. In the modeling of dynamical systems, the variables are the physical quantities and the derivatives express their rates of change. A differential equation is called Ordinary Differential Equation, abbreviated ODE, if it involves ordinary derivatives of the variables with respect to an independent variable (usually the time in the modeling of dynamical systems).  Equation \ref{eq:ode} is an ODE where $x$ is the vector of the dependent variables of interest called the state variables, $\dot{x} = \frac{dx}{dt}$ is the vector of the time derivatives of the state variables, $t$ is the time (the independent parameter), and $f$ is a given function.
 
 \begin{equation}
 \dot{x} = f(x,t)
-\label{ode}
+\label{eq:ode}
 \end{equation}
 
-In contrast, a differential equation is called Partial Differential Equation, abbreviated PDE if it involves unknown functions and their partial derivatives. Equation \ref{pde} shows such PDE where $x_1,x_2,\dots, x_n$ are the parameters, $y=y(x_1,x_2,\dots, x_n)$ is the unknown function, and $f$ is a given function.
+In contrast, a differential equation is called Partial Differential Equation, abbreviated PDE if it involves unknown functions and their partial derivatives. Equation \ref{eq:pde} shows such PDE where $x_1,x_2,\dots, x_n$ are the parameters, $y=y(x_1,x_2,\dots, x_n)$ is the unknown function, and $f$ is a given function.
 
 \begin{equation}
 f\biggl(x_1,x_2,\dots, x_n,y,\frac{\partial y}{\partial x_1},\frac{\partial y}{\partial x_2},\dots,\frac{\partial y}{\partial x_n}\biggl)=0
-\label{pde}
+\label{eq:pde}
 \end{equation} 
 
-A Differential Algebraic Equation, abbreviated DAE, is a system of equations which involves algebraic equations in addition to differential equations. A DAE can be written in the form shown in equation \ref{dae} where $f$ represents differential equations involving derivatives of variables and $g$ represents algebraic equations which do not contain derivatives.
+A Differential Algebraic Equation, abbreviated DAE, is a system of equations which involves algebraic equations in addition to differential equations. A DAE can be written in the form shown in equation \ref{eq:dae} where $f$ represents differential equations involving derivatives of variables and $g$ represents algebraic equations which do not contain derivatives.
 
 \begin{equation}
 \begin{aligned}
 &0 = f(\dot{x},x,t)\\
 &0 = g(x,t)
 \end{aligned}
-\label{dae}
+\label{eq:dae}
 \end{equation} 
   
-In this thesis, we are particularly interested in modeling dynamical systems using ODEs. Typically, such systems are hybrid dynamic systems modeled using hybrid ODEs. These systems exhibit continuous behavior interspersed with jumps triggered by some events. These events, called zero-crossing, arise as a result of the value of a state variable crossing a specific threshold. A classic example of such hybrid dynamic systems is the bouncing ball model where a ball is dropped from a certain height $h$ above the ground. The ball falls with a velocity subject to gravity and bounces when it hits the surface. Equation \ref{eq:bb} gives a hybrid system of equations which describe the behavior of the bouncing ball where $h$ is the height of the ball, $v$ its velocity, $g$ the gravity constant, and $\gamma$ the coefficient of restitution.
+In this thesis, we are particularly interested in modeling dynamical systems using ODEs. Typically, such systems are hybrid dynamic systems modeled using hybrid ODEs. These systems exhibit continuous behavior interspersed with jumps triggered by some events. There are two kinds of events: Events which occur at a particular instant in time are called time events. The other kind of events, called state events or zero-crossing, arise as a result of the value of a state variable crossing a specific threshold. Time events are easier to handle than state events since they occur at known instants in time. A classic example of such hybrid dynamic systems is the bouncing ball model where a ball is dropped from a certain height $h$ above the ground. The ball falls with a velocity subject to gravity and bounces when it hits the surface. Equation \ref{eq:bb} gives a hybrid system of equations which describe the behavior of the bouncing ball where $h$ is the position of the ball (height), $v$ its velocity, $g$ the gravity constant, and $\gamma$ the coefficient of restitution.
 
 \begin{equation}
 \begin{aligned}
@@ -46,13 +46,25 @@ In this thesis, we are particularly interested in modeling dynamical systems usi
 &\ddot{h} = -g\\
 &\dot{h} := -\gamma \dot{h} 
 \end{aligned}
-\label{dae}
+\label{eq:bb}
 \end{equation}  
 
-The bouncing model exhibit a continuous behavior when $h > 0$ and discontinuities occur at bounces, i.e. when $h = 0$, where the velocity of the ball is inverted and scaled down by a factor equal to $\gamma$. In other words, the motion of the ball changes from downward to upward. Figure \ref{} shows the trajectory of the ball.
+The bouncing ball model exhibits a continuous behavior when $h > 0$ and discontinuities occur at bounces, i.e. when $h = 0$, where the velocity of the ball is inverted and scaled down by a factor equal to $\gamma$. In other words, the motion of the ball changes from downward to upward. Figure %\ref{fig:bbtrajectory} 
+shows the trajectory of the ball. This hybrid dynamic system can be modeled using a hybrid automaton as shown in figure %\ref{fig:bbautomaton}.
 
+%\begin{figure}
+%
+%\label{fig:bbtrajectory}
+%\end{figure}
+
+%\begin{figure}
+%
+%\label{fig:bbautomaton}
+%\end{figure}
 
 \subsection{Simulation}
+
+Given a model of a system under study, the simulation consists in running this model in order to produce and plot, on a computer, the time varying values of the quantities of interest. This data is used in order to assess different aspects about the functioning of the system. Technically speaking, running a model which consists of a set of ODEs means solving these equations. In practice, it is not possible to find the solution of such equations analytically which imposes the use numerical methods to solve them. Such numerical methods, called solvers, are based on the principle of discretization of the time $t$. This means that the values of the state variables $x(t)$ of an ODE in the form of equation \ref{eq:ode} evolve between discrete points of time, called time steps, $(t_k, t_{k+1}, \ldots)$ instead of an evolution in continuous time $t \in \mathbb{R}^+$. The distance between two time steps is called the integration step size. 
 
 \subsection{Co-simulation}
 

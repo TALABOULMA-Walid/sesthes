@@ -6,9 +6,13 @@ This chapter describes fundamental concepts and gives literature review about re
 
 \section{Modeling and Simulation}
 
-The complex nature of Cyber Physical Systems impose the study of their behavior before building them with the objective of allowing preliminary evaluation, tuning and possibly redesign of the solution. Simulation has proven successful in responding to this need and is becoming an indisputable step in the design process of complex systems. Simulation is an effective cost reducer since it allows to correct design errors before building the system. Simulation is performed by providing models which describe the behavior of the system and then running these models in order to produce the behavior of the simulated system on a computer.   
+The design of complex systems impose the study of their behavior before building them with the objective of allowing preliminary evaluation, tuning and possibly redesign of the solution. Simulation has proven successful in responding to this need and is becoming an indisputable step in the design process of complex systems. Simulation is an effective cost reducer since it allows to correct design errors before building the system. Simulation is performed by providing models which describe the behavior of the system and then running these models in order to produce the behavior of the simulated system on a computer.   
 
-\subsection{Cyber-Physical Systems}
+\subsection{Systems}
+
+Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. A system is defined as a set of interacting parts which form a complex whole. A system is characterized by the cohesion between its forming parts which operate as a whole towards a common goal. In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In the engineering and computer science domains, a system can be seen as an entity which receives inputs from the environment and produces outputs to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it takes, and, in turn, affects the produced outputs. Figure [ref] illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
+
+ A kind of systems that fall within the scope of this thesis is known as Cyber-Physical Systems (CPS). CPS
 
 \subsection{Modeling}
 
@@ -149,8 +153,11 @@ Figure shows the state machine of the supported calling sequences from a master 
 
 In the design process of complex systems, it is often necessary to test the behavior of the system as it would be produced by the real system. Therefore, the simulation is executed with real-time constraints such that the progress of the simulation time matches the real-time. For example, if temperature takes three minutes to reach $25$°, the simulation has to take three minutes as well. Similarly, a co-simulation with real-time constraints has to be executed with the same rate of the real-time.
 
-A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available. Many HiL solutions are developed in such a way to work using special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS).  
+A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available. Many HiL solutions are developed in such a way to work using special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS).
 
+Roughly speaking, the difference between real-time simulation and non real-time (offline) simulation is related to the notion of results validity. For offline simulation, one seeks to obtain results as soon as possible. The validity of the the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time bounds. If such bounds are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
+
+Figure [ref] illustrates the time evolution of a real-time simulation. During the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}.
 \section{Parallel Computing}
 
 \subsection{Overview}

@@ -10,13 +10,11 @@ The design of complex systems impose the study of their behavior before building
 
 \subsection{Systems}
 
-Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. A system is defined as a set of interacting parts which form a complex whole. A system is characterized by the cohesion between its forming parts which operate as a whole towards a common goal. In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In the engineering and computer science domains, a system can be seen as an entity which receives inputs from the environment and produces outputs to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it takes, and, in turn, affects the produced outputs. Figure [ref] illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
+Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. A system is defined as a set of interacting parts which form a complex whole. A system is characterized by the cohesion between its forming parts which operate as a whole towards a common goal. 
 
-A kind of systems that falls within the scope of this thesis is known as Cyber-Physical Systems (CPS). CPS combine computational elements and physical processes are referred to
-as Cyber-Physical Systems (CPS). Areas where CPS can be found are as important as
-automotive, aerospace, manufacturing, transportation and many others. The diversity of
-the involved disciplines makes the process of building CPS challenging, costly and time
-consuming.
+In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In engineering domains, in addition to the definition given above, a system can be seen as an entity which receives inputs from the environment and produces outputs to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it takes, and, in turn, affects the produced outputs. Figure [ref] illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
+
+A kind of systems that falls within the scope of this thesis is known as Cyber-Physical Systems (CPS). CPS consist of a combination of tightly interacting computational elements and physical processes. The computational elements are called embedded systems or controllers and are used to control the physical processes. They are interfaced with the physical processes through sensors and actuators. The controllers run control software whose behavior is affected by the physical process. Areas where CPS can be found are as important as automotive, aerospace, manufacturing, transportation and many others. The diversity of the involved disciplines makes the process of building CPS challenging, costly and time consuming.
 
 \subsection{Modeling}
 
@@ -77,7 +75,6 @@ Given a model of the system under study, the simulation consists in running this
 The discretized time can be written as: $t_k = k \times h$ where $h$ is the integration step size. The solver computes a sequence: $x_{k+1} = F(x_k,t_k)$ where $x_k$ is the value of the variable $x$ at $t_k$, the $k^{th}$ time step. $F$ is the solver or the integration function. Starting from the initial time $t_0$ and having the initial condition $x_0$, which is the value of $x$ at time $t_0$, the numerical resolution consists in computing approximate values of the quantity $x$ repeatedly with respect to the discretized time. The time step $h$ has to be chosen in such a way that the dynamics of the simulated system are well captured. When the system exhibits dynamics heterogeneity, e.g. fast transients with slow evolution of the state variables, a fixed time step becomes less efficient. It is therefore  more efficient to use a variable time step. A solver with variable step controls the step size using a feedback loop on the error. The step size is adapted according to an estimation of the error. 
 
 Solvers are characterized by a number of properties (e.g. order, explicit/implicit, fixed/variable integration step size, \ldots) which should be taken into consideration when choosing a solver for a specific problem. Overall, it is always desirable to choose a solver that is reliable, robust and fast.
-
 
 \subsection{Co-simulation}
 
@@ -162,6 +159,38 @@ A typical application of real-time co-simulation is HiL. The key advantage of re
 Roughly speaking, the difference between real-time simulation and non real-time (offline) simulation is related to the notion of results validity. For offline simulation, one seeks to obtain results as soon as possible. The validity of the the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time bounds. If such bounds are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
 
 Figure [ref] illustrates the time evolution of a real-time simulation. During the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}.
+
+\subsection{Languages and Tools for Modeling and Simulation}
+
+Building models of systems can be done manually and than transformed into software using general purpose programming languages such as C. However, this approach is not efficient in practice, especially when the modeled system is complex and changes may be required in the model. Many tools and languages for modeling and simulation have been developed in order to facilitate and make the modeling and simulation more efficient. Such tools allow the user to specify an equation-based model in a straightforward manner and come with built-in solvers. Below, we present some tools and languages for modeling and simulation.
+
+\subsubsection{xMOD}
+xMOD\footnote{http://www.xmodsoftware.com/} is the modeling and co-simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models embedding different solvers with different integration and communication step sizes. xMOD does not replace original modeling and simulation tools. Instead, it promotes and facilitates their coupling and existence.
+
+%\begin{figure}[h]
+%\centering
+%\captionsetup{justification=centering}
+%\includegraphics[scale=0.5]{figures/mipsxmod}
+%\caption{Example of co-simulation models in xMOD.} 
+%\label{fig:mips}
+%\end{figure} 
+
+\subsubsection{MATLAB Simulink}
+Simulink\footnote{www.mathworks.com/products/simulink/}, developed by The Mathworks is a graphical modeling environment. Simulink is used in the  process of Model-Based Design of embedded systems. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB algorithms in Simulink models. Finally, Simulink enables automatic code generation form models.
+
+\subsubsection{Modelica}
+
+Modelica is an object-oriented equation-based language for the modeling of complex physical systems developed by the Modelica Association. Modelica allows the modeling of physical systems by writing a set equations. Modelica adopts an acausal approach, i.e. the signal flow is not specified in the model. The simulator has to perform symbolic manipulations in order to define inputs and outputs and find an order of execution for these equations.
+
+\subsubsection{Dymola}
+
+Dymola\footnote{http://www.3ds.com/products-services/catia/products/dymola}, developed by Dassault Syst\`emes AB, is a modeling and simulation environment based on the Modelica modeling language. Dymola supports the FMI standard and allows interfacing with other tools such as Simulink
+
+\subsubsection{Amesim}
+Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/amesim/} is a modeling and simulation software developed by Siemens PLM Software. Amesim can be used for the modeling and simulation of mechatronic systems. Amesim is based on the Modelica modeling language. It is oriented towards the modeling of complex physical systems instead of controller design. Amesim provides libraries containing collections of components that can be loaded and connected by the user to build models. For simulation, Amesim automatically selects a solver that is adapted to the problem.
+
+\subsubsection{Hopsan}
+Hopsan\footnote{https://www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
 \section{Parallel Computing}
 
 \subsection{Overview}

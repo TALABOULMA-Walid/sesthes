@@ -373,38 +373,19 @@ Assuming the tasks are sorted in a list and that processors are organized in a c
   
 \section{Parallelization of Co-simulation}
 
-In this section we briefly review some of the approaches in the literature on the parallelization of simulations. We present also some of the available simulation tools that support parallel simulations.
+The more accurate is a simulation of a system, the more reliable is the assessment of its behavior. The numerical accuracy can be improved in different ways, for instance, by choosing a small step size. However, this means that more computations are performed and thus the computation load becomes large decreasing the simulation performance. An important challenge faced by the developers and the users of simulation tools is to achieve a good simulation performance while maintaining an acceptable simulation accuracy. The performance of a simulation can be significantly improved through parallel execution. In this scope, different approaches for the parallelization of simulations have been porposed in the literature. In this section we briefly review some of the approaches for the parallelization of simulation that are found in the literature. We present also some of the available simulation tools that support parallel simulations.
 
 \subsection{Methods}
 
+The parallelization approaches can be classified into three categories as suggested in [burrage], based on the level at which the parallelization is intorduced.
+
+\subsubsection{Parallelization across the method}
 In order to achieve simulation acceleration using multicore execution, different approaches are possible and were already explored. Some approaches seek to parallelize the integration methods, for example a multi-satge solver requires several computations within one integration step. It is then possible to perform multiple computations in parallel within one step \cite{iserles:1990}. Another approach consists in parallelizing operations on vectors for ODEs resolution like in the PVODE solver \cite{byrne:1999} implemented using MPI. It is possible to modify the model in order to prepare its multicore execution, for example by using marked functions as in \cite{elmqvist:2015,Gebremedhin2012}. If providing OpenMP ready libraries is possible, the key feature for simulation acceleration is to provide techniques which offer speedup whatever the model is. Proposing parallel solvers or automatic parallel executions of model equations as in \cite{elmqvist:2014} is also an efficient approach. \cite{clauberg:2012} presents an approach for the parallelization of simulations on shared memory multiprocessors using OpenMP to parallelize matrix operations. Transmission Line Modeling \cite{hui:1990} is a method that allows the decoupling and the parallelization of models by representing them using transmissionline graphs such that decoupling points are chosen where variables change slowly because the models are considered as if they were connected by constants at these points. \cite{sjolund:2010,braun:2012} are based on the TLM method. As shown in \cite{Benkhaled_A_2012_ECOSM}, splitting a model into several FMUs, by isolating discontinuities, may reduce the simulation time, even in the case of a monocore execution. \cite{benkhaled:2014} presents the RCOSIM approach. It consists in using each FMU information on input/output causality to build a graph, with an increased granularity and then exploiting the potential parallelism by using a heuristic to build an offline multicore schedule.
+
+\subsubsection{Parallelization across the time}
+
+\subsubsection{Parallelization across the system}
 
 \subsection{Tools}
 
-In this section, we present some of the available simulation tools that support parallel execution.
-
-\subsubsection{xMOD}
-xMOD\footnote{http://www.xmodsoftware.com/} is the modeling and simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models embedding different solvers with different step-times on multicore architectures enabling the acceleration of complex simulations execution. The parallelization approach of xMOD is based on scheduling graphs of tasks. The approach is detailed in chapter \ref{methods}. Figure \ref{fig:mips} shows an example of co-simulation models connected in xMOD. 
-
-%\begin{figure}[h]
-%\centering
-%\captionsetup{justification=centering}
-%\includegraphics[scale=0.5]{figures/mipsxmod}
-%\caption{Example of co-simulation models in xMOD.} 
-%\label{fig:mips}
-%\end{figure} 
-
-\subsubsection{MATLAB Simulink}
-Simulink\footnote{www.mathworks.com/products/simulink/}, developed by Mathworks is a graphical modeling environment. It is intended to simulate dynamical systems that can be described using block diagrams. Simulink allows parallel execution by allowing the partitioning of the models and allocating them to a multicore processor in such a way to balance the computational load. The user can configure the parallelization using a graphical interface.
-
-\subsubsection{Dymola}
-Dymola\footnote{http://www.3ds.com/products-services/catia/products/dymola}, developed by Dassault Syst\`emes AB, is a modeling and simulation environnement based on the open Modelica modeling language. Dymola can parallelize the computations of model equations. It finds which equations can be be parallelized and automatically introduces OpenMP directives. The parallelization process is detailed in \cite{elmqvist:2014}.
-
-\subsubsection{Amesim}
-Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/amesim/} is a modeling and simulation software developed by Siemens PLM Software. Amesim allows launching multiple simulations in parallel, for example to run a model with different parameters. It has also the capability of partitioning models and executing them on multicore processors.
-
-\subsubsection{Hopsan}
-Hopsan\footnote{https://www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. The parallelization approach of Hopsan is based on the TLM method \cite{sjolund:2010,braun:2012}.
-
-\subsubsection{MBSim}
-MBSim\footnote{https://github.com/mbsim-env/} is a simulation environment for multibody systems developed at the Institute of Applied Mechanics of the Technische Universit\"at M\"unchen. It is able to run simulations on multicore processors by using OpenMP library to parallelize matrix operations \cite{clauberg:2012}.    
+Some simulation tools are endowed with parallel execution capabilities.

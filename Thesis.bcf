@@ -2150,24 +2150,20 @@
     <bcf:citekey order="24">braun:2012</bcf:citekey>
     <bcf:citekey order="25">Benkhaled_A_2012_ECOSM</bcf:citekey>
     <bcf:citekey order="26">benkhaled:2014</bcf:citekey>
-    <bcf:citekey order="27">elmqvist:2014</bcf:citekey>
-    <bcf:citekey order="28">sjolund:2010</bcf:citekey>
-    <bcf:citekey order="28">braun:2012</bcf:citekey>
-    <bcf:citekey order="29">clauberg:2012</bcf:citekey>
+    <bcf:citekey order="27">benkhaled:2014</bcf:citekey>
+    <bcf:citekey order="29">kermia:2009</bcf:citekey>
+    <bcf:citekey order="29">ramamritham:1995</bcf:citekey>
     <bcf:citekey order="30">benkhaled:2014</bcf:citekey>
-    <bcf:citekey order="32">kermia:2009</bcf:citekey>
-    <bcf:citekey order="32">ramamritham:1995</bcf:citekey>
-    <bcf:citekey order="33">benkhaled:2014</bcf:citekey>
-    <bcf:citekey order="35">gallai:1968</bcf:citekey>
-    <bcf:citekey order="35">roy:1967</bcf:citekey>
-    <bcf:citekey order="35">hasse:1966</bcf:citekey>
-    <bcf:citekey order="35">vitaver:1962</bcf:citekey>
-    <bcf:citekey order="36">ries:2007</bcf:citekey>
-    <bcf:citekey order="37">andreev:2000</bcf:citekey>
-    <bcf:citekey order="37">sotskov:2002</bcf:citekey>
-    <bcf:citekey order="37">al-anzi:2006</bcf:citekey>
-    <bcf:citekey order="38">grandpierre:1999</bcf:citekey>
-    <bcf:citekey order="39">benkhaled:2014</bcf:citekey>
+    <bcf:citekey order="32">gallai:1968</bcf:citekey>
+    <bcf:citekey order="32">roy:1967</bcf:citekey>
+    <bcf:citekey order="32">hasse:1966</bcf:citekey>
+    <bcf:citekey order="32">vitaver:1962</bcf:citekey>
+    <bcf:citekey order="33">ries:2007</bcf:citekey>
+    <bcf:citekey order="34">andreev:2000</bcf:citekey>
+    <bcf:citekey order="34">sotskov:2002</bcf:citekey>
+    <bcf:citekey order="34">al-anzi:2006</bcf:citekey>
+    <bcf:citekey order="35">grandpierre:1999</bcf:citekey>
+    <bcf:citekey order="36">benkhaled:2014</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

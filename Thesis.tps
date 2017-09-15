@@ -35,8 +35,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame1_View0,0]
-TopLine=0
-Cursor=0
+TopLine=6
+Cursor=4018
 
 [Frame2]
 Flags=0
@@ -72,7 +72,7 @@ Document=Thesis.tex
 
 [Frame3_View0,0]
 TopLine=0
-Cursor=0
+Cursor=1232
 
 [Frame4]
 Flags=0
@@ -108,7 +108,7 @@ Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
 TopLine=0
-Cursor=0
+Cursor=2460
 
 [Frame6]
 Flags=0
@@ -256,5 +256,5 @@ Cursor=92
 
 [SessionInfo]
 FrameCount=14
-ActiveFrame=1
+ActiveFrame=5
 

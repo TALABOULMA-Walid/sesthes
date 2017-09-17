@@ -107,8 +107,8 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
-TopLine=0
-Cursor=2460
+TopLine=524
+Cursor=54288
 
 [Frame6]
 Flags=0

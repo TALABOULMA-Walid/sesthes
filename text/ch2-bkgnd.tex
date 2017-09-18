@@ -193,7 +193,21 @@ Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/a
 Hopsan\footnote{https://www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
 \section{Parallel Computing}
 
-\subsection{Overview}
+Parallel computing is a very important branch in the computing research and industry. It refers to the discipline that focuses on executing multiple computations simultaneously to solve one problem. Its basic idea is to divide a computing task into several sub-tasks that can be performed at the same time. From the beginning of the modern era of computing, computer software has been typically written for sequential execution. In order to solve a problem, an algorithm is designed as a sequence of instructions that are executed one after the other. In order to increase the computation power of computers, the dominant method was frequency scaling. If a processor's frequency is increased, it means that it can execute more instructions per clock cycle and thus can execute a sequential program faster. Moore's law predicted that the number of transistors in a processor would double approximately every two years \cite{moore:1965}. This prediction proved correct for many years. However, frequency scaling is facing technological limits and the last decade witnessed a wide shift to multicore processors among semiconductor manufacturers. Moore's law can be considered to be still accurate since more transistors are still integrated in chips, not for frequency scaling but to add more processing elements. The rise of multicore processors has caused the evolution of many parallel hardware and software technologies.
+
+The main goal of parallel computing is to execute computer programs faster. The speedup obtained from the parallelization can be predicted using Amdhal's law \cite{amdahl:1967}. It states that for a program that is paralellized in order to be executed on multiple processors, the portion of the program that has to be executed sequentially will limit the speedup. The speedup is therefore not linear with the number of processors and probably adding more processors will not make the program run faster. The following formula gives the theoretical speedup computed using Amdahl's law.
+\begin{equation}
+S(n) = \frac{1}{(1-P) + \frac{P}{n}}
+\end{equation}
+$S(n)$ is the theoretical speedup, $P$ is the portion of the program that can be parallelized and $n$ is the number of processors. Figure \ref{fig:amdahl} shows the theoretical speedup of a program in function of the number of processors for different values of $P$. It shows for example that if $50\%$ of a program can be parallelized, the maximum possible speedup is 2, and if $95\%$ of the program can be prallelized, the maximum speedup is around 20.
+
+%\begin{figure}[h]
+%\centering
+%\captionsetup{justification=centering}
+%\includegraphics[scale=0.6]{figures/amdahlspeedup}
+%\caption{Theoretical speedup computed using Amdahl's law for a program in function of the number of processors for different values of $P$.}
+%\label{fig:amdahl}
+%\end{figure} 
 
 \subsection{Types of Parallelism}
 
@@ -213,30 +227,28 @@ In task parallelism, a program is divided into different computational tasks tha
 
 In contrast to bit-level and instruction-level parallelism, data and task parallelism is apparent to the programmer who should make the decision of how to divide and allocate the data or the tasks of the application. In this thesis, we are interested in particular in task parallelism because the applications that we deal with are more suitable for this kind of parallelism.
 
-\subsection{Types of Parallel Computers}
+\subsection{Parallel Architectures}
 
-From a hardware point of view, parallel computers can be classified according to the type of interconnection and communication between the different processors which make up them.
+Parallel computers are of many types, some of which are adapted only to specific kinds of applications. Parallel computers can be classified according to different criteria. The well-known Flynn's Taxonomy \cite{flynn:1972} classifies computers according to instruction and data streams into the following categories:
 
-\subsubsection{multicore computing}
-A multicore processor contains multiple processing elements, called cores, on the same chip. The different cores can execute instructions simultaneously and thus accelerate the execution time of a program. The different cores are physically close to each other and share the same memory. The computation power of a multi-core processor can be increased by adding more cores. In order to take advantage of multicore processors, appropriate programming paradigms need to be used.  
+%the physical organization of processors and memory into the following types:
 
-\subsubsection{Distributed computing}
-A distributed computer has several processing elements that are connected by a network and that has each a memory. We talk then of distributed memory.
+\subsubsection{Single-Instruction Stream--Single-Data Stream (SISD)}
 
-\subsubsection{Symmetric multiprocessing}
-A symmetric multiprocessor computer has several processors that share memory and that are connected by a bus.
+This is the basic uniprocessor which does not exhibit any parallelism. The execution is sequential where a single instruction stream operates on single data stream. Examples of such architecture are old desktop computers.
 
-\subsubsection{Cluster computing}
-A cluster is composed of a number of interconnected optionally heterogeneous computers. If the computers are not identical, balancing the load among the computers becomes difficult.
+\subsubsection{Single-Instruction Stream--Multiple-Data Streams (SIMD)}
 
-\subsubsection{Massively parallel computing}
-A massively parallel processor (MPP) has a large number of processors, generally more than 128, that are interconnected by means of a network. MPP differ from clusters in that they use specialized networks to connect processors whereas clusters use common networks, e.g. Ethernet, to connect standalone computers.
+A SIMD computer executes the same instruction on multiple data streams in parallel. A Graphics Processing Unit (GPU) is one example of SIMD architectures.
 
-\subsubsection{Grid computing}
-Grid computing is the most distributed kind of parallel computing. A grid uses remote computers connected via the internet.  
- 
-\subsubsection{General-purpose computing on graphics processing units}
-Graphics Processing Units (GPU) are usually used to perform graphics computations on a computer. General-Purpose computing on Graphics Processing Units (GPGPU) consists in using GPUs to perform computing of applications, different than graphics, which are usually executed by Central Processing Units (CPUs). This form of parallel computing  is very efficient for data-parallel applications such as matrix operations.
+\subsubsection{Multiple Instruction-Streams--Single Data Stream (MISD)}
+
+Multiple instructions are executed on a single data stream. For example, in fault-tolerant computing, the same operation is performed in parallel and the results of all the computations must be the same.
+
+\subsubsection{Multiple Instruction-Streams--Multiple Data Streams (MIMD)}
+
+Different instructions are executed on different data in parallel. Examples of MIMD computers include multiprocessors and multi-core architectures.
+
 
 \subsection{Parallel Programming}
 
@@ -399,4 +411,6 @@ Co-simulation is naturally adapted to parallelization across the system. In fact
 
 \subsection{Tools}
 
-Some simulation tools are endowed with parallel execution capabilities.
+More and more simulation tools are now endowed with parallel execution capabilities. However, it should be noted that some of these tools adopt parallelization approaches that do not target the numerical part of the simulation. For instance, the Parallel Computing Toolbox in MATLAB allows launching multiple Simulink simulations of the same model in parallel on a desktop multi-core computer or a cluster. These are separate independent simulations of the same model. Thus, this feature does not correspond to the focus of this thesis, i.e. the parallelization of the numerical computations of a simulation. Also, Simulink provides an execution mode known as Rapid Accelerator Mode which consists in creating a standalone executable of the model and the solver. Simulink runs in one process and this executable runs in another process on a multi-core processor. Again, although this approach may improve the performance of the simulation, it does not lie within the scope of the thesis.
+
+The Dymola tool enables automatic parallelization of equation resolution. The prallelization approach of Dymola is detailed in \cite{elmqvist:2014}. Amesim allows launching multiple simulations in parallel, for example to run a model with different parameters. It has also the capability of partitioning models and executing them on multi-core processors. The TLM method, presented above, is integrated in the Hopsan tool. Finally, MBSim parallelizes matrix and vector operations as described in \cite{clauberg:2012}. 

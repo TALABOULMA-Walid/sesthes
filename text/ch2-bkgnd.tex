@@ -267,13 +267,19 @@ Pipeline parallelism combines data and task parallelisms. Multiple tasks operate
 
 \subsection{Parallel Programming}
 
-In order to efficiently use parallel computers, many programming approaches have been developed such as libraries, APIs, and programming models. Basically they differ according to the targeted type of memory, i.e. shared memory, distributed memory or shared distributed memory. In a shared memory model, communication is performed by manipulating variables in the shared memory. On the other hand, in a distributed memory model, communication is done by message passing. We present here, one of the most used shared memory libraries (Open Multi-Processing) and one of the most used distributed memory libraries (Message Passing Interface).
+In order to efficiently map software parallelism on parallel architectures, many parallel programming libraries, APIs, and standards have been developed. Basically they differ according to the targeted type of memory.
 
-\subsubsection{Open Multi-Processing}
+\subsubsection{Shared Memory Programming}
+
+Shared memory programming is done using threads. Multiple threads are created and executed on multiple processors. The programmer does not need to worry about the communication between threads as this is done implicitly via shared variables. Threads may have private variables that are not shared with the other threadsData consistency problem occurs if two or more threads attempt to write data to the same data location. Threads must coordinate using synchronization mechanisms in order to avoid data consistency problems. There are many libraries and APIs for shared memory programming. The following are two main examples.
+
 Open Multi-Processing (OpenMP) \cite{openmp} is an API that has been designed to develop applications that are meant to be executed on shared memory parallel computers such as multicore computers. OpenMP is supported by C, C++ and Fortran programming languages. The basic idea of OpenMP is that a master thread is responsible for the creation of slave threads that are allocated to processors to run in parallel. The creation of slave threads is called forking. It is the duty of the developer to specify parts of the code that can run in parallel using preprocessor directives. These directives cause the threads to be created before their execution. When the execution of the slave threads is finished, they join back to the master thread which continues the execution of the program. OpenMP can be used for both data and task parallelism.
 
-\subsubsection{Message Passing Interface}
-Message Passing Interface (MPI) \cite{mpi} is a standard for programming distributed memory parallel computers. It is based on the concept of message passing between threads that are running in parallel on different processors. It is supported by many programming languages and platforms. It defines a communication protocol for performing the message passing and provides communication and synchronization functionalities for collaborating processes that are allocated to different processing elements. It supports different kinds of communications such as point-to-point and collective communication. It is also possible to choose the topology of communication to be used.
+Intel Threading Building Blocks (Intel TBB)
+
+\subsubsection{Distributed Memory Programming}
+
+Message Passing Interface (MPI) \cite{mpi} is a standard for programming distributed memory parallel computers. It is supported by many programming languages and platforms. It defines a communication protocol for performing the message passing and provides communication and synchronization functionalities for collaborating processes that are allocated to different processors. It supports different kinds of communications such as point-to-point and collective communication. It is also possible to choose the topology of communication to be used.
 
 \subsection{Parallel Scheduling}
 

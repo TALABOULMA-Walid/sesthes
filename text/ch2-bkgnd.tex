@@ -293,11 +293,9 @@ Knowing the time needed to execute each task is also important to model the prog
 
 Scheduling in the broad sense refers to the theory, algorithms and systems that deal with problems of sequencing and allocating tasks to resources. Scheduling theory has numerous areas of application like manufacturing, transportation, logistics, sports scheduling, and project management. The objective of scheduling for parallel computing is to take full advantage of a parallel architecture for the execution of a parallel application . A significant part of the research carried out in the scheduling theory field treats problems related to scheduling computational tasks on parallel computers. This kind of scheduling is known as parallel scheduling. We focus in this section on parallel scheduling from a computing point of view.
 
-In a scheduling problem, the resources are the processors (or cores of a mult-icore processor) and the tasks are the computation functions of the application to be executed. Resources are traditionally referred to as computers, or sometimes machines, and tasks as jobs. We use the terms processors, to refer to processing elements of a parallel computing system, and tasks to refer to the computational tasks of the application to be executed.
+In a parallel scheduling problem, the resources are the processors (or cores of a mult-icore processor) and the tasks are the computation functions of the application to be executed. Resources are traditionally referred to as computers, or sometimes machines, and tasks as jobs. We use the terms processors, to refer to processing elements of a parallel computing system, and tasks to refer to the computational tasks of the application to be executed. A set of $n$ tasks is denoted $T = \{t_1, t_2, \ldots, t_n\}$ and a set of $m$ processors is denoted $P = \{p_1, p_2, \ldots, p_m\}$. Scheduling consists allocating tasks form $T$ to processors from $P$ with respect to predefined criteria. Scheduling implies also the definition of an execution order for the tasks that are allocated to the same processor by setting execution start times for the tasks. In general, each task has to be allocated to one and only one processor and a processor can execute at most one task at a time. Additional constraints can be considered depending on the problem.
 
-Basically, a scheduling problem is characterized by a set of $n$ tasks $T = \{t_1, t_2, \ldots, tn\}$ and a set of $m$ processors $P = \{p_1, p_2, \ldots, p_m\}$. Scheduling means allocating tasks form $T$ to processors from $P$ with respect to predefined criteria. Scheduling implies also the definition of an execution order for the tasks that are allocated to the same processor by setting execution start times for the tasks. In general, each task has to be allocated to one and only one processor and a processor can execute at most one task at a time. Additional constraints can be considered depending on the problem. 
-
- In scheduling problems, processors can be classified based on their speed of execution \cite{davis:2011}:
+In scheduling problems, processors can be classified based on their speed of execution \cite{davis:2011}:
 
 \begin{itemize}
 \item \textit{Heterogeneous}: The execution speed of a task depends on both the processor and the task. Not all tasks may be executed on all processors.
@@ -307,9 +305,11 @@ Basically, a scheduling problem is characterized by a set of $n$ tasks $T = \{t_
 
 A schedule is called preemptive if a the execution of a task can be preempted and resumed later. If a schedule is not preemptive, it is called non preemptive. Furthermore, a scheduling algorithm is either dynamic or static. Dynamic scheduling algorithms are used when some information about the tasks are not known before the execution. The scheduling algorithm makes scheduling decisions online as the information becomes available. Static scheduling algorithms can be used when the characteristics of the tasks, such as dependence between them and their execution times, are known before the execution. It is then possible to compute the schedule of the tasks offline.
 
-Scheduling research has been active for over 60 years now and so many methods and algorithms have been proposed to solve different scheduling problems. Different performance measures can be considered such as the makespan objective, the total completion time objective, and the number of late tasks objective \cite{leung:2004}. Makepsan is the time needed by a computer to process a set of tasks. We focus here on the makespan objective because our goal is to accelerate the execution of simulations and thus to minimize the needed execution time.
+Scheduling research has been active for over 60 years now and so many methods and algorithms have been proposed to solve different scheduling problems. Different performance measures can be considered such as the makespan objective, the total completion time objective, and the number of late tasks objective \cite{leung:2004}. Makepsan is the time needed by a computer to process a set of tasks. The general objective of parallel computing is to accelerate the execution of application which corresponds to the makespan objective.
 
-The sets of tasks are usually described by Directed Acyclic Graphs (DAGs) $G(V,E)$ where each task is represented by a vertex in $V$ and precedence constraints are represented by edges in $V$. A vertex may have one or more incoming edges which connect it with its predecessors and one or more outgoing edges which connect it with its successors. A task cannot start its execution unless all its predecessors have finished the execution. If a vertex has no predecessor it is called an entry or source vertex. A vertex that has no successor is called an exit or sink vertex. The vertices may be weighted by the execution times of the corresponding tasks (see Figure \ref{fig:dagexample}).
+\subsubsection{Task Dependence Graph}
+
+A set of tasks which express the parallelism of an application can be represented by a Directed Acyclic Graph (DAG) $G(V,A)$ called the task dependence graph. Each task is represented by a vertex $v_i \in V: 0 \leq i < n$ where $n$ is the number of tasks. Dependence between tasks is represented by arcs $(v_i, v_j) \in A: 0 \leq i,j < n$. A vertex may have one or more incoming edges which connect it with its predecessors and one or more outgoing edges which connect it with its successors. A task cannot start its execution unless all its predecessors have finished the execution. If a vertex has no predecessor it is called an entry or source vertex. A vertex that has no successor is called an exit or sink vertex. The vertices may be weighted by the execution times of the corresponding tasks (see Figure \ref{fig:dagexample}). In the remainder of the thesis we will use the term dependence graph instead of task dependence graph.
 
 %\begin{figure}[h]
 %\centering
@@ -317,7 +317,15 @@ The sets of tasks are usually described by Directed Acyclic Graphs (DAGs) $G(V,E
 %\includegraphics[scale=0.9]{figures/dagexample}
 %\caption{A DAG representation of a set of tasks $T = \{t_1, t_2, t_3, t_4\}$ with the dependence $t_1 \rightarrow t_2, t_1 \rightarrow t_3, t_2 \rightarrow t_4,$ and $t_3 \rightarrow t_4$}
 %\label{fig:dagexample}
-%\end{figure} 
+%\end{figure}
+
+Dependence graphs are of two types:
+
+\paragraph{Control Flow Graph} 
+
+The dependence between two tasks indicates a control relationship, i.e. a sequence of execution. The control flow graph represents all the possible sequences of execution of the tasks starting from a source vertex.
+
+\paragraph{Data Flow Graph}
 
 In industrial practice, we distinguish between the "functional" and "non functional" specifications. Functional specification consists in defining what has to be done. Mainly, the different functions of the application and the dependence between them are specified. Non functional specification consists in defining how the functions have to be performed. It provides a description of the hardware architecture, its different components and how they are interconnected. It specifies also allocation constraints if there are any and the timing parameters of the different functions, like their execution times and periods.
 

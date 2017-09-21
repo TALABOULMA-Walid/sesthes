@@ -1,0 +1,28 @@
+\documentclass{standalone}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\begin{document}
+\begin{tikzpicture}[->,>=stealth']
+
+ % State: Append column update
+ \node[state,minimum size=4cm] (State)
+ {
+ \begin{tabular}{l}          
+$x > 0$\\
+\\
+$\dot{x} = v$\\
+$\ddot{x} = -g$
+ \end{tabular}
+ };
+ % draw the paths and and print some Text below/above the graph
+ \path 
+(State) edge[loop left] 
+node[anchor=west,above,yshift=+1.9em,xshift=+2.0em]{$\dot{x} := -\gamma \dot{x}$}
+node[anchor=west,above,yshift=-3.1em,xshift=+2.0em]{$x = 0$}
+(State);
+       
+\end{tikzpicture}
+
+\end{document} 

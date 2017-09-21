@@ -6,13 +6,20 @@ This chapter describes fundamental concepts and gives literature review about re
 
 \section{Modeling and Simulation}
 
-The design of complex systems impose the study of their behavior before building them with the objective of allowing preliminary evaluation, tuning and possibly redesign of the solution. Simulation has proven successful in responding to this need and is becoming an indisputable step in the design process of complex systems. Simulation is an effective cost reducer since it allows to correct design errors before building the system. Simulation is performed by providing models which describe the behavior of the system and then running these models in order to produce the behavior of the simulated system on a computer.   
+The design of complex systems impose the study of their behavior before building them with the objective of allowing preliminary evaluation, tuning and possibly redesign of the solution. Simulation has proven successful in responding to this need and became an indisputable step in the design process of complex systems. Simulation is an effective way for cost reduction since it allows to correct design errors before building the system. Simulation is performed by providing models which describe the behavior of the system and then running these models in order to produce the behavior of the simulated system on a computer.   
 
 \subsection{Systems}
 
 Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. A system is defined as a set of interacting parts which form a complex whole. A system is characterized by the cohesion between its forming parts which operate as a whole towards a common goal. 
 
-In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In engineering domains, in addition to the definition given above, a system can be seen as an entity which receives inputs from the environment and produces outputs to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it takes, and, in turn, affects the produced outputs. Figure [ref] illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
+In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In engineering domains, in addition to the definition given above, a system can be seen as an entity which receives inputs from the environment and produces outputs to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it takes, and, in turn, affects the produced outputs. Figure \ref{fig:system} illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
+
+\begin{figure}[phbt]
+\centering
+\includegraphics{figures/system.pdf}
+\caption{A block diagram representation of a system.}
+\label{fig:system}
+\end{figure}
 
 A kind of systems that falls within the scope of this thesis is known as Cyber-Physical Systems (CPS). CPS consist of a combination of tightly interacting computational elements and physical processes. The computational elements are called embedded systems or controllers and are used to control the physical processes. They are interfaced with the physical processes through sensors and actuators. The controllers run control software whose behavior is affected by the physical process. Areas where CPS can be found are as important as automotive, aerospace, manufacturing, transportation and many others. The diversity of the involved disciplines makes the process of building CPS challenging, costly and time consuming.
 
@@ -356,21 +363,21 @@ A current trend in multiprocessor scheduling is to use meta-heuristics such as G
 
 \subsection{Parallel Real-time Scheduling}
 
-Real-time scheduling concerns the scheduling of tasks in real-time systems. Here, real-time does not mean fast but it refers to systems that must be able to respond to external events within specified deadlines. Real-time systems are typically found in the form of embedded systems that control physical processes: They represent the cyber part in a CPS. In general, real-time systems are computing systems that are characterized by timing constraints in addition to the functional requirements. A part of this thesis deals with HiL simulation which is a kind of real-time systems because the simulated part has to meet predefined deadlines in order to ensure correct results.
-In order to implement real-time applications, first, \textit{real-time tasks} are defined by characterizing the functions obtained from the functional specification by a number of temporal parameters. A real-time task $t_i$ is characterized by the following parameters (Figure \ref{fig:taskmodel}):
+Real-time scheduling concerns the scheduling of tasks in real-time systems. Real-time does not mean fast, instead, it refers to systems that must be able to respond to external events within specified deadlines. Real-time systems are typically found in the form of embedded systems that control physical processes. They represent the cyber part in a CPS. In general, real-time systems are computing systems that are characterized by timing constraints in addition to the functional requirements. A part of this thesis deals with HiL simulation which can be qualified as a real-time system because the simulated part has to meet predefined deadlines in order to ensure correct results.
+In order to implement real-time applications, first, \textit{real-time tasks} are defined by characterizing the functions obtained from the functional specification by a number of timing parameters. A real-time task denoted $t_i$ is characterized by the following parameters (see Figure \ref{fig:taskmodel}):
 \begin{itemize}
 \item Release time $r^k_i$: Typical real-time applications consist of a set of tasks that are executed repeatedly where each execution is called an instance. The time at which an instance becomes ready to be executed is called the activation or the release time. $r^k_i$ is the release time of the $k^{th}$ instance of the task $t_i$;
-\item First release time: $r^0_i$, called also offset.
+\item First release time: $r^0_i$, called also offset;
 \item Start time $s^k_i$: The time at which the $k^{th}$ instance starts its execution $(s^k_i \geq r^k_i)$;
 \item Execution time $C_i$: A real-time task has an execution time which cannot be considered to be fixed and may vary from one execution to another. Therefore, a real-time task is characterized by its Worst Case Execution Time (WCET);
 \item Finishing time $f^k_i$: The time at which the $k^{th}$ instance finishes its execution;
 \item Response time $R^k_i$: The duration between the release time and the finishing time of the $k^{th}$ instance: $R^k_i = f^k_i - r^k_i$;
 \item Absolute deadline $d^k_i$: The time at which the $k^{th}$ instance must finish its execution;
-\item Relative deadline $D_i$: The duration, starting from the release time, that the task has to finish its execution;
+\item Relative deadline $D_i$: Starting from the release time, the duration within which the task has to finish its execution;
 \item Laxity $l^k_i(t)$: Difference between the absolute deadline and the time for which the task has been running $l^k_i=d^k_i-(t+C_i(t))$.
 \end{itemize}
 
-\noindent According to how consecutive instances of a task are activated, three kinds of tasks are distinguished:
+In addition, real-time tasks are characterized by a parameter related to how consecutive instances of a task are activated. Three kinds of tasks can be distinguished:
 \begin{itemize}
 \item Periodic tasks: The instances of a given task are activated periodically with a known period. A periodic task is characterized by its period $T_i$;
 \item Sporadic tasks: The instances of a task are activated by an event and the minimum time between two successive activations is known. A sporadic task is characterized by $T_i$, its minimum arrival time;
@@ -389,7 +396,7 @@ Real-time systems can be classified based on the impact of missing deadlines. Ha
 
 Many different real-time scheduling algorithms have been proposed in the literature but they are all based on the same idea, tasks are assigned priorities and then scheduled in an order following their priorities. We distinguish between fixed priorities which do not change during the execution and dynamic priorities which may be changed by the scheduler during the execution. Also, as in other kinds of scheduling problems, real-time scheduling algorithms can be classified into offline/online and preemptive/non preemptive algorithms.
 
-The main goal of scheduling in real-time systems is to satisfy the different timing constraints of the tasks. Schedulability tests are performed to check whether the tasks can be scheduled using a given scheduling algorithm in such a way to satisfy all the requirements. The schedulability test verifies if the utilization or the density of the processor, defined below, when it executes the set of tasks under test, is within a least upper bound. For a set of $n$ independent periodic tasks, the utilization factor and density, when a preemptive scheduling algorithm is used, are respectively:
+The main goal of scheduling in real-time systems is to satisfy the different timing constraints of the tasks. Schedulability tests can be used to check whether the tasks can be scheduled using a given scheduling algorithm in such a way to satisfy all the requirements. A schedulability test verifies if the utilization or the density of the processor, defined below, when it executes the set of tasks under test, is within a least upper bound. For a set of $n$ independent periodic tasks, the utilization factor and density, when a preemptive scheduling algorithm is used, are respectively:
 
 \begin{equation}
 U = \sum_{i=1}^{n}\frac{C_i}{T_i}
@@ -408,7 +415,7 @@ The most known real-time scheduling algorithms are the following:
 \end{itemize}
 \item Dynamic priorities
 \begin{itemize}
-\item Earliest Deadline First (EDF): Priorities of tasks are inversely proportional to their absolute deadlines. The priority of a task is fixed for one instance but may change from one instance to another. EDF can schedule a set of tasks if and only if: $U \leq 1, D_i = T_i$.
+\item Earliest Deadline First (EDF): Priorities of tasks are inversely proportional to their absolute deadlines. The priority of a task is fixed for one instance but may change from one instance to another. EDF can schedule a set of tasks iff: $U \leq 1, D_i = T_i$.
 \item Least Laxity First (LLF): Priorities of tasks are inversely proportional to their laxities. The priority may change for the same instance and from one instance to another. The schedulability test is the same as for EDF.
 \end{itemize}
 \end{itemize}
@@ -418,7 +425,7 @@ The most known real-time scheduling algorithms are the following:
 \item Global scheduling: Each task can be scheduled on any processor. the scheduler is responsible for migrating the tasks between the processors.
 \item Partitioned scheduling: The tasks are partitioned into groups, each of which is allocated to one processor. Each processor has a single-processor scheduler. 
 \end{itemize}
-Global multiprocessor scheduling has significant overhead due to the migration cost. That is the reason why partitioned scheduling is usually used in hard real-time systems. Partitioning and allocating a set of tasks is equivalent to the "Bin Packing" problem which is NP-hard and heuristics are therefore used. 
+Global multiprocessor scheduling has significant overhead due to the migration cost. Thus is the reason why partitioned scheduling is usually used in hard real-time systems. Partitioning and allocating a set of tasks is equivalent to the "Bin Packing" problem which is NP-hard and heuristics are therefore used. 
 
 Assuming the tasks are sorted in a list and that processors are organized in a certain order, the most known heuristics that can be used to allocate a set of tasks to multiple processors are:
 

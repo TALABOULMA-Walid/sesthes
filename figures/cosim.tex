@@ -3,15 +3,17 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usetikzlibrary{calc}
 \pgfplotsset{compat=1.15}
 \usetikzlibrary{shapes,arrows}
 \begin{document}
 
 
 % The block diagram code is probably more verbose than necessary
-\begin{tikzpicture}[auto, node distance=3cm,>=latex']
+\begin{tikzpicture}[auto,>=latex',scale=1.5]
 
-
+\begin{scope}[local bounding box=scopeA]
+\node at (3.5,0.2) [rectangle,draw,minimum width=7.5cm, minimum height = 1.5cm,scale=1.5] (modela) {};
 \begin{axis}[
     xmin=0, xmax=9,
     axis x line=bottom,% only show the bottom x axis
@@ -34,40 +36,49 @@ table {
  
     };
 \end{axis}
-\node at (3.5,0.2) [rectangle,draw,minimum width=7.5cm, minimum height = 1.5cm] (modela) {};
-\node at (0.5,0.6) {Model A};
+
+\node at (-0.5,0.2) [rotate=90] {Model A};
 \draw [densely dashed] (1.52,0) -- (1.52,0.5);
 \draw [densely dashed] (2.28,0) -- (2.28,0.5);
 \draw [densely dashed] (3.04,0) -- (3.04,0.5);
 \draw [densely dashed] (6.08,0) -- (6.08,0.5);
 \draw[<->] (1.52,0.5) -- node {$h_A$} (2.28,0.5);
-\draw[<->] (3.04,0.5) -- node {Communication} (6.08,0.5);
+\draw[<->] (3.04,0.5) -- node {H} (6.08,0.5);
 
+\end{scope}
 
+\begin{scope}[shift={(0,-2cm)}]
+ \node at (3.5,0.2) [rectangle,draw,minimum width=7.5cm, minimum height = 1.5cm,scale=1.5] (modelb) {}; 
+\begin{axis}[
+    xmin=0, xmax=9,
+    axis x line=bottom,% only show the bottom x axis
+    hide y axis,    
+    ymin=0,ymax=2,
+    scatter/classes={%
+        a={mark=o,draw=black}},
+				xticklabels={,,},
+				xtick={0.5,1,1.5,2,2.5,3,3.5,4.5,5,5.5,6,6.5,7,7.5}
+    ]
 
-
-%\begin{axis}[
-    %xmin=0, xmax=9,
-    %axis x line=bottom,% only show the bottom x axis
-    %hide y axis,    
-    %ymin=0,ymax=2,
-    %scatter/classes={%
-        %a={mark=o,draw=black}},
-				%xticklabels={,,},
-				%xtick={0.5,1,1.5,2,2.5,3,3.5,4.5,5,5.5,6,6.5,7}
-    %]
-%
-%\addplot[scatter,only marks,
-    %mark size = 3pt,
-    %fill = black,
-    %scatter src=explicit symbolic]
-%table {
-%0 0 
-%4 0 
-%8 0 
- %
-    %};
-%\end{axis}
+\addplot[scatter,only marks,
+    mark size = 3pt,
+    fill = black,
+    scatter src=explicit symbolic]
+table {
+0 0 
+4 0 
+8 0 
+ 
+    };
+\end{axis}
+\node at (-0.5,0.2) [rotate=90] {Model B};
+\draw [densely dashed] (1.52,0) -- (1.52,0.5);
+\draw [densely dashed] (1.91,0) -- (1.91,0.5);
+\draw[<->] (1.52,0.5) -- node {$h_b$} (1.91,0.5);
+\end{scope}
+\draw[<->,line width=0.8mm] (0,-0.12) -- node {} (0,-1.89);
+\draw[<->,line width=0.8mm] (3.04,-0.12) -- node {} (3.04,-1.89);
+\draw[<->,line width=0.8mm] (6.08,-0.12) -- node {} (6.08,-1.89);
 
    
 \end{tikzpicture}

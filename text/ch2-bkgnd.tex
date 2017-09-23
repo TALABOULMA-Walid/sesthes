@@ -131,7 +131,14 @@ Once the controller model is validated, it can be implemented to perform Softwar
 
 After the verification of the controller software, the next stage consists in performing Hardware-in-the-Loop (HiL) co-simulation. In HiL, the controller software is implemented on the real hardware (e.g. Electronic Control Unit) which is connected to the computer that runs the simulation of the physical process. HiL must run in real-time in order to imitate the real interactions between the controller and the physical process. It can ensure reliable tests of the controller and thus shortens the development time and reduces the costs. If any problems are detected, one can go back to SiL or MiL stage to make necessary corrections.
 
-Figure gives a v-cycle view of the different stages of co-simulation performed as part of the process of controller design.
+Figure \ref{fig:mbd} gives a view of the different types of co-simulation performed as part of the process of controller design.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/mbd}
+\caption{Different types of co-simulation involved in the process of controller design.}
+\label{fig:mbd}
+\end{figure}
 
 
 \subsubsection{The Functional Mock-up Interface Standard}
@@ -158,11 +165,26 @@ An FMU is a package that encapsulates different files:
 The FMI standard is organized in two parts:
 \begin{itemize}
 \item FMI for Model Exchange
-FMI for Model Exchange specification provides interfaces and defines how model equations should be encapsulated in components. It allows solving each model independently using custom solvers. Accessing and computing the equations is done through standardized function calls.
+FMI for Model Exchange specification provides interfaces and defines how model equations should be encapsulated in components. It allows solving each model independently using custom solvers. Accessing and computing the equations is done through standardized function calls. Figure \ref{fig:fmimdlexg} illustrates the principle of FMI for Model Exchange.
+
+%\begin{figure}[phbt]
+%\centering
+%\includestandalone{figures/cosim}
+%\caption{Time evolution and data exchange between two models during co-simulation.}
+%\label{fig:cosim}
+%\end{figure}
 
 \item FMI for Co-Simulation:
-FMI for Co-Simulation specification defines interfaces between a master algorithm and slave models. It is intended to couple different simulators (models with their solvers) in a co-simulation environment.
-\end{itemize}
+FMI for Co-Simulation specification defines interfaces between a master algorithm and slave models. It is intended to couple different simulators (models with their solvers) in a co-simulation environment. Figure \ref{fig:fmicosim} illustrates the principle of FMI for Model Exchange.
+
+%\begin{figure}[phbt]
+%\centering
+%\includestandalone{figures/cosim}
+%\caption{Time evolution and data exchange between two models during co-simulation.}
+%\label{fig:cosim}
+%\end{figure} 
+%\end{itemize}
+
 Figure shows the state machine of the supported calling sequences from a master algorithm to a slave.
 
 %\begin{figure}[h]
@@ -174,12 +196,6 @@ Figure shows the state machine of the supported calling sequences from a master 
 %\end{figure}  
 
 
-%\begin{figure}[htb]
-%\centering
-  %\includegraphics[scale=0.7]{figures/Co-Simulation}
-%\caption{Evolution of time and data exchange between two models during co-simulation}
-%\label{fig:cosim}
-%\end{figure}
 
 \subsection{Co-simulation with Real-time Constraints}
 

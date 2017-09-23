@@ -13,8 +13,8 @@
   activityStarts/.style = {base, fill=blue!30},
        startstop/.style = {base, fill=red!30},
     activityRuns/.style = {base, fill=green!30},
-         process/.style = {base, minimum width=2.5cm, fill=orange!15,
-                           font=\ttfamily},
+         process/.style = {base, minimum width=2.5cm, fill=orange!15
+                          },
 }
 \begin{document}    
 % Drawing part, node distance is 1.5 cm and every node
@@ -39,18 +39,20 @@
 	
 	\draw[<->,line width=0.5mm] (controllerMdl) -- node {MiL} (proceMdl);
 	\draw[<->,line width=0.6mm] (controllerSw) -- node {SiL} (proceMdl);
-	\draw[<->,line width=0.6mm] (controllerHw) -- node {HiL} (proceMdl);
+	\draw[<->,line width=0.6mm] (controllerHw) -- node[ xshift=-1.02cm,yshift=0.8cm] {HiL} (proceMdl);
+	\draw[<->,line width=0.6mm] (controllerMdl) -- node[ xshift=-1.02cm,yshift=-0.8cm] {HiL} (proce);
+	\draw[<->,line width=0.6mm] (controllerSw) -- node {HiL} (proce);
 	
-	\coordinate (A) at ($(controllerMdl.east) + (1.6,0)$);
-	\path let \p1=(A), \p2=(proce.south) in coordinate (B) at (\x1,-6+\y2);
-	\path let \p3=(B), \p2=(proce.south) in coordinate (C) at (\x2,-6+\y3);
-	
-	
-	
-	\draw[<->,line width=0.5mm] (controllerMdl.east) -- (A)  -- (B) -- (C) -- 
-								node[ xshift=1.2cm,yshift=-1.5cm,text width=2.5cm]
-     {HiL}(proce.south)
-      ;
+	%\coordinate (A) at ($(controllerMdl.east) + (1.6,0)$);
+	%\path let \p1=(A), \p2=(proce.south) in coordinate (B) at (\x1,-6+\y2);
+	%\path let \p3=(B), \p2=(proce.south) in coordinate (C) at (\x2,-6+\y3);
+	%
+	%
+	%
+	%\draw[<->,line width=0.5mm] (controllerMdl.east) -- (A)  -- (B) -- (C) -- 
+								%node[ xshift=1.2cm,yshift=-1.5cm,text width=2.5cm]
+     %{HiL}(proce.south)
+      %;
   
   \end{tikzpicture}
 \end{document}

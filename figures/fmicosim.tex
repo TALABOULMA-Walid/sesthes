@@ -1,13 +1,18 @@
 % Diagram of Android activity life cycle
 % Author: Pavel Seda 
-\documentclass[border=10pt]{standalone}
+\documentclass[border=10pt,11pt]{standalone}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,arrows}
+\usetikzlibrary{calc,decorations.markings}
 
 
-\begin{document}  
-\tikzset{%
- auto,>=latex',
+\begin{document}   
+% Drawing part, node distance is 1.5 cm and every node
+% is prefilled with white background
+\begin{tikzpicture}[node distance=1.5cm,
+    every node/.style={fill=white}, align=center]
+		\tikzset{%
+  >={Latex[width=2mm,length=2mm]},
   % Specifications for style of nodes:
             base/.style = {rectangle, draw=black,
                            minimum width=4cm, minimum height=1cm,
@@ -17,13 +22,9 @@
        model/.style = {rectangle, draw=black,fill=red!30,minimum width=1.3cm,minimum height=0.5cm},
     solver/.style = {rectangle, draw=black,fill=green!30,minimum width=1.3cm, minimum height=0.5cm},
          tool/.style = {rectangle, draw=black, fill=orange!15,
-                          minimum width=12.3cm, minimum height=1cm,text height=-0.40cm},
+                          minimum width=12.3cm, minimum height=1cm},
 				 FMI/.style = {rectangle,draw=red,dashed,fill=none,minimum width=10cm, minimum height=0.7cm},
-}  
-% Drawing part, node distance is 1.5 cm and every node
-% is prefilled with white background
-\begin{tikzpicture}[node distance=1.5cm,
-    every node/.style={fill=white}, align=center]
+}
   % Specification of nodes (position, etc.)
   
   
@@ -34,11 +35,13 @@
 	
 	\node (tool) [tool, above of=fmu2, yshift=0.5cm] {Tool} ;
 	
-	\node (solver) [solver, above of=fmu2, yshift=0.3cm] {Solver} ;
 	
-	\node (model1) [model, below of=fmu1, yshift=1.3cm] {Model 1} ;
-	\node (model2) [model, below of=fmu2, yshift=1.3cm] {Model 2} ;
-	\node (model3) [model, below of=fmu3, yshift=1.3cm] {Model n} ;
+	\node (model1) [model, below of=fmu1, yshift=1.3cm,xshift=-0.8cm] {Model 1} ;
+	\node (solver1) [solver,  below of=fmu1, yshift=1.3cm,xshift=0.8cm] {Solver 1} ;
+	\node (model2) [model, below of=fmu2, yshift=1.3cm,xshift=-0.8cm] {Model 2} ;
+	\node (solver1) [solver,  below of=fmu2, yshift=1.3cm,xshift=0.8cm] {Solver 2} ;
+	\node (model3) [model, below of=fmu3, yshift=1.3cm,xshift=-0.8cm] {Model n} ;
+	\node (solver1) [solver,  below of=fmu3, yshift=1.3cm,xshift=0.8cm] {Solver n} ;
 	
 	
 	

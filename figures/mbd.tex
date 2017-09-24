@@ -4,23 +4,24 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{calc}
+
+\begin{document}  
 \tikzset{%
   >={Latex[width=2mm,length=2mm]},
   % Specifications for style of nodes:
             base/.style = {rectangle, rounded corners, draw=black,
                            minimum width=4cm, minimum height=1cm,
-                           text centered, font=\sffamily},
+                           text centered},
   activityStarts/.style = {base, fill=blue!30},
        startstop/.style = {base, fill=red!30},
     activityRuns/.style = {base, fill=green!30},
          process/.style = {base, minimum width=2.5cm, fill=orange!15
                           },
-}
-\begin{document}    
+}  
 % Drawing part, node distance is 1.5 cm and every node
 % is prefilled with white background
 \begin{tikzpicture}[node distance=1.5cm,
-    every node/.style={fill=white, font=\sffamily}, align=center]
+    every node/.style={fill=white}, align=center]
   % Specification of nodes (position, etc.)
   
   

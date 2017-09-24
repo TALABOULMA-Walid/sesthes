@@ -167,23 +167,23 @@ The FMI standard is organized in two parts:
 \item FMI for Model Exchange
 FMI for Model Exchange specification provides interfaces and defines how model equations should be encapsulated in components. It allows solving each model independently using custom solvers. Accessing and computing the equations is done through standardized function calls. Figure \ref{fig:fmimdlexg} illustrates the principle of FMI for Model Exchange.
 
-%\begin{figure}[phbt]
-%\centering
-%\includestandalone{figures/cosim}
-%\caption{Time evolution and data exchange between two models during co-simulation.}
-%\label{fig:cosim}
-%\end{figure}
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/fmimdlexg}
+\caption{FMI for Model Exchange.}
+\label{fig:fmimdlexg}
+\end{figure}
 
 \item FMI for Co-Simulation:
 FMI for Co-Simulation specification defines interfaces between a master algorithm and slave models. It is intended to couple different simulators (models with their solvers) in a co-simulation environment. Figure \ref{fig:fmicosim} illustrates the principle of FMI for Model Exchange.
 
-%\begin{figure}[phbt]
-%\centering
-%\includestandalone{figures/cosim}
-%\caption{Time evolution and data exchange between two models during co-simulation.}
-%\label{fig:cosim}
-%\end{figure} 
-%\end{itemize}
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/fmicosim}
+\caption{FMI for Model Co-Simulation.}
+\label{fig:fmicosim}
+\end{figure} 
+\end{itemize}
 
 Figure shows the state machine of the supported calling sequences from a master algorithm to a slave.
 

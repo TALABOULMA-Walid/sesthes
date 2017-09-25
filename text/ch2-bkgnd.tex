@@ -205,7 +205,15 @@ A typical application of real-time co-simulation is HiL. The key advantage of re
 
 Roughly speaking, the difference between real-time simulation and non real-time (offline) simulation is related to the notion of results validity. For offline simulation, one seeks to obtain results as soon as possible. The validity of the the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time bounds. If such bounds are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
 
-Figure [ref] illustrates the time evolution of a real-time simulation. During the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}.
+Figure \ref{fig:rtcosim} illustrates the time evolution of a real-time simulation. During the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/rtcosim}
+\caption{Real-time co-simulation: Execution scenarios.}
+\label{fig:rtcosim}
+\end{figure} 
+\end{itemize}
 
 \subsection{Languages and Tools for Modeling and Simulation}
 

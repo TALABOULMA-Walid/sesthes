@@ -1,0 +1,74 @@
+\documentclass{standalone}
+
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{shapes,arrows.meta}
+\begin{document}
+
+
+% The block diagram code is probably more verbose than necessary
+\begin{tikzpicture}[>=Latex]
+
+
+\begin{axis}[
+    xmin=0, xmax=4.2,
+    axis x line=bottom,% only show the bottom x axis
+    hide y axis,    
+    ymin=0,ymax=2,
+				xticklabels={$t_{n-1}$,$t_{n}$,$t_{n+1}$,$t_{n+2}$},
+				xtick={0.5,1.5,2.5,3.5},
+				x label style={at={(current axis.left of origin)},anchor=east, above=0.5mm, left=0.5mm},
+				xlabel={Real-time clock},
+				x post scale=1.8
+    ]
+		\coordinate (s) at (axis cs:0,0.5);
+		\path (1.1,0.5) edge[->,densely dashed,bend right] node [align=center,fill=white] {$x_{n}$} (1.5,0);
+		\draw [->,densely dashed] (2.5,0.5) -- node [align=center,fill=white] {$x_{n+1}$} (2.5,0);
+		\draw [->,densely dashed] (4.0,0.5) -- node [align=center,fill=white] {$x_{n+2}$} (4.0,0);
+		
+		\draw [<->,blue] (1.1,0.47) -- node [blue,below]{Idle} (1.5,0.47);
+		\draw [blue](1.1,0.5) -- (1.1,0.43);
+		\draw [blue](1.5,0.5) -- (1.5,0.43);
+		
+		\draw [<->,red] (3.5,0.47) -- node [red,below]{overrun} (4,0.47);
+		\draw [red](3.5,0.5) -- (3.5,0.43);
+		\draw [red](4,0.5) -- (4,0.43);
+		
+		\node at (0.8,0.6) {$f(x_{n-1},t_n)$};
+		\node at (2,0.6) {$f(x_{n},t_{n+1})$};
+		\node at (3.25,0.6) {$f(x_{n+1},t_{n+2})$};
+\end{axis}
+
+\begin{axis}[at={(s)},
+    xmin=0, xmax=4.2,
+    axis x line=bottom,% only show the bottom x axis
+    hide y axis,    
+    ymin=0,ymax=2,
+    scatter/classes={%
+        a={mark=o,draw=black}},
+				xtick={0.5,1.5,2.5,3.5},
+				xticklabels={,,},
+				x label style={at={(current axis.left of origin)},anchor=east, above=0.5mm, left=0.5mm},
+				xlabel={Execution time},
+				x post scale=1.8
+    ]
+		\addplot+[mark=none,const plot,draw=black]
+coordinates
+{(0.5,0) (0.5,0.2) (1.1,0.2) (1.1,0)};
+
+\addplot+[mark=none,const plot,draw=black]
+coordinates
+{(1.5,0) (1.5,0.2) (2.5,0.2) (2.5,0)};
+
+\addplot+[mark=none,const plot,draw=black]
+coordinates
+{(2.5,0) (2.5,0.2) (4,0.2) (4,0)};
+
+\end{axis}
+   
+\end{tikzpicture}
+
+\end{document}

@@ -14,14 +14,14 @@
 
 
 \begin{axis}[
-    xmin=0, xmax=4.2,
+    xmin=0, xmax=4.15,
     axis x line=bottom,% only show the bottom x axis
     hide y axis,    
     ymin=0,ymax=2,
 				xticklabels={$t_{n-1}$,$t_{n}$,$t_{n+1}$,$t_{n+2}$},
 				xtick={0.5,1.5,2.5,3.5},
-				x label style={at={(current axis.left of origin)},anchor=east, above=0.5mm, left=0.5mm},
-				xlabel={Real-time clock},
+				x label style={align=center,at={(current axis.left of origin)},anchor=east, above=0.5mm, left=-0.2mm},
+				xlabel={Real-time\\clock},
 				x post scale=1.8
     ]
 		\coordinate (s) at (axis cs:0,0.5);
@@ -33,7 +33,7 @@
 		\draw [blue](1.1,0.5) -- (1.1,0.43);
 		\draw [blue](1.5,0.5) -- (1.5,0.43);
 		
-		\draw [<->,red] (3.5,0.47) -- node [red,below]{overrun} (4,0.47);
+		\draw [<->,red] (3.5,0.47) -- node [red,below]{Overrun} (4,0.47);
 		\draw [red](3.5,0.5) -- (3.5,0.43);
 		\draw [red](4,0.5) -- (4,0.43);
 		
@@ -43,7 +43,7 @@
 \end{axis}
 
 \begin{axis}[at={(s)},
-    xmin=0, xmax=4.2,
+    xmin=0, xmax=4.15,
     axis x line=bottom,% only show the bottom x axis
     hide y axis,    
     ymin=0,ymax=2,
@@ -51,8 +51,8 @@
         a={mark=o,draw=black}},
 				xtick={0.5,1.5,2.5,3.5},
 				xticklabels={,,},
-				x label style={at={(current axis.left of origin)},anchor=east, above=0.5mm, left=0.5mm},
-				xlabel={Execution time},
+				x label style={align=center,at={(current axis.left of origin)},anchor=east, above=0.5mm, left=-0.2mm},
+				xlabel={Execution\\time},
 				x post scale=1.8
     ]
 		\addplot+[mark=none,const plot,draw=black]

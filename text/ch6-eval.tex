@@ -10,17 +10,24 @@ Due to the difficulty in acquiring enough industrial FMU co-simulation applicati
 
 \subsection{Random Dependence Graph Generation}
 
-The random generator that we have implemented is inspired by the work of [Kalla:04]. However it differs from this work because the generation is done in two stages. In fact, we have to generate, first, the different FMUs of the co-simulation and their internal structures. Second, we generate the dependence graph by creating inter-FMU dependence in such a way that the resulting operation graph is a DAG. Our generator is based on a technique of assignment of operations to levels. The level of an operation is the number operations on the longest path from a source operation to this operation. The dependence graph can then be visualized on a grid of levels as depicted in figure \ref{}. The generator uses of the following parameters:
+The random generator that we have implemented is inspired by random generator presented in \cite{kalla:2004}. However, it differs from this work in that the generation is done in two stages. In other words, we have to generate, first, the different FMUs of the co-simulation and their internal structures. Second, we generate the dependence graph by creating inter-FMU dependence in such a way that the resulting operation graph is a DAG. The proposed generator is based on a technique of assignment of operations to levels. The level of an operation is the number of operations on the longest path from a source operation to this operation. The dependence graph can then be visualized on a grid of levels as depicted in figure \ref{}. 
+
+
+The generator uses the following parameters:
+
 \begin{itemize}
-\item The graph size $n$: The number of operations;
+\item The graph size $n$: the number of operations;
 \item The number of FMUs $m$;
-\item The graph height $h$: The number of levels in the graph
-\item The graph width $w$: The maximum number of nodes on one level
+\item The graph height $h$: the number of levels in the graph
+\item The graph width $w$: the maximum number of nodes on one level
 \end{itemize}
-Note that parameters $n$ and $m$ are related. In other words, for a given size of a graph $n$, an adequate number of FMUs $m$ has to be chosen. The generation of the dependence graph is performed as follows:
+
+Note that parameters $n$ and $m$ are related. In other words, for a given size of a graph $n$, an adequate number of FMUs $m$ has to be chosen. 
+
+The generation of the dependence graph is performed as follows:
 \begin{itemize}
-\item \textbf{Input:} Size of the graph $n$, number of FMUs $m$, height of the graph $h$, and width of the graph $w$. The number of FMUs can be derived automatically from the size of the graph using a predefined formula. For instance, one of the formulas that we have used is $ m = 5 \times log10(n/5)$. This allows to have adequate size of the graph and number of FMUs. Suppose for example that we have a size $n = 1000$ and a number of FMUs $m = 1$. Obviously, this example does not represent a realistic application. 
-\item \textbf{Step 1:} Randomly distribute the $n$ operations to the $m$ FMUs. Given the number of operations of each FMU, we randomly determine the number of its input operations and the number of its output operations. Every FMU has one state operation.
+\item \textbf{Input:} Size of the graph $n$, number of FMUs $m$, height of the graph $h$, and width of the graph $w$. %The number of FMUs can be derived automatically from the size of the graph using a predefined formula. For instance, one of the formulas that we have used is $ m = 5 \times log10(n/5)$. This allows to have adequate size of the graph and number of FMUs. Suppose, for example, that we have a size $n = 1000$ and a number of FMUs $m = 1$. Obviously, this example does not represent a realistic application. 
+\item \textbf{Step 1:} Randomly distribute the $n$ operations across the $m$ FMUs. Given the number of operations of each FMU, we randomly determine the number of its input operations and the number of its output operations. Every FMU has one state operation.
 \item \textbf{Step 2:} Randomly generate the intra-FMU arcs. This step is controlled by two parameters.  The number of arcs to generate and the number of NDF outputs of the FMU. These outputs are not considered when randomly generating the arcs.
 \item \textbf{Step 3:} Randomly assign the operations to the grid levels. This step is performed by assigning output operations and then input operations repeatedly.
 \begin{enumerate}
@@ -42,6 +49,24 @@ In addition to random generation of the dependence graph structure, we need to g
 \end{itemize}
 
 \section{Results}
+
+We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the objective result of the heuristic with the objective result of the ILP. For ILP resolution, we used the CPLEX solver.
+
+\subsection{Execution Time of the Acyclic Orientation Algorithms}
+
+In order to compare the execution time of our acyclic orientation heuristic with the execution time of the acyclic orientation ILP, we have generated 85 random operation graphs of different sizes between five and $10000$. %First we generated the first operation graph of size $n = 5$. Then, we generated the rest of the graphs by varying the size of the operation graph by different increment values. The size of the graph is increased by five until a size of $100$, i.e. $n = 5, 10, 15, \ldots, 100$.
+We considered $10000$ as the maximum size of the operation graph because it corresponds to the size of large industrial applications. 
+
+We executed the acyclic orientation heuristic and ILP on all of these random graphs and measured the elapsed time between the start and the end of the execution. For the ILP, the execution is stopped if the optimal solution is not found within two days. The obtained execution times are shown in Figure \ref{fig:orient_exec}. It shows that the acyclic orientation ILP is intractable when the size of the operation graph exceeds $250$. When The number of operations is less than $250$ the ILP finds the optimal solution in reasonable times, except for two graphs. However, we observe that an increase in the graph size does not result always in an increase in the execution time. This can be explained by the fact that other features  
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/orient_exec}
+\caption{Acyclic orientation execution time.}
+\label{fig:orient_exec}
+\end{figure} 
+ 
+
 
 \section{Industrial Use Case}
 

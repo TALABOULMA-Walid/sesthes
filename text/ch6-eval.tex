@@ -51,24 +51,82 @@ In addition to random generation of the dependence graph structure, we need to g
 \section{Results}
 
 We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the objective result of the heuristic with the objective result of the ILP. For ILP resolution, we used three solvers: lpsolve, Gurobi, and CPLEX. With lpsolve, we were only able to solve small instances of the scheduling problem. Gurobi was more efficient but we obtained the best performance using CPLEX. Therefore, the results presented hereafter were obtained using CPLEX. %Tests have been carried out on different multi-core PCs. In the following, we indicate, when necessary, the characteristics of the platform used.  
+Tests were performed on a desktop computer with a 6-core Xeon processor running at 2.7 GH and 16GB RAM.
 
 \subsection{Execution Time of the Acyclic Orientation Algorithms}
 
 In order to compare the execution time of our acyclic orientation heuristic with the execution time of the acyclic orientation ILP, we have generated 85 random operation graphs of different sizes between five and $10000$. %First we generated the first operation graph of size $n = 5$. Then, we generated the rest of the graphs by varying the size of the operation graph by different increment values. The size of the graph is increased by five until a size of $100$, i.e. $n = 5, 10, 15, \ldots, 100$.
 We considered $10000$ as the maximum size of the operation graph because it corresponds to the size of large industrial applications. 
 
-Tests were performed on a desktop computer with a 6-core Xeon processor running at 2.7 GH and 16GB RAM. We executed the acyclic orientation heuristic and ILP on all of the generated random graphs and measured the elapsed time between the start and the end of the execution. For the ILP, the execution is stopped if the optimal solution is not found within two days. The obtained execution times are shown on a logarithmic scale in Figure \ref{fig:orient_exec}. The acyclic orientation ILP is intractable when the size of the operation graph exceeds $250$. When The number of operations is less than $250$ the ILP finds the optimal solution in reasonable times, except for two graphs. In addition, we observe that an increase in the graph size does not always result in an increase in the execution time. This can be explained by the fact that other factors impact the speed of resolution, e.g. number of conflict edges. Still, it is important to notice that the application of the acyclic orientation ILP is limited to relatively small graphs. On the other hand, the acyclic orientation heuristic produces results in practical execution times even for very large operation graphs ($10000$).
+We executed the acyclic orientation heuristic and ILP on all of the generated random graphs and measured the elapsed time between the start and the end of the execution. For the ILP, the execution is stopped if the optimal solution is not found within two days. The obtained execution times are shown on a logarithmic scale in Figure \ref{fig:orient_exec}. The acyclic orientation ILP is intractable when the size of the operation graph exceeds $250$. When The number of operations is less than $250$ the ILP finds the optimal solution in reasonable times, except for two graphs. In addition, we observe that an increase in the graph size does not always result in an increase in the execution time. This can be explained by the fact that other factors impact the speed of resolution, e.g. number of conflict edges. Still, it is important to notice that the application of the acyclic orientation ILP is limited to relatively small graphs. On the other hand, the acyclic orientation heuristic produces results in practical execution times even for very large operation graphs ($10000$).
 
 \begin{figure}[phbt]
 \centering
 \includestandalone{figures/orient_exec}
-\caption{Acyclic orientation execution time.}
+\caption{Comparison of the acyclic orientation execution time.}
 \label{fig:orient_exec}
 \end{figure} 
  
 \subsection{Objective Value of the Acyclic Orientation Algorithms}
 
-We compared the of the critical path length obtained using the acyclic orientation heuristic and ILP. Tests were performed using the same set of operations graph described in the previous section. However, we consider only graphs for which the ILP was able to return the optimal solution within the resolution time limin that we set, i.e. two days. Results are depicted in Figure \ref{}. 
+We compared the value of the critical path length obtained using the acyclic orientation heuristic and ILP. Tests were performed using the same set of operation graphs described in the previous section. However, we consider only graphs for which the ILP was able to return the optimal solution within the resolution time limit that we set, i.e. two days. Thus, we applied our proposed heuristic and ILP on 12 operation graphs of sizes between $20$ and $240$ and saved the obtained length of the critical path. Results are depicted in Figure \ref{fig:orient_critpath}. For most of the operation graphs, our acyclic orientation heuristic produces a length of the critical path that is equal to the length of the critical path produced by the acyclic orientation ILP. The heuristic returns a longer length of the critical path for three graphs but the gap is very small remaining below $8\%$.  
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/orient_critpath}
+\caption{Comparison of the critical path length.}
+\label{fig:orient_critpath}
+\end{figure}
+
+\subsection{Execution Time of the Scheduling Algorithms}
+
+Similarly to the acyclic orientation tests, we compared the execution time of the scheduling heuristic with the execution time of the scheduling ILP using 85 generated random operation graphs of different sizes between five and $10000$. We set a two day limit for the resolution of the ILP. Tests were run for the scheduling problem with $2$, $4$, and $8$ cores. Execution times were measured by fixing the number of cores and varying the number of operations (graph size). The results are depicted for $2$, $4$, and $8$ cores in Figure \ref{fig:sched_exec_2}, Figure \ref{fig:sched_exec_4}, and Figure \ref{fig:sched_exec_8} respectively. All results are plotted on a logarithmic scale. In these figures, we see that the execution time of the ILP resolution increases exponentially as the graph size increases, and only small instances are resolved within acceptable times. On the other hand, the acyclic orientation heuristic is very fast and produces results in very short times and even for very large graphs, the execution times remain within practical bounds.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_exec_2}
+\caption{Comparison of the scheduling execution time for $2$ cores.}
+\label{fig:sched_exec_2}
+\end{figure}
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_exec_4}
+\caption{Comparison of the scheduling execution time for $4$ cores.}
+\label{fig:sched_exec_4}
+\end{figure}
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_exec_8}
+\caption{Comparison of the scheduling execution time for $8$ cores.}
+\label{fig:sched_exec_8}
+\end{figure}
+
+\subsection{Objective Value of the Scheduling Algorithms}
+
+We run tests to compare the value of the makespan obtained using the acyclic orientation heuristic and ILP. For these tests we have generated ten operation graphs of size $n = 15$. We have used graphs of size $15$ because the ILP resolution returns the optimal solution in very short times which is not the case for large graphs. The graphs are different from each other because they are generated randomly which leads to different topologies and execution times. We run the scheduling heuristic and ILP on these graphs to obtain the values of the makespan. Results are shown in Figure \ref{fig:sched_mkspan_2}, Figure \ref{fig:sched_mkspan_4}, and Figure\ref{fig:sched_mkspan_8} for $2$, $4$, $8$ cores respectively. Overall, the results show that the scheduling heuristic produce a makespan which is very close to the makespan produced by the scheduling ILP. The gap between the heuristic and the ILP result lies between $0\%$ and $16\%$. We notice that the gap is smaller when $4$ or $8$ cores are used than when $2$ cores are used. In fact, when $2$ cores are used the maximum gap is $16\%$, whereas when $4$ or $8$ cores are used the maximum gap is $6\%$. This shows that the scheduling heuristic performs better when the effective parallelism is increased. It can be explained by the fact that the scheduling heuristic attempts more allocation possibilities which leads to a better exploitation of the potential parallelism.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_mkspan_2}
+\caption{Comparison of the makespan for $2$ cores.}
+\label{fig:sched_mkspan_2}
+\end{figure}
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_mkspan_4}
+\caption{Comparison of the makespan for $4$ cores.}
+\label{fig:sched_mkspan_4}
+\end{figure}
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/sched_mkspan_8}
+\caption{Comparison of the makespan for $8$ cores.}
+\label{fig:sched_mkspan_8}
+\end{figure} 
 
 \section{Industrial Use Case}
 

@@ -11,14 +11,15 @@
 \begin{tikzpicture}[scale=0.7]
     \begin{axis}[
         width=\textwidth,
-        ylabel=Critical path length,
+        xlabel=Number of operations,
+				ylabel=Critical path length,
 				ymin=0,
 				xticklabels={\null, \null,20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240,\null},
-        enlargelimits=0.15,
+        %enlargelimits=0.15,
         legend style={at={(0.5,-0.15)},
         anchor=north,legend columns=-1},
         ybar,
-        bar width=10pt,
+        bar width=8pt,
         ]
         \addplot
         coordinates {
@@ -78,7 +79,7 @@
 %(250, 442)
 				};
         
-        \legend{Heuristic,ILP}
+        \legend{Scheduling heuristic, Scheduling ILP}
     \end{axis}
 \end{tikzpicture}
 

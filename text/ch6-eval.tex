@@ -51,7 +51,7 @@ In addition to random generation of the dependence graph structure, we need to g
 \section{Results}
 
 We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the objective result of the heuristic with the objective result of the ILP. For ILP resolution, we used three solvers: lpsolve, Gurobi, and CPLEX. With lpsolve, we were only able to solve small instances of the scheduling problem. Gurobi was more efficient but we obtained the best performance using CPLEX. Therefore, the results presented hereafter were obtained using CPLEX. %Tests have been carried out on different multi-core PCs. In the following, we indicate, when necessary, the characteristics of the platform used.  
-Tests were performed on a desktop computer with a 6-core Xeon processor running at 2.7 GH and 16GB RAM.
+Tests were performed on a desktop computer with a 6-core Intel Xeon processor running at 2.7 GH and 16GB RAM.
 
 \subsection{Execution Time of the Acyclic Orientation Algorithms}
 
@@ -128,11 +128,25 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 \label{fig:sched_mkspan_8}
 \end{figure} 
 
-\section{Industrial Use Case}
+\section{Industrial Use Case} 
 
-The proposed parallelization approach has been applied on an industrial use case. In this section, we give a description of the use case and then present the obtained results. 
+We tested our proposed approach on an industrial use case. Tests have been performed on a computer with an 8-core Intel core i7 processor running at 2.7 GH, and 16GB RAM. In the rest of this section, we first give a description of the use case and then present the tests and the obtained results.
 
-Tests have been performed on a computer running the Windows 7 operating system with 16 GB RAM and an Intel core i7 processor running 8 cores at 2.7 GH. Experiments have been carried out on a Spark Ignition (SI) RENAULT F4RT engine co-simulation. It is a four-cylinder in line Port Fuel Injector (PFI) engine in which the engine displacement is 2000 $cm^3$. The air path is composed of a turbocharger with a mono-scroll turbine controlled by a waste-gate, an intake throttle and a downstream-compressor heat exchanger. This co-simulation is composed of 5 FMUs: one FMU for each cylinder and one FMU for the airpath. The FMUs were imported into xMOD using the FMI export features of the Dymola tool. This use-case leads to an initial graph containing over 100 operations. We refer to our proposed method as MUO-RCOSIM (for Multi-Rate Oriented RCOSIM). We compared the obtained results with two approaches: The first one is RCOSIM which is mono-rate and thus we had to use the same communication step for all the FMUs. We used a communication step of $20 {\mu}s$. The second one consists in using RCOSIM with the multi-rate graph transformation algorithm. We refer to it as MU-RCOSIM (for Multi-Rate RCOSIM). For MUO-RCOSIM and MU-RCOSIM we used the recommended configuration of the communication steps for this use case. For each cylinder, we used a communication step of $20 {\mu}s$. The communication step used for the airpath is $100 {\mu}s$. In fact, the airpath has slower dynamics than the cylinders and this configuration of the communication steps corresponds to the specification given by engine engineers. For each FMU, we used a Runge-Kutta 4 solver with a fixed integration step equal to the communication step. The graph of this use case is transformed by Algorithm \ref{algo:mr} into a graph containing over 280 operations that are scheduled by the multi-core scheduling heuristic.      
+\subsection{Use Case Description}
+
+Our use case consists in a Spark Ignition (SI) RENAULT F4RT engine co-simulation. It is a four-cylinder in line Port Fuel Injector (PFI) engine in which the engine displacement is 2000 $cm^3$. The air path is composed of a turbocharger with a mono-scroll turbine controlled by a waste-gate, an intake throttle and a downstream-compressor heat exchanger (Figure \ref{fig:use_case}). This co-simulation is composed of six FMUs: an FMU of the airpath, four FMUs of the four cylinders, and one FMU of the controller.
+The engine model was developed using ModEngine library \cite{benjelloun:2011}. ModEngine is a Modelica library that allows for the modeling of a complete engine with diesel and gasoline combustion models. The engine model was imported into xMOD using the FMI export features of the Dymola\footnote{http://www.3ds.com/products-services/catia/products/dymola} tool. This use-case has over 100 operations which are scheduled by the multi-core scheduling heuristic.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/use_case}
+\caption{Spark Ignition (SI) RENAULT F4RT engine model.}
+\label{fig:use_case}
+\end{figure}
+
+\subsection{Tests and Results}
+
+We refer to our proposed method as MUO-RCOSIM (for Multi-Rate Oriented RCOSIM). We compared the obtained results with two approaches: The first one is RCOSIM which is mono-rate and thus we had to use the same communication step for all the FMUs. We used a communication step of $20 {\mu}s$. The second one consists in using RCOSIM with the multi-rate graph transformation algorithm. We refer to it as MU-RCOSIM (for Multi-Rate RCOSIM). For MUO-RCOSIM and MU-RCOSIM we used the recommended configuration of the communication steps for this use case. For each cylinder, we used a communication step of $20 {\mu}s$. The communication step used for the airpath is $100 {\mu}s$. In fact, the airpath has slower dynamics than the cylinders and this configuration of the communication steps corresponds to the specification given by engine engineers. For each FMU, we used a Runge-Kutta 4 solver with a fixed integration step equal to the communication step. The graph of this use case is transformed by Algorithm \ref{algo:mr} into a graph containing over 280 operations that are scheduled by the multi-core scheduling heuristic.      
 
 The validation of the numerical results of the co-simulation using the proposed method is achieved through the comparison of the co-simulation outputs with reference outputs. Since it is not possible to solve the equations of the FMU analytically, the reference outputs are obtained by using RCOSIM which has been shown in \cite{benkhaled:2014} to give a very good accuracy of the numerical results. Figure \ref{fig:df} shows the obtained results for the torque (an output of the airpath). We note that the results match with the reference, and the generated error is very small remaining within an acceptable bound ($< 1\%$). Similar accuracy results were obtained for the different outputs of the co-simulation.
 

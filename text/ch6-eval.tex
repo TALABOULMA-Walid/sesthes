@@ -48,9 +48,9 @@ In addition to random generation of the dependence graph structure, we need to g
 \item Execution times of the operations. The execution times are generated randomly in such a way that state operations have longer execution times than the output and input operations
 \end{itemize}
 
-\section{Results}
+\section{Performances of the Heuristics}
 
-We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the objective result of the heuristic with the objective result of the ILP. For ILP resolution, we used three solvers: lpsolve, Gurobi, and CPLEX. With lpsolve, we were only able to solve small instances of the scheduling problem. Gurobi was more efficient but we obtained the best performance using CPLEX. Therefore, the results presented hereafter were obtained using CPLEX. %Tests have been carried out on different multi-core PCs. In the following, we indicate, when necessary, the characteristics of the platform used.  
+We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the value of the objective function of the heuristic with the the value of the objective function of the ILP. For ILP resolution, we used three solvers: lpsolve, Gurobi, and CPLEX. With lpsolve, we were only able to solve small instances of the scheduling problem. Gurobi was much more efficient but we obtained the best performance using CPLEX. Therefore, the results presented hereafter were obtained using CPLEX. %Tests have been carried out on different multi-core PCs. In the following, we indicate, when necessary, the characteristics of the platform used.  
 Tests were performed on a desktop computer with a 6-core Intel Xeon processor running at 2.7 GH and 16GB RAM.
 
 \subsection{Execution Time of the Acyclic Orientation Algorithms}
@@ -58,7 +58,7 @@ Tests were performed on a desktop computer with a 6-core Intel Xeon processor ru
 In order to compare the execution time of our acyclic orientation heuristic with the execution time of the acyclic orientation ILP, we have generated 85 random operation graphs of different sizes between five and $10000$. %First we generated the first operation graph of size $n = 5$. Then, we generated the rest of the graphs by varying the size of the operation graph by different increment values. The size of the graph is increased by five until a size of $100$, i.e. $n = 5, 10, 15, \ldots, 100$.
 We considered $10000$ as the maximum size of the operation graph because it corresponds to the size of large industrial applications. 
 
-We executed the acyclic orientation heuristic and ILP on all of the generated random graphs and measured the elapsed time between the start and the end of the execution. For the ILP, the execution is stopped if the optimal solution is not found within two days. The obtained execution times are shown on a logarithmic scale in Figure \ref{fig:orient_exec}. The acyclic orientation ILP is intractable when the size of the operation graph exceeds $250$. When The number of operations is less than $250$ the ILP finds the optimal solution in reasonable times, except for two graphs. In addition, we observe that an increase in the graph size does not always result in an increase in the execution time. This can be explained by the fact that other factors impact the speed of resolution, e.g. number of conflict edges. Still, it is important to notice that the application of the acyclic orientation ILP is limited to relatively small graphs. On the other hand, the acyclic orientation heuristic produces results in practical execution times even for very large operation graphs ($10000$).
+We executed the acyclic orientation heuristic and ILP on all of the generated random graphs and measured the elapsed time between the start and the end of the execution. For the ILP, the execution is stopped if the optimal solution is not found within two days. The obtained execution times are shown on a logarithmic scale in Figure \ref{fig:orient_exec}. The acyclic orientation ILP cannot be resolved in practical times when the size of the operation graph exceeds $250$. When The number of operations is less than $250$ the ILP finds the optimal solution in reasonable times, except for two graphs. In addition, we observe that an increase in the graph size does not always result in an increase in the execution time. This can be explained by the fact that other factors impact the speed of resolution, e.g. number of conflict edges. Still, it is important to notice that the application of the acyclic orientation ILP is limited to relatively small graphs. On the other hand, the acyclic orientation heuristic produces results in practical execution times even for very large operation graphs ($10000$).
 
 \begin{figure}[phbt]
 \centering
@@ -67,7 +67,7 @@ We executed the acyclic orientation heuristic and ILP on all of the generated ra
 \label{fig:orient_exec}
 \end{figure} 
  
-\subsection{Objective Value of the Acyclic Orientation Algorithms}
+\subsection{Critical Path Length}
 
 We compared the value of the critical path length obtained using the acyclic orientation heuristic and ILP. Tests were performed using the same set of operation graphs described in the previous section. However, we consider only graphs for which the ILP was able to return the optimal solution within the resolution time limit that we set, i.e. two days. Thus, we applied our proposed heuristic and ILP on 12 operation graphs of sizes between $20$ and $240$ and saved the obtained length of the critical path. Results are depicted in Figure \ref{fig:orient_critpath}. For most of the operation graphs, our acyclic orientation heuristic produces a length of the critical path that is equal to the length of the critical path produced by the acyclic orientation ILP. The heuristic returns a longer length of the critical path for three graphs but the gap is very small remaining below $8\%$.  
 
@@ -103,7 +103,7 @@ Similarly to the acyclic orientation tests, we compared the execution time of th
 \label{fig:sched_exec_8}
 \end{figure}
 
-\subsection{Objective Value of the Scheduling Algorithms}
+\subsection{Makespan}
 
 We run tests to compare the value of the makespan obtained using the acyclic orientation heuristic and ILP. For these tests we have generated ten operation graphs of size $n = 15$. We have used graphs of size $15$ because the ILP resolution returns the optimal solution in very short times which is not the case for large graphs. The graphs are different from each other because they are generated randomly which leads to different topologies and execution times. We run the scheduling heuristic and ILP on these graphs to obtain the values of the makespan. Results are shown in Figure \ref{fig:sched_mkspan_2}, Figure \ref{fig:sched_mkspan_4}, and Figure\ref{fig:sched_mkspan_8} for $2$, $4$, $8$ cores respectively. Overall, the results show that the scheduling heuristic produces a makespan which is very close to the makespan produced by the scheduling ILP. The gap between the heuristic and the ILP result lies between $0\%$ and $16\%$. We notice that the gap is smaller when $4$ or $8$ cores are used than when $2$ cores are used. In fact, when $2$ cores are used the maximum gap is $16\%$, whereas when $4$ or $8$ cores are used the maximum gap is $6\%$. This shows that the scheduling heuristic performs better when the effective parallelism is increased. It can be explained by the fact that the scheduling heuristic attempts more allocation possibilities which leads to a better exploitation of the potential parallelism.
 
@@ -128,6 +128,10 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 \label{fig:sched_mkspan_8}
 \end{figure} 
 
+\subsection{Execution of the Co-simulation}
+
+The results presented in this section show how the acyclic orientation and the scheduling heuristics perform in terms of execution time and optimality gap. In the next section, we evaluate the runtime performance, i.e. the execution of the co-simulation code that is generated based on the result of the scheduling heuristic. To this end, we applied our proposed heuristics on an industrial use case.
+
 \section{Industrial Use Case} 
 
 We tested our proposed approach on an industrial use case. Tests have been performed on a computer with an 8-core Intel core i7 processor running at 2.7 GH, and 16GB RAM. In the rest of this section, we first give a description of the use case and then present the tests and the obtained results.
@@ -144,26 +148,32 @@ The engine model was developed using ModEngine library \cite{benjelloun:2011}. M
 \label{fig:use_case}
 \end{figure}
 
-\subsection{Tests and Results}
+\subsection{Test Campaign}
 
 We refer to our proposed method as MUO-RCOSIM (for Multi-Rate Oriented RCOSIM). We compared the obtained results with two approaches: The first one is RCOSIM which is mono-rate and thus we had to use the same communication step for all the FMUs. We used a communication step of $20 {\mu}s$. The second one consists in using RCOSIM with the multi-rate graph transformation algorithm. We refer to it as MU-RCOSIM (for Multi-Rate RCOSIM). For MUO-RCOSIM and MU-RCOSIM we used the recommended configuration of the communication steps for this use case. For each cylinder, we used a communication step of $20 {\mu}s$. The communication step used for the airpath is $100 {\mu}s$. In fact, the airpath has slower dynamics than the cylinders and this configuration of the communication steps corresponds to the specification given by engine engineers. For each FMU, we used a Runge-Kutta 4 solver with a fixed integration step equal to the communication step. The graph of this use case is transformed by Algorithm \ref{algo:mr} into a graph containing over 280 operations that are scheduled by the multi-core scheduling heuristic.      
 
+\subsection{Numerical Accuracy}
+
 The validation of the numerical results of the co-simulation using the proposed method is achieved through the comparison of the co-simulation outputs with reference outputs. Since it is not possible to solve the equations of the FMU analytically, the reference outputs are obtained by using RCOSIM which has been shown in \cite{benkhaled:2014} to give a very good accuracy of the numerical results. Figure \ref{fig:df} shows the obtained results for the torque (an output of the airpath). We note that the results match with the reference, and the generated error is very small remaining within an acceptable bound ($< 1\%$). Similar accuracy results were obtained for the different outputs of the co-simulation.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/error_df}
+\caption{Numerical results.}
+\label{fig:df}
+\end{figure}
+
+\subsection{Speedup}
 
 The speedup obtained using MUO-RCOSIM is compared with the speedups obtained using RCOSIM and MU-RCOSIM. The speedup was evaluated by running the co-simulation in xMOD. Execution times measurements were performed by getting the system time stamp at the beginning and at the end of the co-simulation. For a given run of the co-simulation, the speedup is computed by dividing the mono-core co-simulation execution time of RCOSIM by the co-simulation execution time of this run on a fixed number of cores. Figure \ref{fig:spdup} sums up the results. The same speedup is obtained using MUO-RCOSIM and MU-RCOSIM even when only 1 core is used. This speedup is obtained thanks to using the multi-rate configuration. More specifically, increasing the communication step of the airpath from $20 {\mu}s$ to $100 {\mu}s$ results in fewer calls to the solver leading to an acceleration in the execution of the co-simulation. By using multiple cores, speedups are obtained using both MUO-RCOSIM and MU-RCOSIM. Additionally, MUO-RCOSIM outperforms MU-RCOSIM with an improvement in the speedup of, approximately $30\%$ when 2 cores are used, and approximately $10\%$ when 4 cores are used. This improvement is obtained thanks to the acyclic orientation heuristic which defines an efficient order of execution for the operations of each FMU that are mutually exclusive. This defined order tends to allow the multi-core scheduling heuristic to better adapt the potential parallelism of the operation graph to the effective parallelism of the multi-core processor (number of cores) resulting in an improvement in the performance. MU-RCOSIM, on the other hand, uses the solution of RCOSIM which consists in simply allocating mutual exclusive operations to the same core introducing restrictions on the possible solutions of the multi-core scheduling heuristic. When using 8 cores, no further improvement is possible since the potential parallelism is fully exploited. Worse still, the overhead of the synchronization between the cores becomes counter-productive, which explains why the speedup with 8 cores is less than the speedup with 4 cores for all the approaches. The best performance is obtained using 5 cores with slight improvement compared to using 4 cores. 
 
-\begin{figure}[htb]
+\begin{figure}[phbt]
 \centering
-  \includegraphics[scale=0.8]{figures/DF}
-  \caption{Numerical results}
-  \label{fig:df}
-\end{figure}
-
-\begin{figure}[htb]
-\centering
-  \includegraphics[scale=0.8]{figures/Speedup}
-  \caption{Speedup results}
-  \label{fig:spdup}
+\includestandalone{figures/speedup_uc}
+\caption{Speedup results.}
+\label{fig:spdup}
 \end{figure}  
 
 The obtained speedup and numerical accuracy results show the efficiency of our proposed method. In future work, we aim at comparing our solution with an exact scheduling algorithm and also an online scheduling approach. Also, we will test our proposed method on other industrial applications. In addition, we envision to extend MUO-RCOSIM to real-time multi-core scheduling in order to perform Hardware-in-the-Loop simulation whose main challenge is to map the real-time constraints on the different operations of the graph.
+
+\subsection{Comparison with Online Scheduling}

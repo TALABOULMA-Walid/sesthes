@@ -30,7 +30,10 @@
 \node[right of=fmu2,yshift=0.9cm,xshift=0.2cm] {$o_6$};
 \node[right of=fmu2,yshift=-0.9cm,xshift=0.2cm] {$o_7$};
 
-\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {\textbf{Step 1}};
+\node [yshift=-.5cm,xshift=1.5cm] at (fmu1.south) {\textbf{Step 1}};
+\node [yshift=-1cm,xshift=1.5cm] at (fmu1.south) {Each FMU: 2 inputs + 2 outputs + 1 state};
+\node [yshift=-1.5cm,xshift=1.5cm] at (fmu1.south) {Total = 10 operations};
+
 \end{scope}
 
 \begin{scope}[xshift=8cm]
@@ -60,7 +63,8 @@
 \draw [draw=red]([yshift=0.6cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.east);
 \draw [draw=red]([yshift=-0.6cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.east);
 
-\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {\textbf{Step 2}};
+\node [yshift=-.5cm,xshift=1.5cm] at (fmu1.south) {\textbf{Step 2}};
+
 \end{scope}
 
 \begin{scope}[yshift=-8cm,xshift=1.5cm]
@@ -88,8 +92,8 @@
 \draw[<->] (-2,4.2) -- node [yshift=0.3cm]{$w = 4$} (2,4.2);
 
 \node at(0,-4.5) {\textbf{Step 3}};
-\node at(0,-5) {\footnotesize{Each FMU: 2 inputs + 2 outputs + 1 state}};
-\node at(0,-5.5) {\small{Total = 10 operations}};
+\node at(0,-5) {$o_8:$ State operation of FMU1};
+\node at(0,-5.5) {$o_9:$ State operation of FMU2};
 
 \end{scope}
 
@@ -136,13 +140,19 @@
 \path (o6) edge[-{Latex[]},bend left,draw=green,line width=.8pt] (o9);
 \path (o7) edge[-{Latex[]},draw=blue,line width=.8pt] (o9);
 
-\node at(0,-5) (exp) {Input/Output to state arcs};
-\draw [-{Latex[]},draw=green,line width=.8pt] ([xshift=-.5cm]exp.west) -- (exp);
+\node [anchor=west,xshift=-2cm] at(0,-5) (exp1) {Inter-FMU dependence};
+\draw [-{Latex[]},draw=blue,line width=.8pt] ([xshift=-.5cm]exp1.west) -- (exp1);
+
+\node [anchor=west,xshift=-2cm] at(0,-5.5) (exp2) {Input/Output to state arcs};
+\draw [-{Latex[]},draw=green,line width=.8pt] ([xshift=-.5cm]exp2.west) -- (exp2);
+
+\node [anchor=west,xshift=-2cm] at(0,-6) (exp3) {Intra-FMU dependence};
+\draw [-{Latex[]},draw=red,line width=.8pt] ([xshift=-.5cm]exp3.west) -- (exp3);
 
 \node at(0,-4.5) {\textbf{Step 4}};
 \end{scope}
 
-\begin{scope}[yshift=-16cm,xshift=4cm]
+\begin{scope}[yshift=-16.5cm,xshift=4cm]
 % FMU1
 \node[rectangle,draw,minimum height = 2.4cm,minimum width = 2cm] (fmu1) {};
 
@@ -166,11 +176,11 @@
 \draw [draw=red]([yshift=-0.6cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.east);
 
 %Inter-FMU
-\coordinate [right of =fmu2, yshift=2cm,xshift=.5cm] (c1);
-\coordinate [left of =fmu1, yshift=2cm,xshift=-.5cm] (c2);
+\coordinate [right of =fmu2, yshift=1.8cm,xshift=.5cm] (c1);
+\coordinate [left of =fmu1, yshift=1.8cm,xshift=-.5cm] (c2);
 
-\coordinate [right of =fmu2, yshift=-2cm,xshift=.5cm] (c3);
-\coordinate [left of =fmu1, yshift=-2cm,xshift=-.75cm] (c4);
+\coordinate [right of =fmu2, yshift=-1.5cm,xshift=.5cm] (c3);
+\coordinate [left of =fmu1, yshift=-1.5cm,xshift=-.75cm] (c4);
 
 \draw [draw=blue,-{Triangle[black]}]([yshift=0.6cm]fmu2.east) -| (c1) -- (c2) |- ([yshift=-.6cm]fmu1.west);
 \draw [draw=blue,-{Triangle[black]}]([yshift=-.6cm]fmu2.east) -| (c3) -- (c4) |- ([yshift=.6cm]fmu1.west);
@@ -190,7 +200,11 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=0.6cm]fmu2.east) -- ([yshift=0.6cm,xshift=0.05cm]fmu2.east);
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu2.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu2.east);
 
-\node[below of = fmu1,yshift=-1.5cm,xshift=1.5cm] {\textbf{Resulting co-simulation}};
+\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {\textbf{Resulting co-simulation}};
+\end{scope}
+
+\begin{scope}[yshift=2.5cm,xshift=5.5cm]
+\node [draw] at(0,0) {$n = 10, m = 2, h = 8, w = 4$};
 \end{scope}
 \end{tikzpicture}
 

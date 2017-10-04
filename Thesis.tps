@@ -53,8 +53,8 @@ Class=LaTeXView
 Document=figures\genexample.tex
 
 [Frame2_View0,0]
-TopLine=27
-Cursor=3675
+TopLine=155
+Cursor=9538
 
 [Frame3]
 Flags=0

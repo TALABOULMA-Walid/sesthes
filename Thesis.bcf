@@ -2173,8 +2173,11 @@
     <bcf:citekey order="44">al-anzi:2006</bcf:citekey>
     <bcf:citekey order="45">grandpierre:1999</bcf:citekey>
     <bcf:citekey order="46">kalla:2004</bcf:citekey>
-    <bcf:citekey order="47">benjelloun:2011</bcf:citekey>
-    <bcf:citekey order="48">benkhaled:2014</bcf:citekey>
+    <bcf:citekey order="47">berkelaar:2004</bcf:citekey>
+    <bcf:citekey order="48">gurobi:2016</bcf:citekey>
+    <bcf:citekey order="49">cplex:2017</bcf:citekey>
+    <bcf:citekey order="50">benjelloun:2011</bcf:citekey>
+    <bcf:citekey order="51">benkhaled:2014</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

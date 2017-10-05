@@ -21,7 +21,16 @@ In order to have clearer understanding, the notion of a system should be conceiv
 \label{fig:system}
 \end{figure}
 
-A kind of systems that falls within the scope of this thesis is known as Cyber-Physical Systems (CPS). CPS consist of a combination of tightly interacting computational elements and physical processes. The computational elements are called embedded systems or controllers and are used to control the physical processes. They are interfaced with the physical processes through sensors and actuators. The controllers run control software whose behavior is affected by the physical process. Areas where CPS can be found are as important as automotive, aerospace, manufacturing, transportation and many others. The diversity of the involved disciplines makes the process of building CPS challenging, costly and time consuming.
+A kind of systems that falls within the scope of this thesis is known as Cyber-Physical Systems (CPS) \cite{lee:2016}. CPS consist of a combination of tightly interacting computational elements and physical processes. The computational elements are called embedded systems or controllers and are used to control the physical processes. They are interfaced with the physical processes through sensors and actuators. The controllers run control software whose behavior is affected by the physical process. The term feedback control is used to refer to such interaction between the controller and the physical process. Basically, an error, which is the divergence between the aimed behavior, called reference, and the actual behavior of the physical process is measured and corrected. Figure \ref{fig:feedb} shows and example of a CPS with feedback control.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/feedbackloop}
+\caption{Feedback control of a physical process.}
+\label{fig:feedb}
+\end{figure}  
+
+Areas where CPS can be found are as important as automotive, aerospace, manufacturing, transportation and many others. The diversity of the involved disciplines makes the process of building CPS challenging, costly and time consuming.
 
 \subsection{Modeling}
 

@@ -1,0 +1,41 @@
+\documentclass{standalone}
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+
+
+\tikzstyle{block} = [draw, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+% The block diagram code is probably more verbose than necessary
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input,node distance=2cm] (sum) {};
+    \node [block, right of=sum,node distance=3.5cm] (controller) {Controller};
+    \node [block, right of=controller,
+            node distance=4cm] (system) {Physical process};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (controller) -- node[name=u] {Input} (system);
+    \node [output, right of=system, node distance = 3cm] (output) {};
+    \node [block, below of=u] (measurements) {Sensor};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {Reference} (sum);
+    \draw [->] (sum) -- node[text width=1.5cm,align=center] {Measured error} (controller);
+    \draw [->] (system) -- node [name=y] {Output}(output);
+    \draw [->] (y) |- (measurements);
+    \draw [->] (measurements) -| node[pos=0.99] {$-$} 
+        node [near end,text width=1.5cm,align=center] {Measured output} (sum);
+\end{tikzpicture}
+
+\end{document}
+
+\end{document}

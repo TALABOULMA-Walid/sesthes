@@ -1,0 +1,130 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\documentclass{standalone}
+
+\usepackage{pgfplots}
+\usepackage{tikz}
+\pgfplotsset{compat = 1.5}
+\pgfplotsset{scaled x ticks=false}
+\begin{document}
+
+
+\definecolor{mycolor1}{rgb}{1.00000,0.00000,1.00000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=13cm,
+height=7cm,
+log ticks with fixed point,
+xmode=log,
+xmin=1,
+xmax=65536,
+xtick={    1,     2,     4,     8,    16,    32,    64,   128,   256,   512,  1024,  2048,  4096,  8192, 16384, 32768, 65536},
+xlabel={Number of processors},
+ymin=0,
+ymax=20,
+ylabel={Speedup},
+x tick label style={yshift=-.1cm,
+rotate=60,anchor=east},
+legend style={anchor=north,at={(0.5,-.4)}},
+]
+\addlegendimage{empty legend}
+\addlegendentry{\hspace{-.6cm}\textbf{Parallelizable portion}}
+\addplot [smooth,red,line width=1.8pt]
+  plot coordinates{%
+(1	,1)
+(2	,1.33333333333333)
+(4	,1.6)
+(8	,1.77777777777778)
+(16	,1.88235294117647)
+(32	,1.93939393939394)
+(64	,1.96923076923077)
+(128	,1.98449612403101)
+(256	,1.99221789883268)
+(512	,1.99610136452242)
+(1024	,1.9980487804878)
+(2048	,1.99902391410444)
+(4096	,1.99951183793019)
+(8192	,1.99975588917368)
+(16384	,1.99987793713763)
+(32768	,1.99993896670634)
+(65536	,1.99996948288753)
+};
+\addlegendentry{50\%}
+
+\addplot [smooth,color=blue, line width=1.8pt]
+  plot coordinates{%
+(1	,1)
+(2	,1.6)
+(4	,2.28571428571429)
+(8	,2.90909090909091)
+(16	,3.36842105263158)
+(32	,3.65714285714286)
+(64	,3.82089552238806)
+(128	,3.90839694656489)
+(256	,3.95366795366795)
+(512	,3.97669902912621)
+(1024	,3.98831548198637)
+(2048	,3.99414919551438)
+(4096	,3.99707245669676)
+(8192	,3.99853569249542)
+(16384	,3.9992677122109)
+(32768	,3.99963382258704)
+(65536	,3.99981690291277)
+};
+\addlegendentry{75\%}
+
+\addplot [smooth,color=green, line width=1.8pt]
+  plot coordinates{%
+(1	,1)
+(2	,1.81818181818182)
+(4	,3.07692307692308)
+(8	,4.70588235294118)
+(16	,6.4)
+(32	,7.80487804878049)
+(64	,8.76712328767123)
+(128	,9.34306569343066)
+(256	,9.66037735849057)
+(512	,9.82725527831094)
+(1024	,9.91287512100678)
+(2048	,9.95624696159456)
+(4096	,9.97807551766139)
+(8192	,9.98902572856969)
+(16384	,9.994509851766)
+(32768	,9.9972541721329)
+(65536	,9.9986268975513)
+};
+\addlegendentry{90\%}
+
+\addplot [smooth,color=mycolor1, line width=1.8pt]
+  plot coordinates{%
+(1	,1)
+(2	,1.9047619047619)
+(4	,3.47826086956522)
+(8	,5.92592592592592)
+(16	,9.14285714285714)
+(32	,12.5490196078431)
+(64	,15.4216867469879)
+(128	,17.4149659863945)
+(256	,18.6181818181818)
+(512	,19.2843691148776)
+(1024	,19.6356663470757)
+(2048	,19.8161586840832)
+(4096	,19.9076549210206)
+(8192	,19.9537206186822)
+(16384	,19.9768335060659)
+(32768	,19.9884100405648)
+(65536	,19.9942033407063)
+
+};
+\addlegendentry{95\%}
+
+\end{axis}
+\end{tikzpicture}%
+
+\end{document}

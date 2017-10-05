@@ -34,7 +34,7 @@ Areas where CPS can be found are as important as automotive, aerospace, manufact
 
 \subsection{Modeling}
 
-Modeling a system consists in creating a mathematical abstraction of its behavior. The first step is to choose a modeling formalism. This choice depends on the properties of the system, the objective of the simulation, and the aimed level of detail in the simulation. For instance, models can be built using continuous-time variables to represent continuous dynamics of a physical process. Such mathematical models consist of a set of differential equations which describe the continuously changing physical quantities of a process such as electrical circuits, fluid dynamics, chemical reactions, etc. Other systems feature a behavior which evolves between a finite set of states. These systems can be modeled as discrete event systems using formalisms such as DEVS (Discrete Event System Specification), Statecharts, or Petri nets. Finally, hybrid modeling allows the modeling of systems with both continuous variables and discrete states. In other words, the system jumps between discrete states and while it is in a certain state, it features a continuous behavior, i.e. its quantities change continuously. 
+Modeling a system consists in creating a mathematical abstraction of its behavior. The first step is to choose a modeling formalism. This choice depends on the properties of the system, the objective of the simulation, and the aimed level of detail in the simulation. For instance, models can be built using continuous-time variables to represent continuous dynamics of a physical process. Such mathematical models consist of a set of differential equations which describe the continuously changing physical quantities of a process such as electrical circuits, fluid dynamics, chemical reactions, etc. Other systems feature a behavior which evolves between a finite set of states. These systems can be modeled using formalisms such as DEVS (Discrete Event System Specification) \cite{zeigler:2000}, Statecharts \cite{harel:1987}, and Petri nets \cite{petri:1962}. Finally, hybrid modeling allows the modeling of systems with both continuous variables and discrete states. In other words, the system jumps between discrete states and while it is in a certain state, it features a continuous behavior, i.e. its quantities change continuously. 
 
 In this thesis, we focus on the the modeling of dynamical systems using differential equations. A differential equation expresses a variable as a function of its derivatives. In the modeling of dynamical systems, the variables are the physical quantities and the derivatives express their rates of change. A differential equation is called Ordinary Differential Equation, abbreviated ODE, if it involves ordinary derivatives of the variables with respect to an independent variable (usually the time in the modeling of dynamical systems).  Equation \ref{eq:ode} is an ODE where $x$ is the vector of the dependent variables of interest called the state variables, $\dot{x} = \frac{dx}{dt}$ is the vector of the time derivatives of the state variables, $t$ is the time (the independent parameter), and $f$ is a given function.
 
@@ -152,7 +152,7 @@ Figure \ref{fig:mbd} gives a view of the different types of co-simulation perfor
 
 \subsubsection{The Functional Mock-up Interface Standard}
 
-The Functional Mock-up Interface (FMI) is a tool-independent and open standard designed in the context of the MODELISAR project and is currently developed and maintained by the Modelica Association\footnote{https://www.modelica.org/association/}. FMI standard was developed in order to facilitate the co-simulation of dynamical systems, such as CPS. It provides specifications in order to enable the exchange and the co-simulation of heterogeneous dynamical models that may be developed by different tools. A modeling tool that supports FMI can export a model as a Functional Mock-up Unit (FMU) which can be used in co-simulation environments. FMI defines interfaces for the involved models to allow their co-simulation.
+The Functional Mock-up Interface (FMI) is a tool-independent and open standard designed in the context of the ITEA MODELISAR project and is currently developed and maintained by the Modelica Association\footnote{www.modelica.org/association/} which promotes the Modelica language. FMI standard was developed in order to facilitate the co-simulation of dynamical systems, such as CPS. It provides specifications in order to enable the exchange and the co-simulation of heterogeneous dynamical models that may be developed by different tools. A modeling tool that supports FMI can export a model as a Functional Mock-up Unit (FMU) which can be used in co-simulation environments. FMI defines interfaces for the involved models to allow their co-simulation.
 
 %\begin{figure}[h]
 %\centering
@@ -194,7 +194,7 @@ FMI for Co-Simulation specification defines interfaces between a master algorith
 \end{figure} 
 \end{itemize}
 
-Figure shows the state machine of the supported calling sequences from a master algorithm to a slave.
+%Figure shows the state machine of the supported calling sequences from a master algorithm to a slave.
 
 %\begin{figure}[h]
 %\centering
@@ -204,7 +204,8 @@ Figure shows the state machine of the supported calling sequences from a master 
 %\label{fig:callingsequence}
 %\end{figure}  
 
-
+%The High Level Architecture (HLA) \cite{} is another standard for distributed simulation.
+ 
 
 \subsection{Co-simulation with Real-time Constraints}
 
@@ -225,10 +226,7 @@ Figure \ref{fig:rtcosim} illustrates the time evolution of a real-time simulatio
 
 \subsection{Languages and Tools for Modeling and Simulation}
 
-Building models of systems can be done manually and than transformed into software using general purpose programming languages such as C. However, this approach is not efficient in practice, especially when the modeled system is complex and changes may be required in the model. Many tools and languages for modeling and simulation have been developed in order to facilitate and make the modeling and simulation more efficient. Such tools allow the user to specify an equation-based model in a straightforward manner and come with built-in solvers. Below, we present some tools and languages for modeling and simulation.
-
-\subsubsection{xMOD}
-xMOD\footnote{http://www.xmodsoftware.com/} is the modeling and co-simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models embedding different solvers with different integration and communication step sizes. xMOD does not replace original modeling and simulation tools. Instead, it promotes and facilitates their coupling and existence.
+Building models of systems can be done manually and than transformed into software using general purpose programming languages such as C. However, this approach is not efficient in practice, especially when the modeled system is complex and changes may be required in the model. Many tools and languages for modeling and simulation have been developed in order to facilitate and make the modeling and simulation more efficient. Such tools allow the user to specify an equation-based model in a straightforward manner and come with built-in solvers. Below, we present a non exhaustive list of tools and languages for modeling and simulation.
 
 %\begin{figure}[h]
 %\centering
@@ -242,18 +240,25 @@ xMOD\footnote{http://www.xmodsoftware.com/} is the modeling and co-simulation so
 Simulink\footnote{www.mathworks.com/products/simulink/}, developed by The Mathworks is a graphical modeling environment. Simulink is used in the  process of Model-Based Design of embedded systems. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB algorithms in Simulink models. Finally, Simulink enables automatic code generation form models.
 
 \subsubsection{Modelica}
+Modelica is an object-oriented equation-based language for the modeling of complex physical systems developed by the Modelica Association. Modelica allows the modeling of physical systems by writing a set equations. Modelica adopts an acausal approach, i.e. the signal flow is not specified in the model. The simulator has to perform symbolic manipulations in order to define inputs and outputs and find an order of execution for these equations. There exist several tools that are based on the Modelica language.
 
-Modelica is an object-oriented equation-based language for the modeling of complex physical systems developed by the Modelica Association. Modelica allows the modeling of physical systems by writing a set equations. Modelica adopts an acausal approach, i.e. the signal flow is not specified in the model. The simulator has to perform symbolic manipulations in order to define inputs and outputs and find an order of execution for these equations.
+OPENMODELICA\footnote{www.openmodelica.org} is an open-source modeling and simulation environment based on the Modelica language. It is developed and maintained by the Open Source Modelica Consortium (OSMC).
 
-\subsubsection{Dymola}
+Dymola\footnote{www.3ds.com/products-services/catia/products/dymola}, developed by Dassault Syst\`emes AB, is a modeling and simulation environment based on the Modelica modeling language. Dymola supports the FMI standard and allows interfacing with other tools such as Simulink
 
-Dymola\footnote{http://www.3ds.com/products-services/catia/products/dymola}, developed by Dassault Syst\`emes AB, is a modeling and simulation environment based on the Modelica modeling language. Dymola supports the FMI standard and allows interfacing with other tools such as Simulink
-
-\subsubsection{Amesim}
+\subsubsection{LMS Imagine.Lab Amesim}
 Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/amesim/} is a modeling and simulation software developed by Siemens PLM Software. Amesim can be used for the modeling and simulation of mechatronic systems. Amesim is based on the Modelica modeling language. It is oriented towards the modeling of complex physical systems instead of controller design. Amesim provides libraries containing collections of components that can be loaded and connected by the user to build models. For simulation, Amesim automatically selects a solver that is adapted to the problem.
 
+\subsubsection{xMOD}
+xMOD\footnote{www.xmodsoftware.com/} is the modeling and co-simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models with different integration and communication step sizes. Also, it allows the co-simulation of models embedding different solvers or not. In the latter case, xMOD provides a solver for the integration of the models' equations. xMOD does not replace original modeling and simulation tools. Instead, it promotes and facilitates their coupling and existence.
+
+\subsubsection{CosiMate}
+
+CosiMate\footnote{www.cosimate.com/} is a co-simulation environment that enables distributed co-simulation. Multiple simulators can be executed on different computers and communicate over a network. CosiMate supports the FMI standard, interfacing with Simulink, and several languages.
+
 \subsubsection{Hopsan}
-Hopsan\footnote{https://www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
+Hopsan\footnote{www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
+
 \section{Parallel Computing}
 
 Parallel computing is a very important branch in the computing research and industry. It refers to the discipline that focuses on executing multiple computations simultaneously to solve one problem. Its basic idea is to divide a computing task into several sub-tasks that can be performed at the same time. From the beginning of the modern era of computing, computer software has been typically written for sequential execution. In order to solve a problem, an algorithm is designed as a sequence of instructions that are executed one after the other. In order to increase the computation power of computers, the dominant method was frequency scaling. If a processor's frequency is increased, it means that it can execute more instructions per clock cycle and thus can execute a sequential program faster. Moore's law predicted that the number of transistors in a processor would double approximately every two years \cite{moore:1965}. This prediction proved correct for many years. However, frequency scaling is facing technological limits and the last decade witnessed a wide shift to multicore processors among semiconductor manufacturers. Moore's law can be considered to be still accurate since more transistors are still integrated in chips, not for frequency scaling but to add more processing elements. The rise of multicore processors has caused the evolution of many parallel hardware and software technologies.
@@ -262,15 +267,15 @@ The main goal of parallel computing is to execute computer programs faster. The 
 \begin{equation}
 S(n) = \frac{1}{(1-P) + \frac{P}{n}}
 \end{equation}
-$S(n)$ is the theoretical speedup, $P$ is the portion of the program that can be parallelized and $n$ is the number of processors. Figure \ref{fig:amdahl} shows the theoretical speedup of a program in function of the number of processors for different values of $P$. It shows for example that if $50\%$ of a program can be parallelized, the maximum possible speedup is 2, and if $95\%$ of the program can be prallelized, the maximum speedup is around 20.
+$S(n)$ is the theoretical speedup, $P$ is the portion of the program that can be parallelized and $n$ is the number of processors. Figure \ref{fig:amdhal} shows the theoretical speedup of a program in function of the number of processors for different values of $P$. It shows for example that if $50\%$ of a program can be parallelized, the maximum possible speedup is 2, and if $95\%$ of the program can be prallelized, the maximum speedup is around 20.
 
-%\begin{figure}[h]
-%\centering
-%\captionsetup{justification=centering}
-%\includegraphics[scale=0.6]{figures/amdahlspeedup}
-%\caption{Theoretical speedup computed using Amdahl's law for a program in function of the number of processors for different values of $P$.}
-%\label{fig:amdahl}
-%\end{figure} 
+\begin{figure}[phbt]
+\centering
+\captionsetup{justification=centering}
+\includestandalone{figures/amdhal}
+\caption{Theoretical speedup computed using Amdahl’s law for a program in function of the number of processors for different values of P.}
+\label{fig:amdhal}
+\end{figure} 
 
 \subsection{Parallel Architectures}
 
@@ -372,21 +377,20 @@ Scheduling research has been active for over 60 years now and so many methods an
 
 \subsubsection{Task Dependence Graph}
 
-A set of tasks which express the parallelism of an application can be represented by a Directed Acyclic Graph (DAG) $G(V,A)$ called the task dependence graph. Each task is represented by a vertex $v_i \in V: 0 \leq i < n$ where $n$ is the number of tasks. Dependence between tasks is represented by arcs $(v_i, v_j) \in A: 0 \leq i,j < n$. A vertex may have one or more incoming edges which connect it with its predecessors and one or more outgoing edges which connect it with its successors. A task cannot start its execution unless all its predecessors have finished the execution. Generally, dependence between two tasks is due to data movement, i.e. one task is executed and produces a data element, and the second task requires this data element to start its execution. If a vertex has no predecessor it is called an entry or source vertex. A vertex that has no successor is called an exit or sink vertex. The vertices may be weighted by the execution times of the corresponding tasks (see Figure \ref{fig:dagexample}). In the remainder of the thesis we will use the term dependence graph instead of task dependence graph.
+A set of tasks which express the parallelism of an application can be represented by a Directed Acyclic Graph (DAG) $G(V,A)$ called the task dependence graph. Each task is represented by a vertex $v_i \in V: 0 \leq i < n$ where $n$ is the number of tasks. Dependence between tasks is represented by arcs $(v_i, v_j) \in A: 0 \leq i,j < n$. A vertex may have one or more incoming edges which connect it with its predecessors and one or more outgoing edges which connect it with its successors. A task cannot start its execution unless all its predecessors have finished the execution. Generally, dependence between two tasks is due to data movement, i.e. one task is executed and produces a data element, and the second task requires this data element to start its execution. If a vertex has no predecessor it is called an entry or source vertex. A vertex that has no successor is called an exit or sink vertex. The vertices may be weighted by the execution times of the corresponding tasks (see Figure \ref{fig:dagex}). In the remainder of the thesis we will use the term dependence graph instead of task dependence graph.
 
-%\begin{figure}[h]
-%\centering
-%\captionsetup{justification=centering}
-%\includegraphics[scale=0.9]{figures/dagexample}
-%\caption{A DAG representation of a set of tasks $T = \{t_1, t_2, t_3, t_4\}$ with the dependence $t_1 \rightarrow t_2, t_1 \rightarrow t_3, t_2 \rightarrow t_4,$ and $t_3 \rightarrow t_4$}
-%\label{fig:dagexample}
-%\end{figure}
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/dagex}
+\caption{Example of a task dependenc graph.}
+\label{fig:dagex}
+\end{figure} 
 
 \subsubsection{Potential and Effective Parallelisms}
 
 In industrial practice, we distinguish between the "functional" and "non functional" specifications. Functional specification consists in defining what has to be done. Mainly, the different functions of the application and the dependence between them are specified. Non functional specification consists in defining how the functions have to be performed. It provides a description of the hardware architecture, its different components and how they are interconnected. It specifies also allocation constraints if there are any and the timing parameters of the different functions, such as their execution times and periods.
 
-Having both the functional and non functional specifications, the "potential" and the "effective" parallelisms can be deduced. The potential parallelism is related to the functional specification. It is defined by the functions that are not dependent as they can be executed in parallel, e.g. $t_2$ and $t_3$ in Figure \ref{fig:dagexample}. The effective parallelism is defined by the hardware architecture, i.e. how many processing elements (processors, cores, \ldots) are able to execute functions in parallel. If the effective parallelism is less or equal to the potential parallelism, the execution of the application is accelerated. If it is greater, the execution is accelerated also but, no matter how much the effective parallelism is increased, the speedup remains constant. This can be interpreted by Amdahl's law because which describes how hardware parallelism limits the exhibition of the application parallelism.
+Having both the functional and non functional specifications, the "potential" and the "effective" parallelisms can be deduced. The potential parallelism is related to the functional specification. It is defined by the functions that are not dependent as they can be executed in parallel, e.g. $t_2$ and $t_3$ in Figure \ref{fig:dagex}. The effective parallelism is defined by the hardware architecture, i.e. how many processing elements (processors, cores, \ldots) are able to execute functions in parallel. If the effective parallelism is less or equal to the potential parallelism, the execution of the application is accelerated. If it is greater, the execution is accelerated also but, no matter how much the effective parallelism is increased, the speedup remains constant. This can be interpreted by Amdahl's law because which describes how hardware parallelism limits the exhibition of the application parallelism.
 
   
 

@@ -17,8 +17,8 @@ Class=LaTeXView
 Document=Thesis.tex
 
 [Frame0_View0,0]
-TopLine=0
-Cursor=3132
+TopLine=117
+Cursor=2880
 
 [Frame1]
 Flags=0
@@ -32,11 +32,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch6-eval.tex
+Document=text\ch2-bkgnd.tex
 
 [Frame1_View0,0]
-TopLine=227
-Cursor=19966
+TopLine=344
+Cursor=26690
 
 [Frame2]
 Flags=0
@@ -50,11 +50,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\genexample.tex
+Document=figures\system.tex
 
 [Frame2_View0,0]
-TopLine=169
-Cursor=10179
+TopLine=0
+Cursor=472
 
 [Frame3]
 Flags=0
@@ -68,11 +68,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\mbd.tex
+Document=figures\feedbackloop.tex
 
 [Frame3_View0,0]
 TopLine=0
-Cursor=198
+Cursor=668
 
 [Frame4]
 Flags=0
@@ -86,11 +86,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\fmimdlexg.tex
+Document=figures\bbposition.tex
 
 [Frame4_View0,0]
 TopLine=0
-Cursor=913
+Cursor=315
 
 [Frame5]
 Flags=0
@@ -104,11 +104,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\use_case.tex
+Document=figures\bbvelocity.tex
 
 [Frame5_View0,0]
 TopLine=0
-Cursor=155
+Cursor=410
 
 [Frame6]
 Flags=0
@@ -122,11 +122,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\sched_exec_8.tex
+Document=figures\amdhal.tex
 
 [Frame6_View0,0]
-TopLine=16
-Cursor=288
+TopLine=0
+Cursor=470
 
 [Frame7]
 Flags=0
@@ -140,13 +140,13 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\sched_exec_4.tex
+Document=figures\sched_exec_2.tex
 
 [Frame7_View0,0]
-TopLine=16
-Cursor=288
+TopLine=0
+Cursor=231
 
 [SessionInfo]
 FrameCount=8
-ActiveFrame=1
+ActiveFrame=6
 

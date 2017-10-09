@@ -13,7 +13,7 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu1.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu1.east);
 \draw[draw=white,-{Triangle[black]}] ([yshift=0.6cm,xshift=-0.1cm]fmu1.west) -- ([yshift=0.6cm]fmu1.west);
 \draw[draw=white,-{Triangle[black]}] ([yshift=-0.6cm,xshift=-0.1cm]fmu1.west) -- ([yshift=-0.6cm]fmu1.west);
-\node[below of=fmu1,yshift=2.5cm] {FMU 1};
+\node[below of=fmu1,yshift=2.5cm] {FMU A};
 \node[left of=fmu1,yshift=0.9cm,xshift=-0.2cm] {$o_0$};
 \node[left of=fmu1,yshift=-0.9cm,xshift=-0.2cm] {$o_1$};
 \node[right of=fmu1,yshift=0.9cm,xshift=0.2cm] {$o_2$};
@@ -24,7 +24,7 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu2.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu2.east);
 \draw[draw=white,-{Triangle[black]}] ([yshift=0.6cm,xshift=-0.2cm]fmu2.west) -- ([yshift=0.6cm]fmu2.west);
 \draw[draw=white,-{Triangle[black]}] ([yshift=-0.6cm,xshift=-0.2cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.west);
-\node[below of=fmu2,yshift=2.5cm] {FMU 2};
+\node[below of=fmu2,yshift=2.5cm] {FMU B};
 \node[left of=fmu2,yshift=0.9cm,xshift=-0.2cm] {$o_4$};
 \node[left of=fmu2,yshift=-0.9cm,xshift=-0.2cm] {$o_5$};
 \node[right of=fmu2,yshift=0.9cm,xshift=0.2cm] {$o_6$};
@@ -43,7 +43,7 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu1.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu1.east);
 \draw[draw=white,-{Triangle[black]}] ([yshift=0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=0.6cm]fmu1.west);
 \draw[draw=white,-{Triangle[black]}] ([yshift=-0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=-0.6cm]fmu1.west);
-\node[below of=fmu1,yshift=2.5cm] {FMU 1};
+\node[below of=fmu1,yshift=2.5cm] {FMU A};
 \node[left of=fmu1,yshift=0.9cm,xshift=-0.2cm] {$o_0$};
 \node[left of=fmu1,yshift=-0.9cm,xshift=-0.2cm] {$o_1$};
 \node[right of=fmu1,yshift=0.9cm,xshift=0.2cm] {$o_2$};
@@ -55,7 +55,7 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu2.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu2.east);
 \draw[draw=white,-{Triangle[black]}] ([yshift=0.6cm,xshift=-0.2cm]fmu2.west) -- ([yshift=0.6cm]fmu2.west);
 \draw[draw=white,-{Triangle[black]}] ([yshift=-0.6cm,xshift=-0.2cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.west);
-\node[below of=fmu2,yshift=2.5cm] {FMU 2};
+\node[below of=fmu2,yshift=2.5cm] {FMU B};
 \node[left of=fmu2,yshift=0.9cm,xshift=-0.2cm] {$o_4$};
 \node[left of=fmu2,yshift=-0.9cm,xshift=-0.2cm] {$o_5$};
 \node[right of=fmu2,yshift=0.9cm,xshift=0.2cm] {$o_6$};
@@ -158,7 +158,7 @@
 
 \draw[draw=white,-{Straight Barb[angle=60:2pt 3,black]}] ([yshift=0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=0.6cm]fmu1.west);
 %\draw[draw=white,-{Straight Barb[angle=60:2pt 3,black]}] ([yshift=-0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=-0.6cm]fmu1.west);
-\node[below of=fmu1,yshift=2.5cm] {FMU 1};
+\node[below of=fmu1,yshift=2.5cm] {FMU A};
 \node[left of=fmu1,yshift=0.9cm,xshift=-0.2cm] {$o_0$};
 \node[left of=fmu1,yshift=-0.9cm,xshift=-0.2cm] {$o_1$};
 \node[right of=fmu1,yshift=0.9cm,xshift=0.2cm] {$o_2$};
@@ -167,7 +167,7 @@
 % FMU2
 \node[rectangle,draw,minimum height = 2.4cm,minimum width = 2cm, xshift=3cm] (fmu2) {};
 
-\node[below of=fmu2,yshift=2.5cm] {FMU 2};
+\node[below of=fmu2,yshift=2.5cm] {FMU B};
 \node[left of=fmu2,yshift=0.9cm,xshift=-0.2cm] {$o_4$};
 \node[left of=fmu2,yshift=-0.9cm,xshift=-0.2cm] {$o_5$};
 \node[right of=fmu2,yshift=0.9cm,xshift=0.2cm] {$o_6$};
@@ -200,7 +200,7 @@
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=0.6cm]fmu2.east) -- ([yshift=0.6cm,xshift=0.05cm]fmu2.east);
 \draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu2.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu2.east);
 
-\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {\textbf{Resulting co-simulation}};
+\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {\textbf{FMU-level view}};
 \end{scope}
 
 \begin{scope}[yshift=2.5cm,xshift=5.5cm]

@@ -126,7 +126,7 @@ In co-simulation of models based on ODEs, the equations of each model are integr
 
 For larger co-simulations involving more models, different communication step sizes may be associated with different models. In this case, we talk about multi-rate co-simulation.
 
-In this thesis, we are interested, in particular, in co-simulations that are compliant with The Functional Mock-up Interface (FMI) standard \cite{fmi:2014}, presented hereafter. There exist other standards which target the coupling of simulators, e.g. the High-Level Arichtecture (HLA) \cite{ieee1516:2012}. The HLA is an IEEE standard developed by the U.S. Modeling and Simulation Coordination Office (M&S CO) \footnote{www.msco.mil}. We are interested in the FMI standard because it is adopted by many modeling and simulation tool and is becoming the state of the art standard for co-simulation, thanks to the different possibilities of simulators and models coupling that it offers.
+In this thesis, we are interested, in particular, in co-simulations that are compliant with The Functional Mock-up Interface (FMI) standard \cite{fmi:2014}, presented hereafter. There exist other standards which target the coupling of simulators, e.g. the High-Level Arichtecture (HLA) \cite{ieee1516:2012}. The HLA is an IEEE standard developed by the U.S. Modeling and Simulation Coordination Office (M\&S CO) \footnote{www.msco.mil}. We are interested in the FMI standard because it is adopted by many modeling and simulation tool and is becoming the state of the art standard for co-simulation, thanks to the different possibilities of simulators and models coupling that it offers.
 
 In the context of CPS which contain embedded systems controlling physical processes, different kinds of co-simulation, presented hereafter, can be performed depending on the stage of the controller design.
 
@@ -513,7 +513,18 @@ Assuming the tasks are sorted in a list and that processors are organized in a c
   
 \subsection{Parallel Execution}
 
-AAA and code generation.
+It is important to understand how the previously presented concepts of parallel computing are related. These concepts are involved in parallelization which refers to the process that takes as input a sequential code and achieves a parallel execution of the program. The first step of parallelization consists in detecting the potential parallelism of the program. Depending on the pattern of parallelism (e.g. task or data), a model, such as a dependence graph, is used in order to represent this potential parallelism. The targeted parallel architecture has to be modeled as well in order to accomplish the parallelism adaptation. Given the models of the potential parallelism and the effective parallelism, a schedule has to be found. In other words, the different parts of the program are allocated to the different components of the parallel architecture and their execution is ordered. Finally, based on the computed schedule, a parallel code is generated to be executed on the parallel architecture.  
+
+\subsubsection{The AAA Methodology and SynDEx Software}
+
+The goal of the Algorithm-Architecture-Adequation (AAA) methodology \cite{sorel:1996} is to find out the best implementation of an algorithm specifying the functions the application has to perform onto a multicomponent architecture, while satisfying real-time and embedding constraints. The AAA methodology is based on graphs models to exhibit both the potential parallelism of the application algorithm and the available parallelism of the hardware architecture.  Adequation means an efficient implementation. The implementation consists in distributing and scheduling the algorithm graph onto the multicomponent graph while satisfying real-time constraints. This is formalized in terms of graph transformations. Heuristics based on distributed real-time scheduling analyses taking into account timing characteristics attached to operations (period, worst case execution time of computations and of inter-component communications), are used to automatically explore the possible implementations of a given application onto a given multicomponent hardware that satisfy real-time constraints, and to optimize the reaction time as well as resources allocation. The result of graph transformations is an optimized Synchronized Distributed Executive (SynDEx) dedicated to the application, automatically built from a library of architecture dependent executive primitives composing each executive kernel. (Figure \ref{fig:aaa}).
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/aaa}
+\caption{The Algorithm-Architecture-Adequation methodology.}
+\label{fig:aaa}
+\end{figure} 
 
 \section{Parallel Execution of Co-simulation}
 

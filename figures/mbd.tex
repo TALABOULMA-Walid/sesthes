@@ -12,9 +12,6 @@
             base/.style = {rectangle, rounded corners, draw=black,
                            minimum width=4cm, minimum height=1cm,
                            text centered},
-  activityStarts/.style = {base, fill=blue!30},
-       startstop/.style = {base, fill=red!30},
-    activityRuns/.style = {base, fill=green!30},
          process/.style = {base, minimum width=2.5cm, fill=orange!15
                           },
 }  
@@ -24,11 +21,24 @@
     every node/.style={fill=white}, align=center]
   % Specification of nodes (position, etc.)
   
-  
+	\node (controllerMdl1) [process,xshift=.2cm,yshift=.2cm] {Controller model};
+	\node (controllerMdl2) [process,xshift=.1cm,yshift=.1cm] {Controller model};
   \node (controllerMdl) [process] {Controller model};
-  \node (controllerSw)  [process, below of=controllerMdl, yshift=-1cm] {Controller software};
-  \node (controllerHw)    [process, below of=controllerSw, yshift=-1cm] {Controller hardware};
-  \node (proceMdl)    [process, left of=controllerMdl, xshift=-5cm] {Physical process model};
+	
+  \node (controllerSW1) [process, below of=controllerMdl, xshift=.2cm,yshift=-.8cm] {Controller software};
+	\node (controllerSW2) [process, below of=controllerMdl, xshift=.1cm,yshift=-.9cm] {Controller software};
+	\node (controllerSw)  [process, below of=controllerMdl, yshift=-1cm] {Controller software};
+  
+	\node (controllerHW1) [process, below of=controllerSw, xshift=.2cm,yshift=-.8cm] {Controller hardware};
+	\node (controllerHW2) [process, below of=controllerSw, xshift=.1cm,yshift=-.9cm] {Controller hardware};
+	\node (controllerHw)    [process, below of=controllerSw, yshift=-1cm] {Controller hardware};
+  
+	\node (proceMdl1) [process, left of=controllerMdl, xshift=-4.8cm,yshift=.2cm] {Physical process model};
+	\node (proceMdl2) [process, left of=controllerMdl, xshift=-4.9cm,yshift=.1cm] {Physical process model};
+	\node (proceMdl)    [process, left of=controllerMdl, xshift=-5cm] {Physical process model};
+	
+	\node (proce1) [process, left of=controllerHw, xshift=-4.8cm,yshift=.2cm] {Physical process};
+	\node (proce2) [process, left of=controllerHw, xshift=-4.9cm,yshift=.1cm] {Physical process};
 	\node (proce)    [process, left of=controllerHw, xshift=-5cm] {Physical process};
      
   % Specification of lines between nodes specified above

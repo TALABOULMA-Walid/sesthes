@@ -209,6 +209,8 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 
 \subsubsection{Complexity}
 
+The scheduling heuristic contains three nested loop. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(np)$. From the foregoing, the complexity of our heuristic is evaluated to $\mathcal{O}(pn^2)$.
+
 \section{Scheduling of FMU Co-simulation with Real-time Constraints}
 
 \section{Code Generation}

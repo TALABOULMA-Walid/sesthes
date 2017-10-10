@@ -581,11 +581,14 @@ We now describe our proposed acyclic orientation heuristic. The heuristic takes 
 
 \subsubsection{Complexity}
 
-\subsubsection{Soundness}
+The outermost loop (while loop) of the acyclic orientation heuristic is repeated $n$ times, such as at each iteration, one operation is assigned a color. The selection of the operation with latest start time is done in $\mathcal{O}(\log{}n)$. The first inner loop iterates over all the edges connecting the selected operation. It is repeated at most $d$ times, where $d$ is the maximum number of edges connecting one operation. The inner most loop is executed twice in all cases. Therefore, the complexity of the acyclic orientation heuristic is evaluated to $\mathcal{O}(nd)$.  
 
-\subsubsection{Completeness}
 
-\subsubsection{Termination}
+%\subsubsection{Soundness}
+%
+%\subsubsection{Completeness}
+%
+%\subsubsection{Termination}
 
 \section{Dependence Graph with Real-time Constraints}
 

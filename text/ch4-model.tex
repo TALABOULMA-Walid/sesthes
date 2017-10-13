@@ -581,7 +581,7 @@ We now describe our proposed acyclic orientation heuristic. The heuristic takes 
 
 \subsubsection{Complexity}
 
-The outermost loop (while loop) of the acyclic orientation heuristic is repeated $n$ times, such as at each iteration, one operation is assigned a color. The selection of the operation with latest start time is done in $\mathcal{O}(\log{}n)$. The first inner loop iterates over all the edges connecting the selected operation. It is repeated at most $d$ times, where $d$ is the maximum number of edges connecting one operation. The inner most loop is executed twice in all cases. Therefore, the complexity of the acyclic orientation heuristic is evaluated to $\mathcal{O}(nd)$.  
+The outermost loop (while loop) of the acyclic orientation heuristic is repeated $n$ times, such as at each iteration, one operation is assigned a color. The selection of the operation with latest start time is done in $\mathcal{O}(\log{}n)$. The first inner loop iterates over all the edges connecting the selected operation. It is repeated at most $d$ times, where $d$ is the maximum number of edges connecting one operation. The inner most loop is executed twice in all cases. This results in an execution of the nested inner loops in $O(d)$. In addition Algorithms \ref{algo:update_s} and \ref{algo:update_e} that are called in the heuristic have each a complexity of $O(n)$ since they are based on a recursion whose depth is at most $n$. Therefore, the complexity of the acyclic orientation heuristic is evaluated to $\mathcal{O}(n^2d)$.  
 
 
 %\subsubsection{Soundness}

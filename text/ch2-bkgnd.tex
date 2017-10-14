@@ -58,7 +58,7 @@ A Differential Algebraic Equation, abbreviated DAE, is a system of equations whi
 &0 = g(x,t)
 \end{aligned}
 \label{eq:dae}
-\end{equation} 
+\end{equation}
   
 In this thesis, we are particularly interested in modeling dynamical systems using ODEs. Typically, such systems are hybrid dynamic systems modeled using hybrid ODEs. These systems exhibit continuous behavior interspersed with jumps triggered by some events. There are two kinds of events: Events which occur at a particular instant in time are called time events. The other kind of events, called state events or zero-crossing, arise as a result of the value of a state variable crossing a specific threshold. Time events are easier to handle than state events since they occur at known instants in time. A classic example of such hybrid dynamic systems is the bouncing ball model where a ball is dropped from a certain height above the ground. The ball falls with a velocity subject to gravity and bounces when it hits the surface. Equation \ref{eq:bb} gives a hybrid system of equations which describes the behavior of the bouncing ball where $x$ is the position of the ball (height), $v$ its velocity, $g$ the gravity constant, and $\gamma$ the coefficient of restitution.
 
@@ -108,6 +108,8 @@ As an example, the simulation of the bouncing ball model represented in Figure \
 \caption{Trajectories obtained from the simulation of the bouncing ball model}
 \label{fig:bbsim}
 \end{figure}
+
+Quantized State System (QSS) methods \cite{kofman:2001} offer an alternative to modeling an simulation methods based on time-discretization. There principle is based on discretizing the state and considering the time as continuous. The resolution consists in solving for the time when the state changes by a quantum. These methods are out of the scope of this thesis.
 
 \subsection{Co-simulation}
 
@@ -238,7 +240,7 @@ Figure \ref{fig:rtcosim} illustrates the time evolution of a real-time simulatio
 \begin{figure}[phbt]
 \centering
 \includestandalone{figures/rtcosim}
-\caption{Real-time co-simulation.}
+\caption{Comparison of accelerated co-simulation and real-time co-simulation.}
 \label{fig:rtcosim}
 \end{figure} 
 

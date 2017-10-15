@@ -47,14 +47,14 @@
 		\node at (3.25,0.7) {$f(x_{n+1},t_{n+2})$};
 		
 		\draw [->,densely dashed] (1.1,2.5) -- node [align=center,fill=white] {$x_{n}$} (1.1,2);
-		\draw [->,densely dashed] (2,2.5) -- node [align=center,fill=white] {$x_{n+1}$} (2,2);
+		\draw [->,densely dashed] (2.2,2.5) -- node [align=center,fill=white] {$x_{n+1}$} (2.2,2);
 		\draw [->,densely dashed] (3,2.5) -- node [align=center,fill=white] {$x_{n+2}$} (3,2);
 		
 		
 		
 		\node at (0.8,2.6) {$f(x_{n-1},t_n)$};
-		\node at (1.55,2.6) {$f(x_{n},t_{n+1})$};
-		\node at (2.5,2.6) {$f(x_{n+1},t_{n+2})$};
+		\node at (1.65,2.6) {$f(x_{n},t_{n+1})$};
+		\node at (2.6,2.6) {$f(x_{n+1},t_{n+2})$};
 
 		
 \end{axis}
@@ -66,8 +66,7 @@
     ymin=0,ymax=2,
     scatter/classes={%
         a={mark=o,draw=black}},
-				xtick={0.5,1.5,2.5,3.5},
-				xticklabels={,,},
+				ticks=none,
 				x label style={align=center,at={(current axis.left of origin)},anchor=east, above=0.5mm, left=-0.2mm},
 				xlabel={Real-time\\co-simulation},
 				x post scale=1.8
@@ -93,8 +92,7 @@ coordinates
     ymin=0,ymax=2,
     scatter/classes={%
         a={mark=o,draw=black}},
-				xtick={0.5,1.5,2.5,3.5},
-				xticklabels={,,},
+				ticks=none,
 				x label style={align=center,at={(current axis.left of origin)},anchor=east, above=0.5mm, left=-0.2mm},
 				xlabel={Accelerated\\co-simulation},
 				x post scale=1.8
@@ -105,11 +103,11 @@ coordinates
 
 \addplot+[mark=none,const plot,draw=black]
 coordinates
-{(1.1,0) (1.1,0.2) (2,0.2) (2,0)};
+{(1.1,0) (1.1,0.2) (2.2,0.2) (2.2,0)};
 
 \addplot+[mark=none,const plot,draw=black]
 coordinates
-{(2,0) (2,0.2) (3,0.2) (3,0)};
+{(2.2,0) (2.2,0.2) (3,0.2) (3,0)};
 
 
 \end{axis}
@@ -121,7 +119,7 @@ coordinates
     ymin=0,ymax=2,
     scatter/classes={%
         a={mark=o,draw=black}},
-				xtick={0.5,1.1,2,3},
+				xtick={0.5,1.1,2.2,3},
 				xticklabels={$t_{n-1}$,$t_{n}$,$t_{n+1}$,$t_{n+2}$},
 				x label style={align=center,at={(current axis.left of origin)},anchor=east, above=0.5mm, left=-0.2mm},
 				xlabel={Simulated\\time},

@@ -180,19 +180,45 @@ The speedup obtained using MUO-RCOSIM is compared with the speedups obtained usi
 \label{fig:spdup}
 \end{figure}  
 
-\subsection{Comparison Offline and Online Scheduling}
+\subsection{Comparison of Offline and Online Scheduling}
 
-In this thesis, we adopted an offline scheduling heuristic assuming it is more efficient than online scheduling since it introduces lower overhead. This choice was based on the fact the the grain size of the operation graph is small which makes it unsuitable for online scheduling. In addition, the execution times of the operations and the dependence between them are known before the execution which allows the application of offline scheduling. can be known before them In addition, the In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the obtained results obtained using the two approaches.
+In this thesis, we adopted an offline scheduling heuristic assuming it is more efficient than online scheduling since it introduces lower overhead. This choice was based on the fact the the grain size of the operation graph is small which makes it unsuitable for online scheduling. In addition, the execution times of the operations and the dependence between them are known before the execution which allows the application of offline scheduling. In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the obtained results obtained using the two approaches.
 
 \subsubsection{Intel TBB Flow Graph}
 
-We have chosen Intel TBB to implement an online scheduling because it offers the Flow Graph interface, which allows easy parallelization of programs represented as dependence graphs. Intel TBB Flow Graph offers a wide range of classes that can be used to implement dependence graphs, such as the Graph class to create a dependence graph and the Node class to create a task (which corresponds to an operations according to our definition). The developer creates a graph and then edges which belong to this graph. A body is implemented for each node which is the function to be executed when the node is activated. Finally, the make\_edge function allows the creation of arcs between the nodes. All these objects and functions are highly parametrized to allows many possibilities of implementation. For instance and arc can represent just a precedence constraint, which means an order of execution, or additionally, the precedence constraint can be accompanied by data transfer.
+We have chosen Intel TBB to implement an online scheduling because it offers the flow graph interface introduced in Intel TBB 4.0, which allows easy parallelization of programs represented as dependence graphs or data flow graphs. 
+It can be combined with loop parallelism supported by Intel TBB to further improve the parallelism exploitation. 
+In Intel TBB, we distinguish between dependence graphs and data flow graphs.
+In dependence graphs, a dependence represents a precedence constraint between two nodes. In execution, this dependence acts as a signal to inform a node that a predecessor has finished its execution. 
+In data flow graphs, a dependence is accompanied by data transfer from a predecessor to a node.
+The flow graph interface offers a wide range of classes that can be used to implement dependence graphs and data flow graphs. In particular the graph class and other related classes are used for this purpose. In general, a flow graph involves three main components: a graph object, nodes, and edges. A graph object provides methods for the execution of tasks created from the nodes of the graph and to wait for the execution of the flow graph to finish.
+Multiple templated node classes are provided allowing the creation of different types of nodes. These nodes can be classified into four categories as shown in Figure \ref{fig:tbbnodes}.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/tbbnodes}
+\caption{Types of nodes supported by the Intel TBB Flow Graph interface.}
+\label{fig:tbbnodes}
+\end{figure}
+
+Functional nodes can be used to execute user code provided as a body object. Buffering nodes allow accumulating messages as they flow through the graph and forwarding them to successors. Different buffering protocols are supported by the flow graph interface such as FIFO, arbitrary order, or priority order. Split/Joint nodes can be used for aggregation and deaggregation of messages. There exist several other specific purpose node types, e.g. broadcast node. Inputs and outputs of nodes are called ports. %A node is equivalent to an operation according to our definition 
+The user creates a graph, its nodes and then specifies dependence between them. In the flow graph interface, edges are used to create the dependence. Multiple templated functions allow the creation of edges between the nodes. These functions can be used for the creation and removal of edges in the graph, as well as managing ports of nodes.
+The classes and functions of the flow graph interface are highly parametrized to allows many possibilities of implementation.
+
+The execution of the flow graph follows the partial order specified by the created edges. When a node receives data or signal of completion in the case of dependence graph, a task is spawned to execute the body of this node. 
+
+We present here the fundemental concepts necessary to describe how we used the flow graph interface. The Intel TBB documentation\footnote{software.intel.com/en-us/tbb-reference-manual} should be consulted for more detailed explanation of the flow graph interface. 
+
+
+\subsubsection{Scheduling in Intel TBB}
 
 Intel TBB uses work stealing which is an online scheduling algorithm. It's principle consists in keeping all the tasks (nodes in the Flow Graph) in a queue and creating several worker threads. When a task is ready to be executed, the runtime system allocates it to one of worker threads. This achieved in such a way the load is balanced across the worker thread. Also, if one of the worker threads finish its work before the others, the runtime system attampts to balance the load through task migration, i.e. transferring a task from a busy thread to an idle thread.
 
+\subsubsection{Implementation}
+
 In our implementation, the operation graph of the co-simulation is automatically created in the from of an Intel TBB flow graph. The execution of the co-simulation consists in executing this flow graph approach repeatedly similarly to our offline scheduling approach, i.e. the whole graph is executed at each iteration before a new execution can begin.
 
-\subsubsection{Speedup Comparison}
+\subsubsection{Comparison}
 
 We have measured the speedups obtained on different numbers of cores using our proposed offline approach, the online approach based on Intel TBB Flow Graph. The results are depicted in Figure.
 

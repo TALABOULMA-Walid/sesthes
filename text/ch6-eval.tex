@@ -182,7 +182,7 @@ The speedup obtained using MUO-RCOSIM is compared with the speedups obtained usi
 
 \subsection{Comparison with Online Scheduling}
 
-In this thesis, we adopted an offline scheduling heuristic as we believe it is more efficient than online scheduling. In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the obtained results obtained using the two approaches.
+In this thesis, we adopted an offline scheduling heuristic assuming it is more efficient than online scheduling since it introduces lower overhead. This choice was based on the fact the the grain size of the operation graph is small which makes it unsuitable for online scheduling. In addition, the execution times of the operations and the dependence between them are known before the execution which allows the application of offline scheduling. can be known before them In addition, the In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the obtained results obtained using the two approaches.
 
 \subsubsection{Intel TBB Flow Graph}
 

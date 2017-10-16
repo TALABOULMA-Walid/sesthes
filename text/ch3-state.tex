@@ -16,8 +16,42 @@ Finally, the research carried out in this thesis can be divided into two parts. 
 
 The contributions of this thesis constitute improvements to the RCOSIM approach presented in section \ref{subsec:parsimaprr}. The RCOSIM approach is based on offline multi-core scheduling. First, it transforms the co-simulation FMU graph into a dependence graph with finer granularity. This process is explained in section \ref{sec:4-depgrph}. A multi-core list scheduling heuristic is then used to compute a schedule for this dependence graph, i.e. an allocations of its vertices, wich represetn functions, to the cores and an order of execution for the vertices that are allocated to each core. The execution of the co-simulation consisting in running this schedule repeatedly.
 
-In this thesis, we chose to build on the RCOSIM approach in order to achieve parallelization of FMI co-simulations for both accelerated and real-time execution. We did not use known parallel programming libraries for specific reasons. It is clear that MPI is not suitable for our goal since we target shared memory architectures whereas MPI is used to program distributed memory architectures. The other option is use OpenMP or similar libraries which are adapted to shared-memory architectures. However, OpenMP is efficient especially in the case of data parallelism (e.g. loop parallelism) which is not apparent in the co-simulations that we target. In fact, since we do not have access to the source code of the functions, we can not perform parallelization of the functions, e.g. solver function, by using OpenMP pragmas. We only have information about the application at the function level. It should be noted that libraries such as OpenMP and Intel TBB offer task programming features which can be used for our purpose. However, they rely on online scheduling which may introduce high overhead and thus decreases the performance. In addition, given that information about dependence between functions is available and the execution times can be measured, we assume that offline scheduling is more efficient to achieve our goal   
+In this thesis, we chose to build on the RCOSIM approach in order to achieve parallelization of FMI co-simulations for both accelerated and real-time execution. We did not use known parallel programming libraries for specific reasons. It is clear that MPI is not suitable for our goal since we target shared memory architectures whereas MPI is used to program distributed memory architectures. The other option is use OpenMP or similar libraries which are adapted to shared-memory architectures. However, OpenMP is efficient especially in the case of data parallelism (e.g. loop parallelism) which is not apparent in the co-simulations that we target. In fact, since we do not have access to the source code of the functions, we can not perform parallelization of the functions, e.g. solver function, by using OpenMP pragmas. We only have information about the application at the function level. It should be noted that libraries such as OpenMP and Intel TBB offer task programming features which can be used for our purpose. However, they rely on online scheduling which may introduce high overhead and thus decreases the performance. In addition, given that information about dependence between functions is available and the execution times can be measured, we assume that offline scheduling is more efficient to achieve our goal.   
 
 \section{RCOSIM Limitations}
 
+Although RCOSIM resulted in interesting co-simulation speed-ups, it has some limitations that have to be considered in the parallelization problem in order to obtain better performances. We identify the following limitations of the RCOSIM approach:
+
+\begin{enumerate}
+
+\item So far, the multi-core scheduling heuristic uses empiric execution times of the different functions. By using realistic execution times, the multi-core execution of the co-simulation should be improved.
+
+\item Only monorate co-simulations, i.e. where all the FMUs have the same communication step size, can be handled by RCOSIM. This is due to the lack of information about the communication step sizes in the dependence graph constructed by RCOSIM.
+
+\item FMI standard does not presently require that FMU functions have to be thread-safe, i.e. they cannot be executed simultaneously as they may share a resource (e.g. variable) that might be corrupted if two operations try to use it at the same time. This is tackled in RCOSIM by modifying the multi-core scheduling heuristic to always allocate the functions of a same FMU to the same core. Consequently, the search space of the scheduling heuristic is reduced, i.e. for a given function, if there is another function of the same FMU that has already been allocated to a specific core, it is allocated to this same core without the need to test it on the other cores. This restriction on the allocation possibilities limits the exploitation of the potential parallelism.
+
+\item The multi-core scheduling heuristic used in RCOSIM is not real-time. In fact, RCOSIM targets only accelerated co-simulation and cannot be used for real-time co-simulation.
+
+\item The dependence graph constructed by RCOSIM does not contain information about real-time requirements. Such information is necessary in order to be able to apply a real-time scheduling algorithm. For instance, it is needed to know if the execution of a given function has to be finished before a specific deadline.
+
+\end{enumerate} 
+
 \section{Research Questions}
+
+We aim in this thesis to propose solutions to overcome the limitations of the RCOSIM approach presented in the previous section. Below, we detail the research questions that correspond to these limitations.
+
+\subsubsection{Multi-rate Co-simulation}
+
+Most industrial applications are multi-rate, i.e. the different FMUs of the co-simulation are executed according to different communication step sizes. In order to parallelize a multi-rate co-simulation, it is needed to incorporate this information in the dependence graph model. Depending on how this information is added, the multi-core scheduling heuristic may need to be modified. Therefore, the research question related to this point is how should the dependence graph model be extended in order allow RCOSIM to handle multi-rate co-simulation and what is the impact of such extension on the multi-core scheduling problem?
+
+\subsubsection{Mutual exclusion constraints}
+
+The non thread safe implementation of FMUs implies that at any instant during the execution of the co-simulation, one and only one function of the same FMU can be executed. Consequently, if the scheduling heuristic allocates two or more functions belonging to the same FMU to different cores, a mechanism that ensures these operations are executed in strictly different time intervals must be set up. We adresse the questions of how such mutual exclusion constraints can be satisfied while optimizing the exploitation of the potential parallelism? should the dependence graph model be extended or should these constraints be handled by the multi-core scheduling heuristic?
+
+\subsubsection{Specification of real-time requirements}
+
+In a real-time co-simulation, and more specifically HiL co-simulation, the real-components exchange data with the simulated components periodically according to specific periods. The simulated components have to deliver data to the real components following these periods. Therefore their execution has to be done within specific bounds, otherwise the real-time co-simulation fails. Given the periods of data exchange we seek to define what are the requirements that have to be respected by the different FMUs in order to ensure a real-time co-simulation. In other words, how are the executions of the different simulated FMUs bounded so as to be able to deliver data to the real-components at all periods.
+
+\subsubsection{Multi-core real-time scheduling}
+
+Based on the defined real-time requirements, a multi-core scheduling heuristic is needed in order to allocate the functions of simulated FMUs on the multi-core architecture in such a way to respect the real-time requirements. We are interested also in elaborating a schedulability test that determines if a given co-simulation can be executed on a specific multi-core architecture while respecting all the real-time requirements or not  

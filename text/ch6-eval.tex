@@ -182,7 +182,7 @@ The speedup obtained using MUO-RCOSIM is compared with the speedups obtained usi
 
 \subsection{Comparison of Offline and Online Scheduling}
 
-In this thesis, we adopted an offline scheduling heuristic assuming it is more efficient than online scheduling since it introduces lower overhead. This choice was based on the fact the the grain size of the operation graph is small which makes it unsuitable for online scheduling. In addition, the execution times of the operations and the dependence between them are known before the execution which allows the application of offline scheduling. In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the obtained results obtained using the two approaches.
+In this thesis, we adopted an offline scheduling heuristic assuming it is more efficient than online scheduling since it introduces lower overhead. This choice was based on the fact the the grain size of the operation graph is small which makes it unsuitable for online scheduling. In addition, the execution times of the operations and the dependence between them are known before the execution which allows the application of offline scheduling. In order to confirm this assumption, we have compared our approach with a runtime scheduling approach, i.e. online scheduling. For this end, we have used Intel TBB library for the parallelization of the co-simulation. We performed several speedup tests and compared the results obtained using the two approaches.
 
 \subsubsection{Intel TBB Flow Graph}
 
@@ -207,12 +207,14 @@ The classes and functions of the flow graph interface are highly parametrized to
 
 The execution of the flow graph follows the partial order specified by the created edges. When a node receives data or signal of completion in the case of dependence graph, a task is spawned to execute the body of this node. 
 
-We present here the fundemental concepts necessary to describe how we used the flow graph interface. The Intel TBB documentation\footnote{software.intel.com/en-us/tbb-reference-manual} should be consulted for more detailed explanation of the flow graph interface. 
+We present here the fundamental concepts necessary to describe how we used the flow graph interface. The Intel TBB documentation\footnote{software.intel.com/en-us/tbb-reference-manual} should be consulted for more detailed explanation of the flow graph interface. 
 
 
 \subsubsection{Scheduling in Intel TBB}
 
-Intel TBB uses work stealing which is an online scheduling algorithm. It's principle consists in keeping all the tasks (nodes in the Flow Graph) in a queue and creating several worker threads. When a task is ready to be executed, the runtime system allocates it to one of worker threads. This achieved in such a way the load is balanced across the worker thread. Also, if one of the worker threads finish its work before the others, the runtime system attampts to balance the load through task migration, i.e. transferring a task from a busy thread to an idle thread.
+Intel TBB is based on programming with tasks instead of threads. The objective is to make programming simpler by thinking at a higher level, i.e. specifying the potential parallelism of the program without having to explicitly adapt it to the effective parallelism. Tasks are atomic units of execution that are allocated to threads to be executed. The threads that run the tasks are called worker threads. The allocation is automatically done in runtime using an online scheduling algorithm known as work stealing. Each thread keeps a pool of tasks that are ready to be executed in a deque which is a double-ended queue. Elements can be pushed onto or popped from a deque from both ends. Threads are responsible for task creation, known as task spawning. When a task is spawned by a thread, it is pushed onto the deque of this thread from the top. The thread always pops the task on the top of its deque and executes it. As such, a thread uses its local deque as a stack. If the local deque is empty, the thread tries to pick a task from another randomly chosen thread, called the victim. It pops a task from the bottom of the victim thread, therfore using the victim's deque as a queue.
+
+In the case of an application parallerlized using the flow graph interface, tasks are spawned 
 
 \subsubsection{Implementation}
 

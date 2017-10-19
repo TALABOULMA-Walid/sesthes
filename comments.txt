@@ -72,3 +72,26 @@
 - Problem Position: Has to be perfectly written and detailed.
 - Phone meeting on 19/10/2017 at 2:30.
 - Meeting at Inria on 6/11/2017.  
+
+
+---------------------------------------------------------------------------------------------------------------
+19/10/2017
+---------------------------------------------------------------------------------------------------------------
+
+- Title of 3.4 Open issues and thesis objectives
+- Two last research questions, add "for co-simulation"
+- Revoir terminology flow graph, dependence graph, data flow graph. Try to use intel tbb only without using flow graph interface.
+- correct the the, omit one the
+- unsuitable for online scheudling, add : since in code generation more decision overhead. grain size of operation graph is small. 
+recall small size of grain and different not recall data parallelism, in addition different excution times.
+- In execution correct to during execution
+- Deqggregation check if the word is correct english
+- Multiple templated - remove multiple templated
+- To allows - remove the s
+- IN tbb scheduling, move defintion of tasks just after first sentence
+- When a task finishes its execution it sends 
+- Explain that flow graph because we have always a flow either message or data.
+- For real-time, Think if we can keep the same heuristic with considering activation and deadline equal earliest start time and last (for 6 november).
+
+
+- 

@@ -1,0 +1,107 @@
+\documentclass[11pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\begin{document} 
+
+\begin{tikzpicture}
+\begin{scope}
+% FMU1
+\node[rectangle,draw,minimum height = 2.4cm,minimum width = 2cm] (fmu1) {};
+
+\draw[draw=white,-{Straight Barb[angle=60:2pt 3,black]}] ([yshift=0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=0.6cm]fmu1.west);
+%\draw[draw=white,-{Straight Barb[angle=60:2pt 3,black]}] ([yshift=-0.6cm,xshift=-0.2cm]fmu1.west) -- ([yshift=-0.6cm]fmu1.west);
+\node[below of=fmu1,yshift=2.5cm] {};
+\node[left of=fmu1,yshift=0.9cm,xshift=-0.2cm] {};
+\node[left of=fmu1,yshift=-0.9cm,xshift=-0.2cm] {};
+\node[right of=fmu1,yshift=0.9cm,xshift=0.2cm] {};
+\node[right of=fmu1,yshift=-0.9cm,xshift=0.2cm] {};
+\draw ([yshift=-0.6cm]fmu1.west) -- ([yshift=-0.6cm]fmu1.east);
+% FMU2
+\node[rectangle,draw,minimum height = 2.4cm,minimum width = 2cm, xshift=3cm] (fmu2) {};
+
+\node[below of=fmu2,yshift=2.5cm] {};
+\node[left of=fmu2,yshift=0.9cm,xshift=-0.2cm] {};
+\node[left of=fmu2,yshift=-0.9cm,xshift=-0.2cm] {};
+\node[right of=fmu2,yshift=0.9cm,xshift=0.2cm] {};
+\node[right of=fmu2,yshift=-0.9cm,xshift=0.2cm] {};
+\draw ([yshift=0.6cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.east);
+\draw ([yshift=-0.6cm]fmu2.west) -- ([yshift=-0.6cm]fmu2.east);
+
+%Inter-FMU
+\coordinate [right of =fmu2, yshift=1.8cm,xshift=.5cm] (c1);
+\coordinate [left of =fmu1, yshift=1.8cm,xshift=-.5cm] (c2);
+
+\coordinate [right of =fmu2, yshift=-1.5cm,xshift=.5cm] (c3);
+\coordinate [left of =fmu1, yshift=-1.5cm,xshift=-.75cm] (c4);
+
+\draw [-{Triangle[black]}]([yshift=0.6cm]fmu2.east) -| (c1) -- (c2) |- ([yshift=-.6cm]fmu1.west);
+\draw [-{Triangle[black]}]([yshift=-.6cm]fmu2.east) -| (c3) -- (c4) |- ([yshift=.6cm]fmu1.west);
+
+\coordinate [right of =fmu1, yshift=-.6cm,xshift=.3cm] (c5);
+\coordinate [left of =fmu2, yshift=.6cm,xshift=-.3cm] (c6);
+
+\coordinate [right of =fmu1, yshift=.6cm,xshift=.3cm] (c7);
+\coordinate [left of =fmu2, yshift=-.6cm,xshift=-.3cm] (c8);
+
+\draw [-{Triangle[black]}]([yshift=-.6cm]fmu1.east) -- (c5) -- (c6) -- ([yshift=.6cm]fmu2.west);
+\draw [-{Triangle[black]}]([yshift=.6cm]fmu1.east) -- (c7) -- (c8) -- ([yshift=-.6cm]fmu2.west);
+
+\draw[-{Triangle[black]},shorten >=-2pt] ([yshift=0.6cm]fmu1.east) -- ([yshift=0.6cm,xshift=0.05cm]fmu1.east);
+\draw[-{Triangle[black]},shorten >=-2pt] ([yshift=-0.6cm]fmu1.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu1.east);
+
+\draw[-{Triangle[]},shorten >=-2pt] ([yshift=0.6cm]fmu2.east) -- ([yshift=0.6cm,xshift=0.05cm]fmu2.east);
+\draw[-{Triangle[]},shorten >=-2pt] ([yshift=-0.6cm]fmu2.east) -- ([yshift=-0.6cm,xshift=0.05cm]fmu2.east);
+
+\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {Co-simulation};
+\end{scope}
+
+\begin{scope}[yshift=-8cm,rotate=90]
+
+%level 1
+\node[circle,draw,minimum size=.8cm] at(-1.5,3.5) (o2) {};
+\node[circle,draw,minimum size=.8cm] at(1.5,3.5) (o6) {};
+%level 3
+\node[circle,draw,minimum size=.8cm] at(-.5,1.5) (o3) {};
+%level 5
+\node[circle,draw,minimum size=.8cm] at(.5,-.5) (o7) {};
+%level 2
+\node[circle,draw,minimum size=.8cm] at(-1.5,.5) (o5) {};
+\node[circle,draw,minimum size=.8cm] at(0.5,2.5) (o1) {};
+%level 4
+\node[circle,draw,minimum size=.8cm] at(1.5,.5) (o4) {};
+%level 6
+\node[circle,draw,minimum size=.8cm] at(-.5,-1.5) (o0) {};
+%level 7
+\node[circle,draw,minimum size=.8cm] at(.5,-2.5) (o9) {};
+\node[circle,draw,minimum size=.8cm] at(-1.5,-2.5) (o8) {};
+
+%Inter-FMU
+\draw [-{Latex[]},line width=.8pt] (o2) -- (o5);
+\draw [-{Latex[]},line width=.8pt] (o3) -- (o4);
+\draw [-{Latex[]},line width=.8pt] (o7) -- (o0);
+\draw [-{Latex[]},line width=.8pt] (o6) -- (o1);
+
+%Intra-FMU
+\draw [-{Latex[]},line width=.8pt] (o1) -- (o3);
+\draw [-{Latex[]},line width=.8pt] (o4) -- (o7);
+\draw [-{Latex[]},line width=.8pt] (o5) -- (o7);
+
+%To state
+\path (o2) edge[-{Latex[]},bend right,line width=.8pt] (o8);
+\path (o3) edge[-{Latex[]},line width=.8pt] (o8);
+\path (o0) edge[-{Latex[]},line width=.8pt] (o8);
+\path (o1) edge[-{Latex[]},line width=.8pt] (o8);
+
+\path (o4) edge[-{Latex[]},line width=.8pt] (o9);
+\path (o5) edge[-{Latex[]},bend left,line width=.8pt] (o9);
+\path (o6) edge[-{Latex[]},bend left,line width=.8pt] (o9);
+\path (o7) edge[-{Latex[]},line width=.8pt] (o9);
+
+
+\node at(-4.5,0) {Operation graph};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

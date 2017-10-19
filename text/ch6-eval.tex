@@ -140,7 +140,7 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 
 \section{Industrial Use Case} 
 
-We tested our proposed approach on an industrial use case. Tests have been performed on a computer with an 8-core Intel core i7 processor running at 2.7 GH, and 16GB RAM. In the rest of this section, we first give a description of the use case and then present the tests and the obtained results.
+We tested our proposed approach on an industrial use case. Tests have been performed on a computer with an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. In the rest of this section, we first give a description of the use case and then present the tests and the obtained results.
 
 \subsection{Use Case Description}
 
@@ -226,6 +226,21 @@ The execution of the co-simulation consists in executing this flow graph approac
 
 \subsubsection{Comparison}
 
-We implemented a parallelization approach of FMI co-simulations using the Intel TBB flow graph interface for the purpose of comparing it with our proposed offline scheduling approach. We have measured the speedups obtained on different numbers of cores using both approaches. 
+We implemented a parallelization approach of FMI co-simulations using the Intel TBB flow graph interface for the purpose of comparing it with our proposed offline scheduling approach. We have measured the speedups obtained on different numbers of cores using both approaches. First of all, let's summarize the differences between the two approaches. Figure illustrates the main steps of both approaches.
+
+We run the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}.
+
+\begin{table}[phbt]
+\caption{Comparison of speedup obtained using offline and online scheduling}
+\centering
+\label{table:spdup_compr}
+\begin{tabular}{l c c}
+\toprule
+\parbox[l]{5cm}{\raggedright Scheduling Approach} & Offline & Online \\
+\midrule
+Speedup & & \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 

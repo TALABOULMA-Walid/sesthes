@@ -17,7 +17,7 @@ Class=LaTeXView
 Document=figures\rtcosim.tex
 
 [Frame0_View0,0]
-TopLine=98
+TopLine=79
 Cursor=3866
 
 [Frame1]
@@ -161,8 +161,8 @@ Class=LaTeXView
 Document=figures\tbbvsrcosim.tex
 
 [Frame8_View0,0]
-TopLine=61
-Cursor=4336
+TopLine=92
+Cursor=4585
 
 [Frame9]
 Flags=0
@@ -179,8 +179,8 @@ Class=LaTeXView
 Document=figures\genexample.tex
 
 [Frame9_View0,0]
-TopLine=142
-Cursor=7352
+TopLine=165
+Cursor=8188
 
 [SessionInfo]
 FrameCount=10

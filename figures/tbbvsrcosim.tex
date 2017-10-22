@@ -266,7 +266,7 @@
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-8.7cm) -- (2.8cm,-8.7cm);
 \draw [-{Latex[]}] (-.8cm,-8.7cm) -- (-.8cm,-9.25cm);
 
-
+\node at(0,-10.6cm) {\textbf{Offline Scheduling}};
 \end{scope}
 
 \begin{scope}[shift={($(scope5.north)+(8cm,-.01cm)$)},local bounding box=scope7]
@@ -281,9 +281,11 @@
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-8.7cm) -- (2.8cm,-8.7cm);
 \path ([yshift=.2cm]deque2.west) edge[-{Latex[]},in=270,out = 180,looseness=1]  (-.7cm,-8.7cm);
 \path (-.9cm,-8.7cm) edge[-{Latex[]},out=270,in = 180,looseness=2] ([yshift=-.2cm]deque2.west);
+
+\node at(0,-10.6cm) {\textbf{Online Scheduling}};
 \end{scope}
 
-\draw [dashed] (4.5,-6cm) -- (4.5,-22cm);
+\draw [dashed] (4.5,-6cm) -- (4.5,-22.7cm);
 \path ([xshift=.5cm]scope1.east) edge[-{Latex[]},line width=3pt,out = 0, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Operation graph construction} ([xshift=.5cm,yshift=.5cm]scope2.west);
 
 \path ([xshift=-.1cm,yshift=-.2cm]scope2.south) edge[-{Latex[]},line width=3pt, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Multi-rate graph transformation} ([xshift=.1cm,yshift=-.3cm]scope3.east);

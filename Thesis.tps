@@ -161,8 +161,8 @@ Class=LaTeXView
 Document=figures\tbbvsrcosim.tex
 
 [Frame8_View0,0]
-TopLine=270
-Cursor=15505
+TopLine=271
+Cursor=14171
 
 [Frame9]
 Flags=0

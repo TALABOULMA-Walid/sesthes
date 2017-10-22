@@ -53,8 +53,8 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame2_View0,0]
-TopLine=299
-Cursor=29427
+TopLine=307
+Cursor=29209
 
 [Frame3]
 Flags=0
@@ -161,8 +161,8 @@ Class=LaTeXView
 Document=figures\tbbvsrcosim.tex
 
 [Frame8_View0,0]
-TopLine=92
-Cursor=4585
+TopLine=270
+Cursor=15505
 
 [Frame9]
 Flags=0
@@ -182,7 +182,25 @@ Document=figures\genexample.tex
 TopLine=165
 Cursor=8188
 
+[Frame10]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=26
+NormalPos.right=1916
+NormalPos.bottom=904
+Class=LaTeXView
+Document=figures\mbd.tex
+
+[Frame10_View0,0]
+TopLine=23
+Cursor=0
+
 [SessionInfo]
-FrameCount=10
+FrameCount=11
 ActiveFrame=8
 

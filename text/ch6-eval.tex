@@ -226,7 +226,14 @@ The execution of the co-simulation consists in executing this flow graph approac
 
 \subsubsection{Comparison}
 
-We implemented a parallelization approach of FMI co-simulations using the Intel TBB flow graph interface for the purpose of comparing it with our proposed offline scheduling approach. We have measured the speedups obtained on different numbers of cores using both approaches. First of all, let's summarize the differences between the two approaches. Figure illustrates the main steps of both approaches.
+We implemented a parallelization approach of FMI co-simulations using the Intel TBB flow graph interface for the purpose of comparing it with our proposed offline scheduling approach. We have measured the speedups obtained on different numbers of cores using both approaches. First of all, let's summarize the differences between the two approaches. Figure \ref{fig:tbbvsrcosim} illustrates the main steps of both approaches.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/tbbvsrcosim}
+\caption{Comparison of the different phases of the offline and online scheduling approaches.}
+\label{fig:tbbvsrcosim}
+\end{figure}
 
 We run the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}.
 

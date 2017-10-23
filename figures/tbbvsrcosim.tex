@@ -6,7 +6,7 @@
 \begin{document} 
 
 \begin{tikzpicture}
-\begin{scope}[scale=.6,every node/.style={scale=0.6},local bounding box=scope1]
+\begin{scope}[xshift=-2cm,yshift=.1cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope1]
 % FMU1
 \node[rectangle,draw,minimum height = 2.4cm,minimum width = 2cm] (fmu1) {};
 
@@ -57,7 +57,7 @@
 %\node[below of = fmu1,yshift=-1cm,xshift=1.5cm] {Co-simulation};
 \end{scope}
 
-\begin{scope}[xshift=10cm,yshift=-1cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope2]
+\begin{scope}[xshift=10cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope2]
 
 %level 1
 \node[circle,draw,minimum size=.5cm] at(-1,1) (o2) {};
@@ -103,7 +103,7 @@
 %\node at(0,-1.6cm) {Operation graph};
 \end{scope}
 
-\begin{scope}[yshift=-3cm,xshift=3cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope3]
+\begin{scope}[yshift=-2.5cm,xshift=3cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope3]
 %level 1
 \node[circle,draw,minimum size=.5cm] at(-2.5,1.5) (o2) {};
 \node[circle,draw,minimum size=.5cm] at(-4.5,-1.5) (o6) {};
@@ -173,7 +173,7 @@
 %\node at(0,-2.6cm) {Operation graph};
 \end{scope}
 
-\begin{scope}[yshift=-8cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope4]
+\begin{scope}[yshift=-7cm,scale=.6,every node/.style={scale=0.6},local bounding box=scope4]
 %level 1
 \node[circle,draw,minimum size=.5cm] at(-3.5,0) (o2) {};
 \node[circle,draw,minimum size=.5cm] at(-4.5,-.5) (o6) {};
@@ -247,62 +247,64 @@
 %\node at(0,-3cm) {Operation graph};
 \end{scope}
 
-\begin{scope}[shift={($(scope4.north)+(-1.5,.5cm)$)},local bounding box=scope5]
+\begin{scope}[shift={($(scope4.north)+(-1.5,1cm)$)},local bounding box=scope5]
 \def\mystrut{\vrule height 1.5cm depth 1.5cm width 0pt}
 % Compute Schedule
-\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=8,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-7.2cm,label={[anchor=north west, yshift=.5cm]north west:{Schedule of core 1}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil \nodepart{eight}\hfil};
-\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-9cm,,label={[anchor=north west, yshift=.5cm]north west:{Schedule of core 2}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil};
+\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=8,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-7.2cm,label={[anchor=north west, yshift=.5cm]north west:{Scheduling table of core 1}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil \nodepart{eight}\hfil};
+\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-9cm,,label={[anchor=north west, yshift=.5cm]north west:{Scheduling table of core 2}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil};
 \end{scope}
 
-\begin{scope}[shift={($(scope5.north)+(0,-.01cm)$)},local bounding box=scope6]
+\begin{scope}[shift={($(scope5.north)+(0,1cm)$)},local bounding box=scope6]
 % Execute
 \node at(0cm,-6cm) [rectangle, draw, minimum width=6cm,minimum height=1.4cm,label={[anchor=north west, yshift=-.01cm]north west:{\textbf{Core 1}}},label={[anchor=west, yshift=-.3cm]west:{\textit{thread 1}}}] {};
 \node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=8,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-7.2cm]{};
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-6.3cm) -- (2.8cm,-6.3cm);
-\draw [-{Latex[]}] (-.8cm,-6.3cm) -- (-.8cm,-6.85cm);
+\draw [-{Latex[]}] (1.8cm,-6.3cm) -- (1.8cm,-6.85cm);
 
 \node at(0cm,-8.4cm) [rectangle, draw, minimum width=6cm,minimum height=1.4cm,label={[anchor=north west, yshift=-.01cm]north west:{\textbf{Core 2}}},label={[anchor=west, yshift=-.3cm]west:{\textit{thread 2}}}]{};
 \node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-9.6cm]{};
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-8.7cm) -- (2.8cm,-8.7cm);
-\draw [-{Latex[]}] (-.8cm,-8.7cm) -- (-.8cm,-9.25cm);
+\draw [-{Latex[]}] (.1cm,-8.7cm) -- (.1cm,-9.25cm);
 
 \node at(0,-10.6cm) {\textbf{Offline Scheduling}};
 \end{scope}
 
-\begin{scope}[shift={($(scope5.north)+(8cm,-.01cm)$)},local bounding box=scope7]
+\begin{scope}[shift={($(scope5.north)+(8cm,1cm)$)},local bounding box=scope7]
 \node at(0cm,-6cm) [rectangle, draw, minimum width=6cm,minimum height=1.4cm,label={[anchor=north west, yshift=-.01cm]north west:{\textbf{Core 1}}},label={[anchor=west, yshift=-.3cm]west:{\textit{thread 1}}}] {};
-\node at(-.5cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=8,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-7.2cm](deque1){};
+\node at(-.5cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=4,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-7.2cm,label={[anchor=east, xshift=-.5cm]west:{Deque 1}}](deque1){};
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-6.3cm) -- (2.8cm,-6.3cm);
 \path ([yshift=.2cm]deque1.west) edge[-{Latex[]},in=270,out = 180,looseness=1]  (-.7cm,-6.3cm);
-\path (-.9cm,-6.3cm) edge[-{Latex[]},out=270,in = 180,looseness=2] ([yshift=-.2cm]deque1.west);
+\path (-.9cm,-6.3cm) edge[-{Latex[]},out=270,in = 180,looseness=1] ([yshift=-.2cm]deque1.west);
 
 \node at(0cm,-8.4cm) [rectangle, draw, minimum width=6cm,minimum height=1.4cm,label={[anchor=north west, yshift=-.01cm]north west:{\textbf{Core 2}}},label={[anchor=west, yshift=-.3cm]west:{\textit{thread 2}}}]{};
-\node at(-.5cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-9.6cm](deque2){};
+\node at(-.5cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=4,anchor=west, draw, minimum width=5.6cm,minimum height=.7cm,yshift=-9.6cm,label={[anchor=east, xshift=-.5cm]west:{Deque 2}}](deque2){};
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-8.7cm) -- (2.8cm,-8.7cm);
 \path ([yshift=.2cm]deque2.west) edge[-{Latex[]},in=270,out = 180,looseness=1]  (-.7cm,-8.7cm);
-\path (-.9cm,-8.7cm) edge[-{Latex[]},out=270,in = 180,looseness=2] ([yshift=-.2cm]deque2.west);
+\path (-.9cm,-8.7cm) edge[-{Latex[]},out=270,in = 180,looseness=1] ([yshift=-.2cm]deque2.west);
+
+\path (2.5cm,-8.7cm) edge[-{Latex[]},out=90,in = 0,looseness=1] (deque1.east);
 
 \node at(0,-10.6cm) {\textbf{Online Scheduling}};
 \end{scope}
 
-\draw [dashed] (4.5,-6cm) -- (4.5,-22.7cm);
-\path ([xshift=.5cm]scope1.east) edge[-{Latex[]},line width=3pt,out = 0, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Operation graph construction} ([xshift=.5cm,yshift=.5cm]scope2.west);
+%\draw [dashed] (4.5,-6cm) -- (4.5,-22.7cm);
+\path ([xshift=.5cm]scope1.east) edge[-{Triangle[]},line width=2pt, midway,text width = 3cm,align = center] node[fill=white]{Operation graph construction} (scope2.west);
 
-\path ([xshift=-.1cm,yshift=-.2cm]scope2.south) edge[-{Latex[]},line width=3pt, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Multi-rate graph transformation} ([xshift=.1cm,yshift=-.3cm]scope3.east);
+\path ([xshift=-.1cm,yshift=-.2cm]scope2.south) edge[-{Triangle[]},line width=2pt, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Multi-rate graph \mbox{transformation}} ([xshift=.1cm,yshift=-.3cm]scope3.east);
 
-\path ([xshift=-2cm,yshift=.2cm]scope3.south) edge[-{Latex[]},line width=3pt, bend right=10,midway,text width = 3.8cm,align = center] node[fill=white]{Acyclic orientation} ([xshift=.1cm,yshift=.05cm]scope4.north);
+\path ([xshift=-2cm,yshift=.2cm]scope3.south) edge[-{Triangle[]},line width=2pt, bend right=10,midway,text width = 3.8cm,align = center] node[fill=white]{Acyclic orientation} ([xshift=.1cm,yshift=.02cm]scope4.north);
 
-\path ([xshift=.07cm,yshift=2.3cm]scope5.north) edge[-{Latex[]},line width=3pt,midway,align = center] node[fill=white]{Compute offline schedule} ([xshift=.07cm,yshift=0cm]scope5.north);
+\path ([xshift=.07cm,yshift=1.9cm]scope5.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node[fill=white]{Compute offline schedule} ([xshift=.07cm,yshift=0cm]scope5.north);
 
-\path ([xshift=.07cm,yshift=2cm]scope6.north) edge[-{Latex[]},line width=3pt,midway,align = center] node{} ([xshift=.07cm,yshift=.2cm]scope6.north);
+\path ([xshift=.07cm,yshift=1cm]scope6.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node{} ([xshift=.07cm,yshift=.2cm]scope6.north);
 
-\draw [dashed] ([xshift=-3cm,yshift=1.5cm]scope6.north) -- ([xshift=3cm,yshift=1.5cm]scope7.north);
+%\draw [dashed] ([xshift=-3cm,yshift=1.5cm]scope6.north) -- ([xshift=3cm,yshift=1.5cm]scope7.north);
 
-\node [fill=white] at([xshift=.07cm,yshift=1.5cm]scope6.north) {Execution};
+%\node [fill=white] at([xshift=.07cm,yshift=1.5cm]scope6.north) {Execution};
 \node [fill=white] at([yshift=1.5cm]scope7.north) (exec2){Execution};
 
-\path ([xshift=1.7cm,yshift=0cm]scope3.south) edge[bend left = 16,line width=3pt,midway,align = center] node{} ([xshift=.07cm]exec2.north);
-\draw [-{Latex[]},line width=3pt] ([xshift=.07cm]exec2.south) -- ([xshift=.07cm,yshift=.2cm]scope7.north);
+\path ([xshift=1.7cm,yshift=0cm]scope3.south) edge[bend left = 16,line width=2pt,midway,align = center] node{} ([xshift=.07cm]exec2.north);
+\draw [-{Triangle[]},line width=2pt] ([xshift=.07cm]exec2.south) -- ([xshift=.07cm,yshift=.2cm]scope7.north);
 
 
 

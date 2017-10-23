@@ -1,4 +1,4 @@
-\chapter{\label{ch:3-state}Problem Position} 
+\chapter{\label{ch:3-state}Problem Description} 
 
 \minitoc
 
@@ -36,22 +36,22 @@ Although RCOSIM resulted in interesting co-simulation speed-ups, it has some lim
 
 \end{enumerate} 
 
-\section{Research Questions}
+\section{Open Research Issues and Thesis Objectives}
 
 We aim in this thesis to propose solutions to overcome the limitations of the RCOSIM approach presented in the previous section. Below, we detail the research questions that correspond to these limitations.
 
-\subsubsection{Multi-rate Co-simulation}
+\subsubsection{Multi-rate FMU Co-simulation}
 
 Most industrial applications are multi-rate, i.e. the different FMUs of the co-simulation are executed according to different communication step sizes. In order to parallelize a multi-rate co-simulation, it is needed to incorporate this information in the dependence graph model. Depending on how this information is added, the multi-core scheduling heuristic may need to be modified. Therefore, the research question related to this point is how should the dependence graph model be extended in order allow RCOSIM to handle multi-rate co-simulation and what is the impact of such extension on the multi-core scheduling problem?
 
-\subsubsection{Mutual exclusion constraints}
+\subsubsection{Mutual exclusion constraints in FMU Co-simulation}
 
 The non thread safe implementation of FMUs implies that at any instant during the execution of the co-simulation, one and only one function of the same FMU can be executed. Consequently, if the scheduling heuristic allocates two or more functions belonging to the same FMU to different cores, a mechanism that ensures these operations are executed in strictly different time intervals must be set up. We adresse the questions of how such mutual exclusion constraints can be satisfied while optimizing the exploitation of the potential parallelism? should the dependence graph model be extended or should these constraints be handled by the multi-core scheduling heuristic?
 
-\subsubsection{Specification of real-time requirements}
+\subsubsection{Specification of real-time requirements for FMU Co-simulation}
 
 In a real-time co-simulation, and more specifically HiL co-simulation, the real-components exchange data with the simulated components periodically according to specific periods. The simulated components have to deliver data to the real components following these periods. Therefore their execution has to be done within specific bounds, otherwise the real-time co-simulation fails. Given the periods of data exchange we seek to define what are the requirements that have to be respected by the different FMUs in order to ensure a real-time co-simulation. In other words, how are the executions of the different simulated FMUs bounded so as to be able to deliver data to the real-components at all periods.
 
-\subsubsection{Multi-core real-time scheduling}
+\subsubsection{Multi-core real-time scheduling for FMU Co-simulation}
 
 Based on the defined real-time requirements, a multi-core scheduling heuristic is needed in order to allocate the functions of simulated FMUs on the multi-core architecture in such a way to respect the real-time requirements. We are interested also in elaborating a schedulability test that determines if a given co-simulation can be executed on a specific multi-core architecture while respecting all the real-time requirements or not.  

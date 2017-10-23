@@ -236,7 +236,7 @@ We implemented a parallelization approach of FMI co-simulations using Intel TBB 
 \label{fig:tbbvsrcosim}
 \end{figure}
 
-We run the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}.
+We run the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}. The obtained speedup obtained using offline scheduling is better than the one obtained using online scheduling which confirms our assumption. The decision overhead of online scheduling is very costly compared to the execution times of operations which decreases the performance. 
 
 \begin{table}[phbt]
 \caption{Comparison of speedup obtained using offline and online scheduling}
@@ -246,7 +246,7 @@ We run the co-simulation of the use case on an 8-core Intel core i7 processor ru
 \toprule
 \parbox[l]{5cm}{\raggedright Scheduling Approach} & Offline & Online \\
 \midrule
-Speedup & $5.03$ & $2.26$\\
+Speedup & $2.44$ & $1.64$\\
 \bottomrule
 \end{tabular}
 \end{table}

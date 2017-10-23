@@ -248,10 +248,9 @@
 \end{scope}
 
 \begin{scope}[shift={($(scope4.north)+(-1.5,1cm)$)},local bounding box=scope5]
-\def\mystrut{\vrule height 1.5cm depth 1.5cm width 0pt}
 % Compute Schedule
 \node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=8,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-7.2cm,label={[anchor=north west, yshift=.5cm]north west:{Scheduling table of core 1}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil \nodepart{eight}\hfil};
-\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-9cm,,label={[anchor=north west, yshift=.5cm]north west:{Scheduling table of core 2}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil};
+\node at(-1cm,0) [rectangle split,rectangle split horizontal,rectangle split parts=7,text width=.5cm,anchor=west, draw, minimum width=6cm,minimum height=.7cm,yshift=-8.5cm,,label={[anchor=north west, yshift=.5cm]north west:{Scheduling table of core 2}}]{\hfil \nodepart{two}\hfil \nodepart{three}\hfil \nodepart{four}\hfil \nodepart{five}\hfil \nodepart{six}\hfil \nodepart{seven}\hfil};
 \end{scope}
 
 \begin{scope}[shift={($(scope5.north)+(0,1cm)$)},local bounding box=scope6]
@@ -266,7 +265,6 @@
 \draw [->,decorate,decoration={snake,pre=curveto,pre length=1,post length=1,amplitude=.4mm}] (-1cm,-8.7cm) -- (2.8cm,-8.7cm);
 \draw [-{Latex[]}] (.1cm,-8.7cm) -- (.1cm,-9.25cm);
 
-\node at(0,-10.6cm) {\textbf{Offline Scheduling}};
 \end{scope}
 
 \begin{scope}[shift={($(scope5.north)+(8cm,1cm)$)},local bounding box=scope7]
@@ -282,30 +280,35 @@
 \path ([yshift=.2cm]deque2.west) edge[-{Latex[]},in=270,out = 180,looseness=1]  (-.7cm,-8.7cm);
 \path (-.9cm,-8.7cm) edge[-{Latex[]},out=270,in = 180,looseness=1] ([yshift=-.2cm]deque2.west);
 
-\path (2.5cm,-8.7cm) edge[-{Latex[]},out=90,in = 0,looseness=1] (deque1.east);
+\path (2.1cm,-8.7cm) edge[-{Latex[]},out=90,in = 0,looseness=1] (deque1.east);
 
-\node at(0,-10.6cm) {\textbf{Online Scheduling}};
 \end{scope}
 
 %\draw [dashed] (4.5,-6cm) -- (4.5,-22.7cm);
-\path ([xshift=.5cm]scope1.east) edge[-{Triangle[]},line width=2pt, midway,text width = 3cm,align = center] node[fill=white]{Operation graph construction} (scope2.west);
+\path ([xshift=.5cm]scope1.east) edge[-{Triangle[]},line width=2pt, midway,text width = 3cm,align = center] node[fill=white]{Operation graph construction} ([xshift=7cm]scope1.east);
 
 \path ([xshift=-.1cm,yshift=-.2cm]scope2.south) edge[-{Triangle[]},line width=2pt, bend left=20,midway,text width = 1.8cm,align = center] node[fill=white]{Multi-rate graph \mbox{transformation}} ([xshift=.1cm,yshift=-.3cm]scope3.east);
 
 \path ([xshift=-2cm,yshift=.2cm]scope3.south) edge[-{Triangle[]},line width=2pt, bend right=10,midway,text width = 3.8cm,align = center] node[fill=white]{Acyclic orientation} ([xshift=.1cm,yshift=.02cm]scope4.north);
 
-\path ([xshift=.07cm,yshift=1.9cm]scope5.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node[fill=white]{Compute offline schedule} ([xshift=.07cm,yshift=0cm]scope5.north);
+\path ([xshift=.07cm,yshift=1.7cm]scope5.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node[fill=white]{Compute offline schedule} ([xshift=.07cm,yshift=0cm]scope5.north);
 
-\path ([xshift=.07cm,yshift=1cm]scope6.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node{} ([xshift=.07cm,yshift=.2cm]scope6.north);
+\path ([xshift=.07cm,yshift=1.5cm]scope6.north) edge[-{Triangle[]},line width=2pt,midway,align = center] node{} ([xshift=.07cm,yshift=.2cm]scope6.north);
 
-%\draw [dashed] ([xshift=-3cm,yshift=1.5cm]scope6.north) -- ([xshift=3cm,yshift=1.5cm]scope7.north);
+\path ([xshift=1.7cm,yshift=0cm]scope3.south) edge[-{Triangle[]},bend left = 20,line width=2pt,midway,align = center] node{} ([xshift=.07cm,yshift=.2cm]scope7.north);%([xshift=.07cm]exec2.north);
+%\draw [-{Triangle[]},line width=2pt] ([xshift=.07cm]exec2.south) -- ([xshift=.07cm,yshift=.2cm]scope7.north);
 
-%\node [fill=white] at([xshift=.07cm,yshift=1.5cm]scope6.north) {Execution};
-\node [fill=white] at([yshift=1.5cm]scope7.north) (exec2){Execution};
+\node at (-2.9cm,-5cm)[anchor= north west,rectangle,draw,dashed,minimum height=15cm,minimum width=6.6cm] (frame1) {};
+\node [anchor= north west,rectangle,draw,dashed, right of = frame1, minimum height=15cm,minimum width=6.6cm,xshift=7cm] (frame2) {};
 
-\path ([xshift=1.7cm,yshift=0cm]scope3.south) edge[bend left = 16,line width=2pt,midway,align = center] node{} ([xshift=.07cm]exec2.north);
-\draw [-{Triangle[]},line width=2pt] ([xshift=.07cm]exec2.south) -- ([xshift=.07cm,yshift=.2cm]scope7.north);
+\node at(frame1.south) [fill=white] {\textbf{Offline Scheduling}};
+\node at(frame2.south) [fill=white] {\textbf{Online Scheduling}};
 
+\draw [dashed] ([yshift=-1.3cm]frame1.west) -- ([yshift=-1.3cm]frame1.east);
+\draw [dashed] ([yshift=-1.3cm]frame2.west) -- ([yshift=-1.3cm]frame2.east);
+
+\node [fill=white] at([xshift=.07cm,yshift=1cm]scope6.north) {Execution};
+\node [fill=white] at([yshift=1cm]scope7.north) (exec2){Execution};
 
 
 \end{tikzpicture}

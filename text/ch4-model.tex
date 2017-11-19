@@ -592,6 +592,10 @@ The outermost loop (while loop) of the acyclic orientation heuristic is repeated
 
 \section{Dependence Graph with Real-time Constraints}
 
+A widely used term in the literature is "real-time (co-)simulation" \cite{belanger:2010} which basically means that the amount of time needed to compute all equations of a model must be less than the integration step size. In this thesis we talk instead about "co-simulation with real-time constraints". In particular, we are interested in such co-simulation within the context of HiL testing. In this section, we focus on an important step in the design of a simulator that allows performing co-simulation with real-time constraints. This step consists in defining the real-time constraints. First, we explain what these constraints are and where they originate from. Then, we describe how to define real-time constraints for a specific co-simulation. The work presented in this section is based on the method for propagation of real-time constraints described in \cite{faure:2011}. This method was proposed for co-simulations where information about intra-model dependence is not available. Our work is an adaptation of this method to FMU co-simulation represented by a dependence graph.
 
+\subsection{Real-time constraints}
+
+A HiL setup is composed of a simulated component and a real component that is interfaced with the simulated component via inputs and outputs. The goal of the HiL testing phase in the model based design process is mainly to run realistic tests. In other words, it aims at estimating the performance of the real component by providing a realistic environment through the simulated component.   
 
 

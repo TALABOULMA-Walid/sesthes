@@ -2182,13 +2182,15 @@
     <bcf:citekey order="55">andreev:2000</bcf:citekey>
     <bcf:citekey order="55">sotskov:2002</bcf:citekey>
     <bcf:citekey order="55">al-anzi:2006</bcf:citekey>
-    <bcf:citekey order="56">grandpierre:1999</bcf:citekey>
-    <bcf:citekey order="57">kalla:2004</bcf:citekey>
-    <bcf:citekey order="58">berkelaar:2004</bcf:citekey>
-    <bcf:citekey order="59">gurobi:2016</bcf:citekey>
-    <bcf:citekey order="60">cplex:2017</bcf:citekey>
-    <bcf:citekey order="61">benjelloun:2011</bcf:citekey>
-    <bcf:citekey order="62">benkhaled:2014</bcf:citekey>
+    <bcf:citekey order="56">belanger:2010</bcf:citekey>
+    <bcf:citekey order="57">faure:2011</bcf:citekey>
+    <bcf:citekey order="58">grandpierre:1999</bcf:citekey>
+    <bcf:citekey order="59">kalla:2004</bcf:citekey>
+    <bcf:citekey order="60">berkelaar:2004</bcf:citekey>
+    <bcf:citekey order="61">gurobi:2016</bcf:citekey>
+    <bcf:citekey order="62">cplex:2017</bcf:citekey>
+    <bcf:citekey order="63">benjelloun:2011</bcf:citekey>
+    <bcf:citekey order="64">benkhaled:2014</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

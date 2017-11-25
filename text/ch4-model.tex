@@ -596,6 +596,8 @@ A widely used term in the literature is "real-time (co-)simulation" \cite{belang
 
 \subsection{Real-time constraints}
 
-A HiL setup is composed of a simulated component and a real component that is interfaced with the simulated component via inputs and outputs. The goal of the HiL testing phase in the model based design process is mainly to run realistic tests. In other words, it aims at estimating the performance of the real component by providing a realistic environment through the simulated component.   
+A HiL setup is composed of a simulated component and a real component that is interfaced with the simulated component via inputs and outputs. The goal of the HiL testing phase in the model based design process is mainly to run realistic tests. In other words, it aims at estimating the performance of the real component by providing a realistic environment through the simulated component. The simulated component has to interact with the real component at the same rate as its real counterpart. As such, the inputs and outputs of the real component, which are periodically sampled, define timing constraints which involve that the simulated time have to match real-time. These constraints are initially defined on the outputs and inputs of the simulated component that are connected with the inputs and outputs of the real component respectively. Since these inputs and outputs of the simulated component depend on other operations of the co-simulation, the timing constraints are propagated to the other operations.
+
+The propagation of real-time constraints   
 
 

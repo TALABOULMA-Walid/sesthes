@@ -89,7 +89,7 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame4_View0,0]
-TopLine=368
+TopLine=552
 Cursor=24289
 
 [Frame5]
@@ -125,8 +125,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame6_View0,0]
-TopLine=716
-Cursor=54054
+TopLine=741
+Cursor=54717
 
 [Frame7]
 Flags=0

@@ -608,16 +608,24 @@ The propagation of real-time constraints loosens the constraints imposed on the 
 
 \subsection{Definition of Real-time Constraints}
 
-Real-time systems are based on real-time tasks which represent in the basic units of computation. In co-simulation under real-time constraints, the operations of the co-simulation represent the real-time tasks. The real-time requirements that we define here consist real-time parameters that are assigned to operations.
+Real-time systems are based on real-time tasks which represent the basic units of computation. In the context of co-simulation under real-time constraints, the operations of the co-simulation represent the real-time tasks. The real-time requirements that we define here consist in real-time parameters that are assigned to operations.
 
-The real-time co-simulation setup is composed of a simulated part which consists in an FMU co-simulation, and a real hardware connected to some of the inputs and outputs of the simulated part. Inputs and outputs of the real component are sampled with sampling periods $T_{I_i}$ and $T_{O_j}$ respectively. In other words, an input (resp. output) of the real component is periodically activated every $T_{I_i}$ (resp. $T_{O_j}$) units of time. The sampling periods of the different inputs and outputs of the real component can be identical or different. In this work, we assume that every sampling period is a multiple of the step sizes of the simulated FMUs. Otherwise, the hardware may miss some of the values provided by the simulated part and vice versa. The periodic activations of the inputs and outputs of the real component lead to the following:
+Let the inputs and the outputs of the real component be sampled with sampling periods $T_{I_i}$ and $T_{O_j}$ respectively. In other words, an input (resp. output) of the real component is periodically activated every $T_{I_i}$ (resp. $T_{O_j}$) units of time. The sampling periods of the different inputs and outputs of the real component can be identical or different. In this work, we assume that every sampling period is a multiple of the step sizes of the simulated FMUs. Otherwise, the hardware may miss some of the values provided by the simulated part and vice versa. The periodic activations of the inputs and outputs of the real component lead to the following:
 
 \begin{itemize}
 
-\item An output of the real hardware periodically sends data to an input of the simulation $o_i$ following a sampling period $T_{O_j}$. Therefore, at the $p^{th}$ sample $p \times T_{O_j}$, the simulation input $o_i$ is updated to its value corresponding to simulated time $p \times T_{O_j}$. This defines a periodic release for this input, i.e. an occurrence of the input can start its execution once the data received form the real hardware. We refer to this requirement as a \textit{relative release constraint} and define it by its period $R(o_i)$. The occurrences of a relative release constraint are denoted $r(o_i,p) = p \times R_{o_i}, p \in \mathbb{N}$. This means that the value of $o_i$ for simulated time $p \times R_{o_i}$ is available at real-time $p \times R_{o_i}$. 
+\item An output of the real hardware periodically sends data to an input of the simulation $o_i$ following a sampling period $T_{O_j}$. Therefore, at the $p^{th}$ sample $p \times T_{O_j}$, the simulation input $o_i$ is updated to its value corresponding to simulated time $p \times T_{O_j}$. This defines a periodic release for this input, i.e. an occurrence of the input can start its execution once the data received form the real hardware. We refer to this requirement as a \textit{release constraint} and define it by its period $R(o_i) = T_{O_j}$. The occurrences of a release constraint are denoted $r(o_i,p) = p \times R(o_i), p \in \mathbb{N}$. This means that the value of $o_i$ for simulated time $p \times R(o_i)$ is available at real-time $p \times R(o_i)$. 
 
-\item An input of the real hardware periodically receives data from an output of the simulation $o_j$ following a sampling period $T_{I_i}$. Therefore, at the $q^{th}$ sample $q \times T_{I_i}$, the simulation output $o_i$ generates its value corresponding to simulated time $q \times T_{I_i}$. This defines a periodic deadline for this output, i.e. an occurrence of the output has to finish its execution and send the data to the real hardware before this deadline. We refer to this requirement as a \textit{relative deadline constraint} and define it by its period $D(o_j)$. The occurrences of a relative deadline constraint are denoted $d(o_j,q) = q \times D_{o_j}, q \in \mathbb{N}$. This means that the value of $o_j$ for simulated time $q \times D_{o_i}$ has to be available at real-time $q \times D_{o_j}$.
+\item An input of the real hardware periodically receives data from an output of the simulation $o_j$ following a sampling period $T_{I_i}$. Therefore, at the $q^{th}$ sample $q \times T_{I_i}$, the simulation output $o_i$ generates its value corresponding to simulated time $q \times T_{I_i}$. This defines a periodic deadline for this output, i.e. an occurrence of the output has to finish its execution and send the data to the real hardware before this deadline. We refer to this requirement as a \textit{deadline constraint} and define it by its period $D(o_j)$. The occurrences of a relative deadline constraint are denoted $d(o_j,q) = q \times D(o_j), q \in \mathbb{N}$. This means that the value of $o_j$ for simulated time $q \times D(o_i)$ has to be available at real-time $q \times D(o_j)$.
 
-\end{itemize}  
+ 
+
+\end{itemize}
+
+\subsection{Propagation of Real-time Constraints}
+
+\subsection{Propagation of Multiple Real-time Constraints}
+
+\subsection{Propagation Algorithm}
 
 

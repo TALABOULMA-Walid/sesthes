@@ -53,7 +53,7 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame2_View0,0]
-TopLine=354
+TopLine=353
 Cursor=31644
 
 [Frame3]
@@ -71,8 +71,8 @@ Class=LaTeXView
 Document=Thesis.tex
 
 [Frame3_View0,0]
-TopLine=214
-Cursor=2880
+TopLine=79
+Cursor=4895
 
 [Frame4]
 Flags=0
@@ -89,7 +89,7 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame4_View0,0]
-TopLine=850
+TopLine=807
 Cursor=3280
 
 [Frame5]
@@ -107,7 +107,7 @@ Class=LaTeXView
 Document=text\ch3-state.tex
 
 [Frame5_View0,0]
-TopLine=47
+TopLine=51
 Cursor=8190
 
 [Frame6]
@@ -125,8 +125,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame6_View0,0]
-TopLine=834
-Cursor=61317
+TopLine=845
+Cursor=62499
 
 [Frame7]
 Flags=0
@@ -143,7 +143,7 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame7_View0,0]
-TopLine=220
+TopLine=219
 Cursor=13093
 
 [Frame8]
@@ -161,7 +161,7 @@ Class=LaTeXView
 Document=figures\tbbvsrcosim.tex
 
 [Frame8_View0,0]
-TopLine=284
+TopLine=288
 Cursor=16010
 
 [Frame9]

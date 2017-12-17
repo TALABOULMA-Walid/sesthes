@@ -626,7 +626,18 @@ A \textit{deadline constraint} is a real-time requirement applied on an output $
 \label{def:deadline}
 \end{definition}
 
+During the execution of the co-simulation, operations are executed repetitively according to their communication steps. If a real-time constraint is applied on an operation, 
+
 \subsection{Propagation of Real-time Constraints}
+
+The aforementioned definitions specify real-time constraints for the operations that are directly connected with the real component. These operations being dependent on other operations and vice versa, makes it necessary to define the impact of the real-time constraints on the rest of the operations. In classical real-time co-simulation, real-time constraints are defined by translating the integration step size of each model into a real-time period. This approach, if used in a HiL co-simulation, may lead to pessimistic constraints. In other words, it may overconstrain the co-simulation by setting stringent requirements that are not needed in order to ensure the real-time exchange between the simulated and the real components. In our approach, we, instead, impose the necessary constraints on the gate operations. Then, these constraints are \textit{propagated} to the the remaining operations of the graph. These operations become subject to constraints that are induced from the constraints imposed on the gate operations.
+
+\begin{property}
+An operation graph of an FMU co-simulation under real-time constrained can be scheduled on a multi-core processor if every operation in the graph is assigned a release and a deadline constraints.
+\label{prop:constr}
+\end{property}
+
+The operation graph model is completed with release and deadline constraints defined previously. We consider that any real-time multi-core scheduling algorithm uses these parameters. Therefore, we only consider operation graphs for which Property \ref{prop:constr} holds. In the following, we present the process of propagation of real-time constraints in an operation graph. We, also, derive a necessary condition that ensures that the operation graph resulting from the propagation of the real-time constraints is conformant with \ref{prop:constr}.
 
 \subsection{Propagation of Multiple Real-time Constraints}
 

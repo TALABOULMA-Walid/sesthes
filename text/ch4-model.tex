@@ -639,6 +639,10 @@ An operation graph of an FMU co-simulation under real-time constrained can be sc
 
 The operation graph model is completed with release and deadline constraints defined previously. We consider that any real-time multi-core scheduling algorithm uses these parameters. Therefore, we only consider operation graphs for which Property \ref{prop:constr} holds. In the following, we present the process of propagation of real-time constraints in an operation graph. We, also, derive a necessary condition that ensures that the operation graph resulting from the propagation of the real-time constraints is conformant with \ref{prop:constr}.
 
+Let's consider an operation graph $G(V,A)$ representing an FMU co-simulation. We consider that the multi-rate transformation and the acyclic orientation have been applied on this operation graph. Therefore, the operation graph is seen as a mono-rate graph and the communication steps of the different FMUs are abstracted away. Some of the operations are directly connected with the real component. We consider that these gate operations are subject to real-time constraints that are equal, i.e. all the real-time periods of the inputs and outputs of the real component are equal.
+
+
+
 \subsection{Propagation of Multiple Real-time Constraints}
 
 \subsection{Propagation Algorithm}

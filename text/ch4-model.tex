@@ -643,7 +643,7 @@ Let's consider an operation graph $G(V,A)$ representing an FMU co-simulation. We
 
 \subsubsection{Propagation of release constraints}
 
-Let a release constraint of period $T_O$ be applied on an input operation $o_i$ of the operation graph. A subset of the occurrences of $o_i$, ${o^s}_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $p-th$ occurrence of the release constraint ${r_i}^p = t_k$ is applied on the occurrence ${o^s}_i | t = t_k$, i.e. the computation of ${o_i}$ for time step $t_k$. Since we consider the release constraint to be a multiple of the communication step of ${o_i}$, we can compute which occurrences of ${o_i}$ are subject to occurrences of the release constraint. More specifically, the occurrence ${r_i}^p$ of the release constraint is applied on occurrence ${o^s}_i | s = p \times \frac{T_O}{H(o_i)}$. Each occurrence that is subject to occurrence ${r_i}^p$ is assigned a release $R({o^s}_i) = {r_i}^p$. This constraint propagates towards all the successors of ${o^s}_i$. This propagation is given by expression \ref{eq:release} and illustrated in Figure.
+Let a release constraint of period $T_O$ be applied on an input operation $o_i$ of the operation graph. A subset of the occurrences of $o_i$, $o^s_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $p-th$ occurrence of the release constraint $r_i^p = t_k$ is applied on the occurrence $o^s_i | t = t_k$, i.e. the computation of $o_i$ for time step $t_k$. Since we consider the release constraint to be a multiple of the communication step of ${o_i}$, we can compute which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $r_i^p$ of the release constraint is applied on occurrence ${o^s}_i | s = p \times \frac{T_O}{H(o_i)}$. Each occurrence that is subject to occurrence $r_i^p$ is assigned a release $R(o^s_i) = r_i^p$. This constraint propagates towards all the successors of $o^s_i$. This propagation is given by expression \ref{eq:release} and illustrated in Figure.
 
 \begin{equation}
 \forall o_{i'} \in succ(o_i): R(o_{i'}) = R(o_i)
@@ -653,7 +653,7 @@ Let a release constraint of period $T_O$ be applied on an input operation $o_i$ 
 The propagation of the release constraint is performed iteratively. For each operation that is assigned a release constraint, this constraint is propagated towards all its successors as described above. Therefore, the process of propagation of a release constraint can be summarized as follows:
 
 \begin{enumerate}
-\item Let $G(V,A)$ be the operation graph representing the simulated component and let $o_i \in  V$ be an input gate operation connected to an output of the real component.
+\item Let $G(V,A)$ be the operation graph representing the simulated component and let $o_i \in  V$ be an input gate operation connected to an output of the real component whose sampling period and its occurrences are denoted $T_O$ and $r_i^p$ respectively..
 \item Assign to the occurrence $o_i^s, 0 \leq s < r(o_i)$, the release constraint $R(o_i^s) = r_i^p | s = p \times \frac{T_O}{H(o_i)}$.
 \item Propagate the constraint assigned to every operation $o_i^s$ in the previous step towards all its successors $o_{i'}^{s'} \in succ(o_i^s)$.
 \item Repeat the previous step for ever operation that is newly assigned a release constraint.
@@ -661,9 +661,23 @@ The propagation of the release constraint is performed iteratively. For each ope
 
 \subsubsection{Propagation of deadline constraints}
 
-Now let a deadline constraint of period $T_I$ be applied on an input of the operation graph $o_j$. Occurrences of this deadline constraint are applied on several occurrences of operation $o_j$, ${o^u}_j, 0 \leq u < r(o_j)$ that appear in the operation graph. The $q-th$ occurrence of the deadline constraint ${d_i}^q = t_k$ is applied on the occurrence ${o^u}_j | t = t_k$, i.e. the computation of ${o_j}$ for time step $t_k$. The deadline constraint is a multiple of the communication step of ${o_j}$, hence, we can compute which occurrences of ${o_i}$ are subject to occurrences of the deadline constraint. The occurrence ${d_i}^q$ of the deadline constraint is applied on occurrence ${o^u}_j | u = q \times \frac{T_I}{H(o_j)}$. Each occurrence that is subject to occurrence ${d_i}^q$ is assigned a deadline $D({o_j}^u) = {d_i}^q$. This constraint propagates towards all the predecessors of ${o_j}^u$.
+Now let a deadline constraint of period $T_I$ be applied on an output operation $o_j$ of the operation graph. Occurrences of this deadline constraint are applied on several occurrences of operation $o_j$, $o^u_j, 0 \leq u < r(o_j)$ that appear in the operation graph. The $q-th$ occurrence of the deadline constraint $d_i^q = t_k$ is applied on the occurrence $o^u_j | t = t_k$, i.e. the computation of ${o_j}$ for time step $t_k$. The deadline constraint is a multiple of the communication step of $o_j$, hence, we can compute which occurrences of $o_i$ are subject to occurrences of the deadline constraint. The occurrence $d_i^q$ of the deadline constraint is applied on occurrence $o^u_j | u = q \times \frac{T_I}{H(o_j)}$. Each occurrence that is subject to occurrence $d_i^q$ is assigned a deadline $D(o_j^u) = d_i^q$. This constraint propagates towards all the predecessors of $o_j^u$. Expression \ref{eq:release} states this propagation and Figure shows how it is performed in the graph.
 
-In Figure
+\begin{equation}
+\forall o_{j'} \in pred(o_j): D(o_{j'}) = D(o_j)
+\label{eq:release}
+\end{equation}
+
+The deadline constraint iteratively propagates such that eor each operation that is assigned a deadline constraint, this constraint propagates towards all its predecessors. The process of propagation of a deadline constraint can be summarized in the following steps:
+
+\begin{enumerate}
+\item Let $G(V,A)$ be the operation graph representing the simulated component and let $o_j \in  V$ be an output gate operation connected to an output of the real component whose sampling period and its occurrences are denoted $T_I$ and $d_i^q$ respectively.
+\item Assign to the occurrence $o_j^u, 0 \leq u < r(o_j)$, the deadline constraint $D(o_j^u) = d_i^q | u = q \times \frac{T_I}{H(o_j)}$.
+\item Propagate the constraint assigned to every operation $o_j^u$ in the previous step towards all its predecessors $o_{j'}^{u'} \in pred(o_j^u)$.
+\item Repeat the previous step for ever operation that is newly assigned a deadline constraint.
+\end{enumerate}
+
+
 
 \subsubsection{Propagation of real-time constraints through looping back}
 

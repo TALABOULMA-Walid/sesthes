@@ -633,7 +633,7 @@ During the execution of the co-simulation, operations are executed repetitively 
 The aforementioned definitions specify real-time constraints for the operations that are directly connected with the real component. These operations being dependent on other operations and vice versa, makes it necessary to define the impact of the real-time constraints on the rest of the operations. In classical real-time co-simulation, real-time constraints are defined by translating the integration step size of each model into a real-time period. This approach, if used in a HiL co-simulation, may lead to pessimistic constraints. In other words, it may overconstrain the co-simulation by setting stringent requirements that are not needed in order to ensure the real-time exchange between the simulated and the real components. In our approach, we, instead, impose the necessary constraints on the gate operations. Then, these constraints are \textit{propagated} to the the remaining operations of the graph. These operations become subject to constraints that are induced from the constraints imposed on the gate operations.
 
 \begin{property}
-An operation graph of an FMU co-simulation under real-time constrained can be scheduled on a multi-core processor if every operation in the graph is assigned a release and a deadline constraints.
+An operation graph of an FMU co-simulation under real-time constraints can be scheduled on a multi-core processor if every operation in the graph is assigned a release and a deadline constraints.
 \label{prop:constr}
 \end{property}
 
@@ -641,7 +641,33 @@ The operation graph model is completed with release and deadline constraints def
 
 Let's consider an operation graph $G(V,A)$ representing an FMU co-simulation. We consider that the multi-rate transformation and the acyclic orientation have been applied on this operation graph. Therefore, the operation graph is seen as a mono-rate graph and the communication steps of the different FMUs are abstracted away. Some of the operations are directly connected with the real component. We consider that these gate operations are subject to real-time constraints that are equal, i.e. all the real-time periods of the inputs and outputs of the real component are equal.
 
+\subsubsection{Propagation of release constraints}
 
+Let a release constraint of period $T_O$ be applied on an input operation $o_i$ of the operation graph. A subset of the occurrences of $o_i$, ${o^s}_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $p-th$ occurrence of the release constraint ${r_i}^p = t_k$ is applied on the occurrence ${o^s}_i | t = t_k$, i.e. the computation of ${o_i}$ for time step $t_k$. Since we consider the release constraint to be a multiple of the communication step of ${o_i}$, we can compute which occurrences of ${o_i}$ are subject to occurrences of the release constraint. More specifically, the occurrence ${r_i}^p$ of the release constraint is applied on occurrence ${o^s}_i | s = p \times \frac{T_O}{H(o_i)}$. Each occurrence that is subject to occurrence ${r_i}^p$ is assigned a release $R({o^s}_i) = {r_i}^p$. This constraint propagates towards all the successors of ${o^s}_i$. This propagation is given by expression \ref{eq:release} and illustrated in Figure.
+
+\begin{equation}
+\forall o_{i'} \in succ(o_i): R(o_{i'}) = R(o_i)
+\label{eq:release}
+\end{equation}
+
+The propagation of the release constraint is performed iteratively. For each operation that is assigned a release constraint, this constraint is propagated towards all its successors as described above. Therefore, the process of propagation of a release constraint can be summarized as follows:
+
+\begin{enumerate}
+\item Let $G(V,A)$ be the operation graph representing the simulated component and let $o_i \in  V$ be an input gate operation connected to an output of the real component.
+\item Assign to the occurrence $o_i^s, 0 \leq s < r(o_i)$, the release constraint $R(o_i^s) = r_i^p | s = p \times \frac{T_O}{H(o_i)}$.
+\item Propagate the constraint assigned to every operation $o_i^s$ in the previous step towards all its successors $o_{i'}^{s'} \in succ(o_i^s)$.
+\item Repeat the previous step for ever operation that is newly assigned a release constraint.
+\end{enumerate}
+
+\subsubsection{Propagation of deadline constraints}
+
+Now let a deadline constraint of period $T_I$ be applied on an input of the operation graph $o_j$. Occurrences of this deadline constraint are applied on several occurrences of operation $o_j$, ${o^u}_j, 0 \leq u < r(o_j)$ that appear in the operation graph. The $q-th$ occurrence of the deadline constraint ${d_i}^q = t_k$ is applied on the occurrence ${o^u}_j | t = t_k$, i.e. the computation of ${o_j}$ for time step $t_k$. The deadline constraint is a multiple of the communication step of ${o_j}$, hence, we can compute which occurrences of ${o_i}$ are subject to occurrences of the deadline constraint. The occurrence ${d_i}^q$ of the deadline constraint is applied on occurrence ${o^u}_j | u = q \times \frac{T_I}{H(o_j)}$. Each occurrence that is subject to occurrence ${d_i}^q$ is assigned a deadline $D({o_j}^u) = {d_i}^q$. This constraint propagates towards all the predecessors of ${o_j}^u$.
+
+In Figure
+
+\subsubsection{Propagation of real-time constraints through looping back}
+
+\subsubsection{Necessary condition for covering the operation graph}
 
 \subsection{Propagation of Multiple Real-time Constraints}
 

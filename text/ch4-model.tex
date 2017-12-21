@@ -100,7 +100,7 @@ The flexibility $F(o_i)$ is defined by equation \ref{eq:flex}. $F(o_i)$ expresse
 	\label{eq:flex}
 \end{equation}
 
-\section{Dependence Graph of a Multi-rate FMU Co-simulation}
+\section{\label{sec:opgraph}Dependence Graph of a Multi-rate FMU Co-simulation}
 
 The operation graph model presented in the previous sections allows elementary modeling of FMU co-simulation programs. For some applications this model is sufficient to be used for multi-core scheduling. However, many industrial co-simulation applications feature behaviors that cannot be captured by this model. In particular, many industrial applications involve FMUs that are executed according to different communication steps. This is especially true when different FMUs of a co-simulation are provided by different parties. It is very common that an FMU provider designs the FMU in such a way that its proper functioning depends on the use of specific values of the communication step. It is therefore highly unrecommended, and in some cases even impossible, to change the communication step of the FMU. In other cases, even if it is possible and acceptable to change the communication step of a given FMU, better performance and/or accuracy could be obtained when using specific communication steps. As a consequence, our operation graph model has to be extended in order to accommodate multi-rate data exchange between operations. 
 
@@ -677,9 +677,30 @@ The deadline constraint iteratively propagates such that eor each operation that
 \item Repeat the previous step for ever operation that is newly assigned a deadline constraint.
 \end{enumerate}
 
-
-
 \subsubsection{Propagation of real-time constraints through looping back}
+
+It can be clearly seen that the propagation of the real-time constraints is based on graph traversal. The BFS (Breadth First Search) or the DFS (Depth First Search) can be used to perform this propagation. On one hand, the release constraints propagate following the topological ordering of the graph (forward propagation) since the constraint always propagate from a predecessor to a successor. On the other hand, the deadline constraint propagates in reverse topological ordering of the graph (backward propagation) because the constraint always propagates from a successor to a predecessor. This means that the release (resp. deadline) constraint cannot propagate towards the operations that come before (resp. after) the input (resp. output) gate operation that is subject to this constraint as shown in Figure.
+
+For the operation graph to be scheduled by a real-time multi-core scheduling algorithm, every operation has to be assigned a release and a deadline constraints. In order to assign release (resp. deadline) constraints to operations that are not covered by the forward (resp. backward) propagation phases, we need to define a periodic pattern of the operation graph.
+
+\begin{definition}
+In the context of co-simulation under real-time constraints, the \textit{Hyper Period} is the least common multiple of the real-time sampling period of the real component and the communication steps of the the different FMUs: $HP=lcm(H(o_1),H(o_2), \dots ,\allowbreak H(o_n), T_1, T_2, \dots ,T_m)$ where $n$ is the number of operations in the operation graph and $m$ is the number of inputs and outputs of the real component.
+\label{def:hyperperiod}
+\end{definition}
+
+The Hyper Period notion is similar to the notion of Hyper Period found in the real-time literature and the Hyper Step defined in section \ref{sec:opgraph}. In other words, it specifies a time interval for describing a periodic pattern of the real-time constraints. It differs from both notions in that it combines real-time periods and communication steps. Therefore, a release constraint can be written as follows:
+
+\begin{equation}
+\forall o_i^s, o_i^{s'}: s' = s + \frac{HP}{H(o_i)}, R(o_i^{s'}) = R(o_i^s) + HP
+\label{eq:release}
+\end{equation}
+
+Similarly, a deadline constraint can be written as follows:
+
+\begin{equation}
+\forall o_j^u, o_j^{u'}: u' = u + \frac{HP}{H(o_j)}, D(o_j^{u'}) = R(o_j^u) + HP
+\label{eq:release}
+\end{equation}
 
 \subsubsection{Necessary condition for covering the operation graph}
 

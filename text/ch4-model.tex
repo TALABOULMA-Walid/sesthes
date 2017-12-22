@@ -708,6 +708,17 @@ Now consider that a deadline constraint is propagated in the graph $G(V,A)$ star
 
 \subsubsection{Necessary condition for covering the operation graph}
 
+The propagation of real-time constraints must lead to assigning a release and a deadline constraint for every operation in the operation graph. If that is not the case, it is not possible to apply a real-time multi-core scheduling on the operation graph. For this to be possible, the operation graph has to satisfy the necessary condition stated in Lemma \re{}.
+
+\begin{lemma}
+Let $G(V,A)$ be an operation graph representing an FMU co-simulation under real-time constraints. Let $o_i$ and $o_j$ be an input and an output gate operations respectively. The propagation of the release (resp. deadline) constraint applied on $o_i$ (resp. $o_j$) leads to assigning a release (resp. deadline) constraint to every operation $o_k \in V$ only if there exists at least one path from $o_i$ (resp. at least one operation $o_k \in  V : k \neq i$ of every FMU $o_k \in  V : k \neq i$) to at least one operation $o_k \in  V : k \neq i$ of every FMU (resp.$o_j$).  
+\label{lem:coverage}
+\end{lemma}
+
+\begin{proof}
+Suppose that there is an FMU whose operations are denoted $o_k \in  V : k \neq i$ and for which there exist no leading paths starting from the input gate operation $o_i$. Running the forward phase propagation cannot lead to assigning a release constraint to any of the operations $o_k \in  V : k \neq i$. As a consequence, it is not possible to loop back on the first occurrence of the state operation of the said FMU. Therefore, none of the operations $o_k \in  V : k \neq i$ is reached either by the forward propagation phase or the looping back phase.      
+\end{proof}
+
 \subsection{Propagation of Multiple Real-time Constraints}
 
 \subsection{Propagation Algorithm}

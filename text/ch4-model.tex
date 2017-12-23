@@ -708,7 +708,7 @@ Now consider that a deadline constraint is propagated in the graph $G(V,A)$ star
 
 \subsubsection{Necessary condition for covering the operation graph}
 
-The propagation of real-time constraints must lead to assigning a release and a deadline constraint for every operation in the operation graph. If that is not the case, it is not possible to apply a real-time multi-core scheduling on the operation graph. For this to be possible, the operation graph has to satisfy the necessary condition stated in Lemma \re{}.
+The propagation of real-time constraints must lead to assigning a release and a deadline constraint for every operation in the operation graph. If that is not the case, it is not possible to apply a real-time multi-core scheduling on the operation graph. For this to be possible, the operation graph has to satisfy the necessary condition stated in Lemma \ref{lem:coverage}.
 
 \begin{lemma}
 Let $G(V,A)$ be an operation graph representing an FMU co-simulation under real-time constraints. Let $o_i$ and $o_j$ be an input and an output gate operations respectively. The propagation of the release (resp. deadline) constraint applied on $o_i$ (resp. $o_j$) leads to assigning a release (resp. deadline) constraint to every operation $o_k \in V$ only if there exists at least one path from $o_i$ (resp. at least one operation $o_k \in  V : k \neq i$ of every FMU $o_k \in  V : k \neq i$) to at least one operation $o_k \in  V : k \neq i$ of every FMU (resp.$o_j$).  
@@ -720,6 +720,16 @@ Suppose that there is an FMU whose operations are denoted $o_k \in  V : k \neq i
 \end{proof}
 
 \subsection{Propagation of Multiple Real-time Constraints}
+
+In the previous section, we considered that the operation graph is subject to real-time constraints that are equal, i.e. with the same sampling period. In this section we consider that multiple input and output gate operations are subject to different release and deadline constraints respectively. This means the sampling periods of the inputs and the outputs of the real component are different. As before, we consider that every sampling period is a multiple of the communication steps of the FMUs of the simulate component.
+
+In order to propagate multiple real-time constraints, we follow the propagation process described previously. The release constraints are propagated by running a forward propagation phase and a looping back phase whereas deadline constraints are propagated by applying a backward propagation and a looping forward phase. The main difference here is that during propagation, several constraints may be applied on the same operation. We handle this situation in a similar way to \cite{faure:2011}.
+
+Gate operations are always subject to only one constraint. Therefore, assigning constraints to gate operations remains unchanged. On the other hand, the rest of the operations of the operation graph may have several predecessors and successors. In fact, if an operation $o_i \in V$ has no more than one predecessor, i.e. $|pred(o_i)| \leq 1$, the propagation of a release constraint towards this operation remains unchanged. Similarly, if an operation $o_j \in V$ has no more than one successor, i.e. $|succ(o_j)| \leq 1$, the propagation of a deadline constraint towards this operation remains unchanged. Hence, we are interested in this section in propagation release (resp. deadline) constraints towards operations which has more than one predecessor (resp. successor), i.e. $|pred(o_i)| > 1$ (resp. $|succ(o_j)| > 1$). 
+
+We denote by $\mathcal{R}(o_i)$ the set of release constraints propagated towards the operation $o_i$ and by $\mathcal{D}(o_j)$ the set of deadline constraints propagated towards the operation $o_j$. The set $\mathcal{R}(o_i)$ is built as the union of all the release constraints propagated towards $o_i$ from its predecessors, i.e. $R(o_{i'}) | o_{i'} \in pred(o_i)$. The process of propagation of release constraints described hereabove becomes as follows:
+
+The set $\mathcal{D}(o_j)$ is built as the union of all the deadline constraints propagated towards $o_j$ from its successors, i.e. $D(o_{j'}) | o_{j'} \in succ(o_j)$. The process of propagation of deadline constraints described hereabove becomes as follows:
 
 \subsection{Propagation Algorithm}
 

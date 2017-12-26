@@ -213,6 +213,39 @@ The scheduling heuristic contains three nested loop. The outermost loop is execu
 
 \section{Scheduling of FMU Co-simulation with Real-time Constraints}
 
+In this section, we are interested in scheduling FMU co-simulation while ensuring a set of real-time constraints  is satisfied. We consider FMU co-simulation in the context of HiL consisting of a simulated component and a real component. Also, we consider that the real-time constraints that are applied by the real component have been propagated through the operation graph as described in section \ref{sec:grphrtsc}. Therefore, the aim here consists in scheduling the operations of the operations graph on a multi-core architecture, such as these constraints are satisfied. Note that in contrast to the previous section, how much the execution is sped up is not of a crucial important here as long as the real-time constraints are respected. Hereafter, we present an ILP formulation and a heuristic for scheduling operation graphs under real-time constraints.
+
+\subsection{Problem Formulation}
+
+The problem of scheduling FMU co-simulation under real-time constraints can be considered as a satisfaction problem instead of an optimization problem. In fact, the basic problem does not involve an objective function to be optimized, the goal being to ensure the real-time constraints are satisfied. More precisely, the problem consists in scheduling the operations of the operation graph such that each operation starts its execution no earlier than its release date and finishes its execution by its deadline date. Obviously, there are other constraints that are common with the acceleration problem, namely, respecting the partial order of the operation graph. Also, the cost of inter-core synchronization is taken into account in computing the schedule. The scheduling of FMU co-simulation under real-time constraints can be stated as a satisfaction problem as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l  l}
+  \rule{0pt}{5ex}	
+	\textit{Input} & Operation graph $G_F(V_F,A_F)$\\
+	\rule{0pt}{5ex}									  
+	
+  \textit{Output} & Offline Schedule of operations on multi-core processor\\
+	\rule{0pt}{5ex}									  
+  
+	\textit{Find} & Allocation of operations to cores, $\alpha: V \rightarrow P$\\
+	\rule{0pt}{5ex}
+                & Assignment of start times to operations, $\beta: V \times P \rightarrow \mathbb{N}$\\
+	\rule{0pt}{5ex}								 
+	
+	\textit{Subject to} & Precedence constraints of the graph $G_F(V_F,A_F)$\\
+											& Start time greater or equal to the release date $\forall o_i \in V_F, S(o_i) \geq R(o_i)$\\
+											& End time less or equal to the deadline date $\forall o_i \in V_F, E(o_i) \leq D(o_i)$\\
+										 
+	
+\end{tabular}
+\end{table}
+
+\subsection{Resolution using Linear Programming}
+
+\subsection{Multi-core Scheduling Heuristic}
+
 \section{Code Generation}
 
 

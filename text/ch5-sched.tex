@@ -244,6 +244,76 @@ The problem of scheduling FMU co-simulation under real-time constraints can be c
 
 \subsection{Resolution using Linear Programming}
 
+The ILP formulation that we propose is, in most part, similar the ILP formulation for co-simulation acceleration. The main differences consist, first, in adding the inequalities that express the real-time constraints. Second, it is possible not to set an objective function since the real-time scheduling consists in a satisfaction problem.
+
+Therefore, the ILP formulation for multi-core scheduling of co-simulation under real-time constraints is given below. The start date of every operation must be at the earliest equal to its release date. Expression \ref{schedRT:const_01} captures this constraint. The deadline date of every operation is the latest time before which the operation has to finish its execution. Expression \ref{schedRT:const_02} specifies this constraint.
+
+\begin{equation}
+\forall\ o_i \in V, \sum_{p_j \in P}x_{ij}=1
+\label{schedRT:const_1}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, E(o_i) = S(o_i) + C(o_i)
+\label{schedRT:const_2}
+\end{equation}
+
+\begin{equation}
+\forall\ o_i \in V, S(o_i) \geq R(o_i)
+\label{schedRT:const_01}
+\end{equation}
+
+\begin{equation}
+\forall\ o_i \in V, E(o_i) \leq D(o_i)
+\label{schedRT:const_02}
+\end{equation}
+
+\begin{equation}
+\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_i) \leq S(o_j) + M \times (3 - x_{ip} - x_{jp} - b_{ij}) 
+\label{schedRT:const_11}
+\end{equation}
+
+\begin{equation}
+\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_j) \leq S(o_i) + M \times (2 - x_{ip} - x_{jp} + b_{ij}) 
+\label{schedRT:const_12}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijp}= V_{ip}
+\label{schedRT:const_3}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijp} \leq x_{jp}: \forall o_i \in V
+\label{schedRT:const_4}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), V_{ip} \geq x_{jp} - x_{ip}: \forall o_i \in V
+\label{schedRT:const_5}
+\end{equation}
+
+\begin{equation}
+ \forall o_i \in V, V_{ip} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ip}\big)
+\label{schedRT:const_6}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \leq S(o_j) + M \times (1-x_{jp})
+\label{schedRT:const_7}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \geq S(o_j) - M \times (1-sync_{ijp})
+\label{schedRT:const_8}
+\end{equation} 
+
+\begin{equation}
+\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p \in P, \forall o_{i'} \in pred(o_j)}sync_{ijp}\times synCost\Big]
+\label{schedRT:const_9}
+\end{equation}
+
+
 \subsection{Multi-core Scheduling Heuristic}
 
 \section{Code Generation}

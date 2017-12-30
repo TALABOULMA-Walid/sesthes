@@ -318,12 +318,50 @@ Therefore, the ILP formulation for multi-core scheduling of co-simulation under 
 
 Removing the objective function from the scheduling problem might indicate that the complexity of the scheduling problem is reduced in the real-time case compared to the acceleration case. However, adding the strict release and deadline constraints adds to the complexity of the problem which remains an NP-Hard problem that is equivalent to the bin packing problem.
 
-In the following, we propose a heuristic for scheduling operation graphs representing FMU co-simulations under real-time constraints. There are some considerations that are common with the scheduling problem for co-simulation acceleration. Mainly, we propose an offline heuristic which we consider to be more suitable given the fine granularity of the operations and since information about the execution times of the operations and the dependence between them is available before runtime. 
+In the following, we propose a heuristic for scheduling operation graphs representing FMU co-simulations under real-time constraints. There are some considerations that are common with the scheduling problem for co-simulation acceleration. Mainly, we propose an offline heuristic which we consider to be more suitable given the fine granularity of the operations and since information about the execution times of the operations and the dependence between them is available before runtime.
 
-A variety of list multi-core scheduling heuristics exist in the literature and each heuristic may be suitable for some specific kinds of multi-core scheduling problems. We detail in this section a heuristic that we have chosen to apply on the final graph $G_F(V_F,A_F)$ in order to minimze its makespan. Because of the number of fine-grained operations, and since the execution times and the dependence between the operations are known before runtime, it is more convenient to use an offline scheduling heuristic which has the advantage of introducing lower overhead than online scheduling heuristics. We use an offline scheduling heuristic similar to the one proposed in \cite{grandpierre:1999} which is a fast greedy algorithm whose cost function corresponds well to our minimization objective. In accordance with the principle of list scheduling heuristics, this heuristic is priority-based, i.e. it builds a list of operations that are ready to be scheduled, called candidate operations and selects one operation based on the evaluation of the cost function. We denote by $\rho$ the cost function and call it the schedule pressure. It expresses the degree of criticality of scheduling an operation. The schedule pressure of an operation is computed using its flexibility and the penalty of scheduling which refers to the increase in the critical path resulting from scheduling an operation.  
+We propose to adapt the scheduling heuristic that we use for the acceleration of FMU co-simulation. In particular, we modify the computation of the scheduling priority such that the criticality of a given operation expresses how close it is to miss its deadline if scheduled on a specific processor. The priority of an operation is a dynamic operation as its computation depends on the partial scheduling solution that has already been computed. This priority is given by expression \ref{eq:priority}.
 
-The heuristic considers the different timing attributes of each operation $o_i \in V_F$ in order to compute a schedule that minimizes the makespan of the graph. The heuristic schedules the operations of the graph $G_F(V_F,A_F)$ on the different cores iteratively and aims at minimizing the schedule pressure of an operation on a specific core while taking into account the synchronization costs. %Let $P^{n}(o_i,p_j)$ be the schedule pressure 
-The heuristic updates the set of candidate operations to be scheduled at each iteration. An operation is added to the set of candidate operations if it has no predecessor or if all its predecessors have already been scheduled. For each candidate operation, the schedule pressure is computed on each core and the operation is allocated to its best core, the one that minimizes the pressure. Then, a list of candidate operation-best core pairs is obtained. Finally, the operation with the largest pressure on its best core is selected and scheduled. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled.
+\begin{equation}
+\rho_{i,j} = D(o_i) - E_j(o_i)
+\label{eq:priority}
+\end{equation}
+
+Where $\rho_{i,j}$ and $E_j(o_i)$ are the scheduling priority of operation and the end date of operation $o_i$ respectively, computed when the latter is scheduled on core $j$.
+
+The proposed heuristic is a list scheduling heuristic. It builds the multi-core schedule iteratively. At each iteration, a list of candidate operations is constructed. An operation is added to the list of candidate operation if all its predecessors have been scheduled. The heuristic computes the priority for each candidate operation on every core and selects the one for the which the priority is maximized. After that, a list of pairs operation-best core is obtained. The heuristic selects from this list the operation whose priority is the least among all operation in the list. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:schedRT} lists the proposed real-time multi-core scheduling heuristic. 
+
+\begin{algorithm}[!htp]		
+	  Initialization\;
+		Set $\Omega$ the set of all the operations\;  
+		Set $P$ the set of all the available cores\; 
+ 		Set $O$ the set of operations without predecessors\;  		
+ 		\While{$O \neq \emptyset$}
+		{
+ 			\ForEach{operation $o_i \in O$} 
+			{
+ 				Set $\sigma$ to $\infty$; (cost of $o_i$ is set to the maximum value)\;
+ 				\ForEach{$p \in P$}
+				{
+  				$S'(o_i) \leftarrow max(S(o_i) , L_p)$; (new start time of $o_i$ when executed on $p$)\;
+  				$\sigma' \leftarrow S'(o_i) + C(o_i) + \overline{E}(o_i) - R$; (cost of $o_i$ when executed on $p)$\;
+  				\If{$\sigma' < \sigma$}
+					{
+  					Set $\sigma \leftarrow \sigma'$\;
+  					Set $BestCore(o_i) \leftarrow p$\;
+  				}
+  			}
+  		 }
+  		 Find $o_{i'}$ with maximal cost $\sigma$ in $O$\; 
+  		 Schedule $o_{i'}$ on its core $\mathrm{BestCore}(o_{i'})$\;
+  		 Set $p' := \mathrm{BestCore}(o_{i'})$\;
+  		 $L_{\mathrm{p'}} := L_{\mathrm{p'}} + C(o_{i'})$; (Advance the time of $p'$)\;
+  		 Remove $o_{i'}$ from the set $O$\;
+  		 Add to the set $O$ all successors of $o_{i'}$ for which all predecessors are already scheduled\;
+		}
+	\caption{Multi-core scheduling heuristic}
+	\label{algo:schedRT}
+\end{algorithm} 
 
 \section{Code Generation}
 

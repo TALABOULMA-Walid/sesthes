@@ -340,19 +340,19 @@ The proposed heuristic is a list scheduling heuristic. It builds the multi-core 
 		{
  			\ForEach{operation $o_i \in O$} 
 			{
- 				Set $\sigma$ to $\infty$; (cost of $o_i$ is set to the maximum value)\;
+ 				Set $\sigma$ to $-\infty$; (cost of $o_i$ is set to the minimum value)\;
  				\ForEach{$p \in P$}
 				{
   				$S'(o_i) \leftarrow max(S(o_i) , L_p)$; (new start time of $o_i$ when executed on $p$)\;
-  				$\sigma' \leftarrow S'(o_i) + C(o_i) + \overline{E}(o_i) - R$; (cost of $o_i$ when executed on $p)$\;
-  				\If{$\sigma' < \sigma$}
+  				$\sigma' \leftarrow D(o_i) - E(o_i)$; (priority of $o_i$ when executed on $p)$\;
+  				\If{$\sigma' > \sigma$}
 					{
   					Set $\sigma \leftarrow \sigma'$\;
   					Set $BestCore(o_i) \leftarrow p$\;
   				}
   			}
   		 }
-  		 Find $o_{i'}$ with maximal cost $\sigma$ in $O$\; 
+  		 Find $o_{i'}$ with least priority $\sigma$ in $O$\; 
   		 Schedule $o_{i'}$ on its core $\mathrm{BestCore}(o_{i'})$\;
   		 Set $p' := \mathrm{BestCore}(o_{i'})$\;
   		 $L_{\mathrm{p'}} := L_{\mathrm{p'}} + C(o_{i'})$; (Advance the time of $p'$)\;

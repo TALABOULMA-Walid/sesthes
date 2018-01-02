@@ -761,7 +761,11 @@ The process of propagation of deadline constraints described previously is adapt
 \item Repeat the previous step for ever operation that is newly assigned a deadline constraint.
 \end{enumerate}
 
-\subsection{Propagation Algorithm}
+\subsection{Propagation Algorithms}
+
+We propose two algorithm to accomplish the propagation of release and deadline constraints in an operation graph respectively. The proposed algorithms are based on the previously presented concepts. As stated previously, the propagation is based on graph traversal and therefore the propagation algorithms can be based on graph traversal algorithms such as BFS or DFS. We aim at formulating propagation algorithms with low complexity. In particular, the order in which the different phases of the the propagation are performed may affect the algorithm's complexity. Therefore, this order should be chosen accordingly as detailed hereafter.
+
+Let's start with the propagation of the release constraint. The propagation starts with the forward phase where, starting from the gate operations, the release constraints are propagated form each operation subject to the release constraint to its successors. The proposed algorithm performs these propagations iteratively, in a decreasing order of the periods of the release constraints. Following such order may avoid performing unnecessary propagations. To show this, consider that operation $o_i$ is subject to two different release constraints $T_{O1}$ and $T_{O2}$ such that $T_{O1} > T_{O2}$. If the propagation of $T_{O2}$ is performed first, all the paths in the operation graph that start at $o_i$ are traversed twice, first to propagate $T_{O2}$ and then to propagate $T_{O1}$. However, if the $T_{O1}$ is propagated first, the said paths are traversed only once, propagating $T_{O1}$. The propagation of $T_{O2}$ is stopped     
 
 \subsection{Example}
 

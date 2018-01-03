@@ -76,7 +76,7 @@
 \ifmc@nobind
 \usepackage[includehead,hmargin={3.1cm, 3.1cm}, vmargin={2.5cm,2.7cm}, headsep=.8cm,footskip=1.2cm]{geometry}
 \else
-\usepackage[includehead,hmargin={3.6cm, 2.6cm}, vmargin={2.5cm,2.7cm}, headsep=.8cm,footskip=1.2cm]{geometry}
+\usepackage[includehead,hmargin={3.6cm, 2.6cm}, vmargin={2.5cm,3.7cm}, headsep=.8cm,footskip=1.2cm]{geometry}
 %\usepackage[includehead,hmargin={3cm, 2cm}, vmargin={2cm,2.2cm}, headsep=.8cm,footskip=1.2cm]{geometry}
 \fi
 

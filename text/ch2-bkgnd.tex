@@ -36,17 +36,17 @@ Areas where CPS can be found are as important as automotive, aerospace, manufact
 
 Modeling a system consists in creating a mathematical abstraction of its behavior. The first step is to choose a modeling formalism. This choice depends on the properties of the system, the objective of the simulation, and the aimed level of detail in the simulation. For instance, models can be built using continuous-time variables to represent continuous dynamics of a physical process. Such mathematical models consist of a set of differential equations which describe the continuously changing physical quantities of a process such as electrical circuits, fluid dynamics, chemical reactions, etc. Other systems feature a behavior which evolves between a finite set of states. These systems can be modeled using formalisms such as DEVS (Discrete Event System Specification) \cite{zeigler:2000}, Statecharts \cite{harel:1987}, and Petri nets \cite{petri:1962}. Finally, hybrid modeling allows the modeling of systems with both continuous variables and discrete states. In other words, the system jumps between discrete states and while it is in a certain state, it features a continuous behavior, i.e. its quantities change continuously. 
 
-In this thesis, we focus on the modeling of dynamical systems using differential equations. A differential equation expresses a variable as a function of its derivatives. In the modeling of dynamical systems, the variables are the physical quantities and the derivatives express their rates of change. A differential equation is called Ordinary Differential Equation, abbreviated ODE, if it involves ordinary derivatives of the variables with respect to an independent variable (usually the time in the modeling of dynamical systems).  Equation \ref{eq:ode} is an ODE where $x$ is the vector of the dependent variables of interest called the state variables, $\dot{x} = \frac{dx}{dt}$ is the vector of the time derivatives of the state variables, $t$ is the time (the independent parameter), and $f$ is a given function.
+In this thesis, we focus on the modeling of dynamical systems using differential equations. A differential equation expresses a variable as a function of its derivatives. In the modeling of dynamical systems, the variables are the physical quantities and the derivatives express their rates of change. A differential equation is called Ordinary Differential Equation, abbreviated ODE, if it involves ordinary derivatives of the variables with respect to an independent variable (usually the time in the modeling of dynamical systems). The ordinary derivative consists in computing the derivative of the function allowing all variables to vary. The term ordinary is used in contrast with the term Partial Differential Equation presented below. Equation \ref{eq:ode} is an ODE where $x$ is the vector of the dependent variables of interest called the state variables, $\dot{x} = \frac{dx}{dt}$ is the vector of the time derivatives of the state variables, $t$ is the time (the independent parameter), and $f$ is a given function.
 
 \begin{equation}
-\dot{x} = f(x,t)
+ 0 = f(\dot{x},x,t) \equiv f(\frac{dx}{dt},x,t)
 \label{eq:ode}
 \end{equation}
 
-In contrast, a differential equation is called Partial Differential Equation, abbreviated PDE if it involves unknown functions and their partial derivatives. Equation \ref{eq:pde} shows such PDE where $x_1,x_2,\dots, x_n$ are the parameters, $y=y(x_1,x_2,\dots, x_n)$ is the unknown function, and $f$ is a given function.
+A differential equation is called Partial Differential Equation, abbreviated PDE if it involves unknown functions and their partial derivatives. A partial derivative of a function is its derivative with respect to one variable while holding the other variables constant. Equation \ref{eq:pde} shows such PDE where $x_1,x_2,\dots, x_n$ are the parameters, $y=y(x_1,x_2,\dots, x_n)$ is the unknown function, and $f$ is a given function.
 
 \begin{equation}
-f\biggl(x_1,x_2,\dots, x_n,y,\frac{\partial y}{\partial x_1},\frac{\partial y}{\partial x_2},\dots,\frac{\partial y}{\partial x_n}\biggl)=0
+0 = f\biggl(x_1,x_2,\dots, x_n,y,\frac{\partial y}{\partial x_1},\frac{\partial y}{\partial x_2},\dots,\frac{\partial y}{\partial x_n}\biggl)
 \label{eq:pde}
 \end{equation} 
 
@@ -54,7 +54,7 @@ A Differential Algebraic Equation, abbreviated DAE, is a system of equations whi
 
 \begin{equation}
 \begin{aligned}
-&0 = f(\dot{x},x,t)\\
+&0 = f(\dot{x},x,t) \equiv f(\frac{dx}{dt},x,t) \\
 &0 = g(x,t)
 \end{aligned}
 \label{eq:dae}

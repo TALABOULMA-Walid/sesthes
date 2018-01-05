@@ -121,7 +121,7 @@ Co-simulation is an alternative approach to monolithic simulation where a comple
 
 In co-simulation of models based on ODEs, the equations of each model are integrated using a solver separately. 
 Models exchange data by updating their inputs and outputs at fixed points in time called \textit{communication steps}. The duration between two communication steps is referred to as \textit{communication step size} and denoted $H$. The communication step size associated with a model is a multiple of the integration step size of the model and defines the rate of communication (data exchange) of this model. It does not make any sense to use a communication step size that is smaller than the integration step size because communication should only be performed at points corresponding to integration steps. Thus, the communication step size should be at least equal to the integration step size. Using a communication step size that is a multiple of the integration step size is interesting when the inputs or the outputs of the model don't need to be updated at every integration step. For instance, if at one out of two integration steps, the model consumes new input values, its communication step size can be set to two times its integration step size. Therefore, the equations of the model are computed at every integration step, and its inputs and outputs are updated at every communication step. 
-Figure \ref{fig:cosim} shows the evolution of time and data exchange between two models A and B. In this example, the equations of model A are solved using a fixed step size $h_A$ whereas the equation of model B are solved using a variable step step $h_B$. The communication step size $H$ is considerably larger than both integrations step sizes, allowing fast progress of the integration of the equations by restricting the data exchange to occur at communications steps only. Between communications steps, each model considers that the values of data produced by the other models are held constant. Another alternative is to estimate these values by employing extrapolation techniques.
+Figure \ref{fig:cosim} shows the evolution of time and data exchange between two models A and B. In this example, the equations of model A are solved using a fixed step size $h_A$ whereas the equation of model B are solved using a variable step step $h_B$. The communication step size $H $ is considerably larger than both integrations step sizes, allowing fast progress of the integration of the equations by restricting the data exchange to occur at communications steps only. Between communications steps, each model considers that the values of data produced by the other models are held constant. Another alternative is to estimate these values by employing extrapolation techniques.
 
 \begin{figure}[phbt]
 \centering
@@ -171,10 +171,11 @@ Figure \ref{fig:mbd} gives a view of the different types of co-simulation perfor
 \label{fig:mbd}
 \end{figure}
 
+Coupling models and performing co-simulation presents many technical challenges. Some attempts have been made to establish methods that allow easy coupling of models and running co-simulations. In the following, we present a prominent industrial standard that was developed for model exchange and co-simulation.  
 
 \subsubsection{The Functional Mock-up Interface Standard}
 
-The Functional Mock-up Interface (FMI) is a tool-independent and open standard designed in the context of the ITEA MODELISAR project and is currently developed and maintained by the Modelica Association\footnote{www.modelica.org/association/} which promotes the Modelica language. FMI standard was developed in order to facilitate the co-simulation of dynamical systems, such as CPS. It provides specifications in order to enable the exchange and the co-simulation of heterogeneous dynamical models that may be developed by different tools. A modeling tool that supports FMI can export a model as a Functional Mock-up Unit (FMU) which can be used in co-simulation environments. FMI defines interfaces for the involved models to allow their co-simulation.
+The Functional Mock-up Interface (FMI) is a tool-independent and open standard designed in the context of the European ITEA MODELISAR project and is currently developed and maintained by the Modelica Association\footnote{www.modelica.org/association/} which promotes the Modelica language (\ref{lngtoolsMS}). FMI standard was developed in order to facilitate the co-simulation of dynamical systems, such as CPS. It provides specifications in order to enable the exchange and the co-simulation of heterogeneous dynamical models that may be developed by different tools. A modeling tool that supports FMI can export a model as a Functional Mock-up Unit (FMU) which can be used in co-simulation environments. FMI defines interfaces for the involved models to allow their co-simulation.
 
 %\begin{figure}[h]
 %\centering
@@ -195,8 +196,8 @@ An FMU is a package that encapsulates different files:
 
 The FMI standard is organized in two parts:
 \begin{itemize}
-\item FMI for Model Exchange
-FMI for Model Exchange specification provides interfaces and defines how model equations should be encapsulated in components. It allows solving each model independently using custom solvers. Accessing and computing the equations is done through standardized function calls. Figure \ref{fig:fmimdlexg} illustrates the principle of FMI for Model Exchange.
+\item FMI for Model Exchange:
+This specification provides interfaces and defines how model equations should be encapsulated in components. It allows solving each model independently using custom solvers. Accessing and computing the equations is done through standardized function calls. Figure \ref{fig:fmimdlexg} illustrates the principle of FMI for Model Exchange.
 
 \begin{figure}[phbt]
 \centering
@@ -206,7 +207,7 @@ FMI for Model Exchange specification provides interfaces and defines how model e
 \end{figure}
 
 \item FMI for Co-Simulation:
-FMI for Co-Simulation specification defines interfaces between a master algorithm and slave models. It is intended to couple different simulators (models with their solvers) in a co-simulation environment. Figure \ref{fig:fmicosim} illustrates the principle of FMI for Model Exchange.
+This specification defines interfaces between a master algorithm and slave models. It is intended to couple different simulators (models with their solvers) in a co-simulation environment. Figure \ref{fig:fmicosim} illustrates the principle of FMI for Model Exchange.
 
 \begin{figure}[phbt]
 \centering
@@ -231,17 +232,17 @@ In the context of FMI, we talk of model export and import. Model export means th
 %The High Level Architecture (HLA) \cite{} is another standard for distributed simulation.
  
 
-\subsection{Co-simulation with Real-time Constraints}
+\subsection{Co-simulation under Real-time Constraints}
 
-In the design process of complex systems, it is often necessary to test the behavior of the system as it would be produced by the real system. Therefore, the simulation is executed with real-time constraints such that the progress of the simulation time matches the real-time. For example, if temperature takes three minutes to reach $25$°, the simulation has to take three minutes as well. Similarly, a co-simulation with real-time constraints has to be executed with the same rate of the real-time.
+In the design process of complex systems, it is often necessary to test the behavior of the system or a part of the system as it would be produced by the real system. Therefore, the simulation is executed with real-time constraints such that the progress of the simulation time matches the real-time. For example, if temperature takes three minutes to reach $25$°, the simulation has to take three minutes as well. In the same way, a co-simulation under real-time constraints has to be executed such that the simulated time is advanced at the same speed as real-time.
 
-A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available. Many HiL solutions are developed in such a way to work using special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS).
+A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available. Many HiL solutions are developed in such a way to run the simulated part on special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS).
 
-Roughly speaking, the difference between real-time simulation and non real-time simulation is related to the notion of results validity. For non real-time simulation, one seeks to obtain results as soon as possible. The validity of the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time bounds. If such bounds are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
+Roughly speaking, the difference between real-time simulation and non real-time simulation is related to the notion of results validity. For non real-time simulation, one seeks to obtain results as soon as possible. The validity of the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time \textit{deadlines}. If such deadlines are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
 
-Figure \ref{fig:rtcosim} illustrates the time evolution of a real-time simulation in comparison to accelerated non real-time simulation. During the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}. In the field of real-time systems, we talk also about \textit{deadline miss}. In the context of real-time simulation, the deadline of a variable computation is the time step by which the value the variable has to be provided, e.g. time step $t_n$ for the computation of $X_n$.
+Figure \ref{fig:rtcosim} illustrates the time evolution of a real-time simulation in comparison to accelerated non real-time simulation. For the former, during the resolution of the differential equations, the value of each variable $x$ is computed at every time step. The computation of $x_{n+1}$, the value of $x$ at time step $t_{n+1}$, cannot start before the value $x_n$ is computed as the computation of $x_{n+1}$ depends on the value of $x_n$. If the time required to compute the value of $x_{n+1}$ exceeds the step size, the real-time simulation constraints are violated which makes the simulation invalid. This is known as an \textit{overrun}. In the field of real-time systems, we talk also about \textit{deadline miss}. In the context of real-time simulation, the deadline of a variable computation is the time step by which the value of the variable has to be provided, e.g. time step $t_n$ for the computation of $X_n$.
 
-Note that a real-time co-simulation is executed repeatedly. The execution is driven by a real-time period which defines the frequency of data exchange between the simulated part and the real part, e.g. the controller. This period can be different (usually greater) than the integration step-size of the co-simulation. In this case, not all computations are required to meet their deadlines. Instead, we seek rendez-vous points where time-steps and real-time periods match. Only the computations whose deadlines corresponds to these points must not overrun. Hence, a co-simulation can be guaranteed to satisfy real-time requirements even if the rest of the computations miss their deadlines.   
+Note that a real-time co-simulation is executed repeatedly. The execution is driven by real-time periods related to data exchange between the simulated part and the real part, e.g. the controller. This period can be different (usually greater) than the integration step-size of the co-simulation. In this case, not all computations are required to meet their deadlines. Instead, we seek "rendezvous" points where time-steps and real-time periods match. Only the computations whose deadlines corresponds to these points must not overrun. Hence, a co-simulation can be guaranteed to satisfy real-time requirements even if the rest of the computations miss their deadlines.   
 
 \begin{figure}[phbt]
 \centering
@@ -250,7 +251,7 @@ Note that a real-time co-simulation is executed repeatedly. The execution is dri
 \label{fig:rtcosim}
 \end{figure} 
 
-\subsection{Languages and Tools for Modeling and Simulation}
+\subsection{\label{lngtoolsMS}Languages and Tools for Modeling and Simulation}
 
 Building models of systems can be done manually and then transformed into software using general purpose programming languages such as C. However, this approach is not efficient in practice, especially when the modeled system is complex and changes may be required in the model. Many tools and languages for modeling and simulation have been developed in order to facilitate and make the modeling and simulation more efficient. Such tools allow the user to specify an equation-based model in a straightforward manner and come with built-in solvers. Below, we present a non exhaustive list of tools and languages for modeling and simulation.
 
@@ -263,7 +264,7 @@ Building models of systems can be done manually and then transformed into softwa
 %\end{figure} 
 
 \subsubsection{MATLAB Simulink}
-Simulink\footnote{www.mathworks.com/products/simulink/}, developed by The Mathworks is a graphical modeling environment. Simulink is used in the  process of Model-Based Design of embedded systems. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB algorithms in Simulink models. Finally, Simulink enables automatic code generation form models.
+Simulink\footnote{www.mathworks.com/products/simulink/}, developed by The Mathworks is a graphical modeling environment. Simulink can be used in the  process of designing embedded systems. It allows the simulation of embedded systems with the controlled physical processes. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB functions in Simulink models. Finally, Simulink enables automatic code generation from models.
 
 \subsubsection{Modelica}
 Modelica is an object-oriented equation-based language for the modeling of complex physical systems developed by the Modelica Association. Modelica allows the modeling of physical systems by writing a set equations. Modelica adopts an acausal approach, i.e. the signal flow is not specified in the model. The simulator has to perform symbolic manipulations in order to define inputs and outputs and find an order of execution for these equations. There exist several tools that are based on the Modelica language.

@@ -17,7 +17,7 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame0_View0,0]
-TopLine=1081
+TopLine=1086
 Cursor=84272
 
 [Frame1]
@@ -71,7 +71,7 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame3_View0,0]
-TopLine=22
+TopLine=41
 Cursor=31644
 
 [Frame4]
@@ -107,8 +107,8 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
-TopLine=20
-Cursor=5108
+TopLine=9
+Cursor=3648
 
 [Frame6]
 Flags=0

@@ -288,9 +288,9 @@ Hopsan\footnote{www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free m
 
 \section{Parallel Computing}
 
-Parallel computing is a very important branch in the computing research and industry. It refers to the discipline that focuses on executing multiple computations simultaneously to solve one problem. Its basic idea is to divide a computing task into several sub-tasks that can be performed at the same time. From the beginning of the modern era of computing, computer software has been typically written for sequential execution. In order to solve a problem, an algorithm is designed as a sequence of instructions that are executed one after the other. In order to increase the computation power of computers, the dominant method was frequency scaling. If a processor's frequency is increased, it means that it can execute more instructions per clock cycle and thus can execute a sequential program faster. Moore's law predicted that the number of transistors in a processor would double approximately every two years \cite{moore:1965}. This prediction proved correct for many years. However, frequency scaling is facing technological limits and the last decade witnessed a wide shift to multicore processors among semiconductor manufacturers. Moore's law can be considered to be still accurate since more transistors are still integrated in chips, not for frequency scaling but to add more processing elements. The rise of multicore processors has caused the evolution of many parallel hardware and software technologies.
+Parallel computing is a very important branch in the computing research and industry. It refers to the discipline that focuses on executing multiple computations simultaneously to solve one problem; thus, accelerating the total time of computation. Its basic idea is to divide a computing task into several sub-tasks that can be performed at the same time. From the beginning of the modern era of computing, computer software has been typically written for sequential execution. In order to solve a problem, an algorithm is designed as a sequence of instructions that are executed one after the other. In order to increase the computation power of computers, the dominant method was frequency scaling. If a processor's frequency is increased, it means that it can execute more instructions per clock cycle and thus can execute a sequential program faster. Moore's law predicted that the number of transistors in a processor would double approximately every two years \cite{moore:1965}. This prediction proved correct for many years. However, frequency scaling is facing technological limits and the last decade witnessed a wide shift to multicore processors among semiconductor manufacturers. Moore's law can be considered to be still accurate since more transistors are still integrated in chips, not for frequency scaling but to add more processing elements. The rise of multicore processors has caused the evolution of many parallel hardware and software technologies.
 
-The main goal of parallel computing is to execute computer programs faster. The speedup obtained from the parallelization can be predicted using Amdhal's law \cite{amdahl:1967}. It states that for a program that is paralellized in order to be executed on multiple processors, the portion of the program that has to be executed sequentially will limit the speedup. The speedup is therefore not linear with the number of processors and probably adding more processors will not make the program run faster. The following formula gives the theoretical speedup computed using Amdahl's law.
+The main goal of parallel computing is to execute computer programs faster. The speedup obtained from the parallelization can be predicted using Amdhal's law \cite{amdahl:1967}. It states that for a program that is paralellized in order to be executed on multiple processors, the portion of the program that has to be executed sequentially will limit the speedup. The speedup is therefore not linear with the number of processors and adding more processors will not make the program run faster than the portion of the program that has to be executed sequentially. The following formula gives the theoretical speedup computed using Amdahl's law:
 \begin{equation}
 S(n) = \frac{1}{(1-P) + \frac{P}{n}}
 \end{equation}
@@ -304,29 +304,21 @@ $S(n)$ is the theoretical speedup, $P$ is the portion of the program that can be
 \label{fig:amdhal}
 \end{figure} 
 
-\subsection{Parallel Architectures}
+\subsection{Parallelism in Architectures}
 
-Parallel computers are of many types, some of which are adapted only to specific kinds of applications. Parallel computers can be classified according to different criteria. Below, we present the common classifications of parallel computers. 
+A computer program consists in a stream of instructions. The first computers were only able to execute programs sequentially, i.e. one instruction after another. Later, parallel computing was made possible thanks to the introduction of parallel computers. Parallel computers are of many types, some of which are adapted only to specific kinds of applications. Parallel computers can be classified according to different criteria. Below, we present the common classifications of parallel computers. 
 
 \subsubsection{Flynn's Taxonomy}
 
 The well-known Flynn's taxonomy \cite{flynn:1972} classifies computers according to instruction and data streams into the following categories:
 
-\paragraph{Single-Instruction Stream--Single-Data Stream (SISD)}
+\paragraph{Single Instruction Stream Single-Data Stream (SISD)} This is the basic uniprocessor which does not exhibit any parallelism. The execution is sequential where a single instruction stream operates on a single data stream. Examples of such architecture are old desktop computers.
 
-This is the basic uniprocessor which does not exhibit any parallelism. The execution is sequential where a single instruction stream operates on single data stream. Examples of such architecture are old desktop computers.
+\paragraph{Single Instruction Stream Multiple Data Streams (SIMD)} A SIMD computer executes the same instruction stream on multiple data streams in parallel. A Graphics Processing Unit (GPU) is one example of SIMD architectures.
 
-\paragraph{Single-Instruction Stream--Multiple-Data Streams (SIMD)}
+\paragraph{Multiple Instruction Streams Single Data Stream (MISD)} Multiple instruction streams are executed on a single data stream. For example, in fault-tolerant computing, the same operation is performed in parallel and the results of all the computations must be the same. An example of this type is pipeline architecture.
 
-A SIMD computer executes the same instruction on multiple data streams in parallel. A Graphics Processing Unit (GPU) is one example of SIMD architectures.
-
-\paragraph{Multiple Instruction-Streams--Single Data Stream (MISD)}
-
-Multiple instructions are executed on a single data stream. For example, in fault-tolerant computing, the same operation is performed in parallel and the results of all the computations must be the same.
-
-\paragraph{Multiple Instruction-Streams--Multiple Data Streams (MIMD)}
-
-Different instructions are executed on different data in parallel. Examples of MIMD computers include multi-core architectures, grid computers, and supercomputers.
+\paragraph{Multiple Instruction-Streams Multiple Data Streams (MIMD)} Different instruction streams are executed on different data streams in parallel. Examples of MIMD computers include multi-core architectures, grid computers, and supercomputers.
 
 \subsubsection{Memory Models}
 
@@ -334,7 +326,7 @@ Flynn's taxonomy differentiates parallel computers based on their operational be
 
 \paragraph{Shared Memory}
 
-In this class of parallel architectures, a common memory is shared among multiple processors. All processors access the same global shared memory by operating on a single address space. Communication between the processors is performed through shared memory variables. Shared memory multiprocessors have the advantage of low communication overhead thanks to the proximity of the memory to processors. Scalability is a disadvantage of shared memory multiprocessors as increasing the number of processors creates more traffic between the processors and the memory.
+In this class of parallel architectures, a common memory is shared among multiple processors. All processors access the same global shared memory by operating on a single address space. Communication between the processors is performed through shared memory variables. Shared memory multiprocessors have the advantage of low communication overhead thanks to the proximity of the memory to processors. Scalability is a disadvantage of shared memory multiprocessors as increasing the number of processors creates more traffic between the processors and the memory resulting in memory contention. The latter means conflict between multiple accesses to memory. In practice, shared memory architecture does not scale beyond 16 processors.  
 
 There are two kinds of shared memory designs, Uniform Memory Access (UMA) and Non-Uniform Memory Access (NUMA). In the UMA design, the time needed to access the memory is the same for all the processors. This architecture is referred to as Symmetric Multiprocessor also. In the NUMA design, each processor has a local memory, and the shared memory is composed of these local memories. Time to access a specific memory region is not uniform for all processors. Processors access their local memories faster than the local memories of other processors.
 
@@ -348,7 +340,7 @@ It is possible to use both shared and distributed memory in a computer. In this 
 
 \subsection{Parallelism in Software}
 
-Much progress has been made in the design of parallel architectures. That being said, taking advantage of such architectures requires efficient ways for executing applications on parallel architectures. A difficult yet integral step in this direction is the process of detecting the parallelism that is inherent in software. It is important that this parallelism can be classified into different categories based on the nature of computations that are performed. The main classes of software parallelism are the following:    
+Much progress has been made in the design of parallel architectures. That being said, taking advantage of such architectures requires efficient ways for executing software on parallel architectures. A difficult yet integral step in this direction is the process of detecting the parallelism that is inherent in software. It is important that this parallelism can be classified into different categories based on the nature of computations that are performed. The main classes of software parallelism are the following:    
 
 \subsubsection{Data parallelism}
 Data parallelism is characterized by performing the same computation on a large set of data. If several processors are available, the data can be distributed across them and the same computation is executed on each processor. For instance a for loop can be parallelized by distributing the iterations over multiple processors. The same body of the for loop is executed on all the processors but operates on a different range of iterations on each processor.

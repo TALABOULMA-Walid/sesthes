@@ -365,4 +365,9 @@ The proposed heuristic is a list scheduling heuristic. It builds the multi-core 
 
 \section{Code Generation}
 
+In this section, we describe how the FMU co-simulation code is generated based on the schedule tables produced by the proposed scheduling algorithms. Note that, while the schedule tables are produced using different algorithms, the code generation is done in a similar way for both acceleration of co-simulation and co-simulation under real-time constraints. Since the FMU co-simulation is intended to be executed on multi-core desktop computers running general purpose or real-time operating systems, the implementation is achieved using \textit{native} threads. Such threads consist in threads that are provided by the operating system in contrast to threads that are related to a specific programming language and/or rely on a specific runtime library.
+
+In the generated code, as many threads are created as there are cores. Each thread is responsible for the execution of the schedule of one core. Therefore, each thread reads for the schedule table of its corresponding core and executes the operations that are specified in this table. These operations can be computational operations, i.e. input, output, and state operations, or synchronization operations. The synchronization operations are implemented using semaphores provided by the operating system. They are of two types: \textit{signal} and \textit{wait} operations. The execution of a signal operation by a thread consists in signaling the corresponding semaphore. The execution of a wait operation by a thread consists in block waiting for the corresponding semaphore. Each thread executes its associated schedule table repeatedly, and thus executes FMU operations and synchronizes with the other threads. 
+
+The orchestration of the co-simulation is ensured by a main thread which runs the FMI master algorithm.
 

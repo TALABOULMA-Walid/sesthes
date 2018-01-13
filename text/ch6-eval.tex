@@ -84,7 +84,7 @@ We compared the values of the critical path length obtained using the acyclic or
 \label{fig:orient_critpath}
 \end{figure}
 
-\subsection{Execution Time of the Scheduling Algorithms}
+\subsection{Execution Time of the Scheduling Algorithms for Co-simulation Acceleration}
 
 Similarly to the acyclic orientation tests, we compared the execution time of the scheduling heuristic with the execution time of the scheduling ILP using 200 generated random operation graphs of different sizes between five and $10000$. We set a two day limit for the resolution of the ILP. Tests were run for the scheduling problem with $2$, $4$, and $8$ cores. Execution times were measured by fixing the number of cores and varying the number of operations (graph size). The results are depicted for $2$, $4$, and $8$ cores in Figure \ref{fig:sched_exec_2}, Figure \ref{fig:sched_exec_4}, and Figure \ref{fig:sched_exec_8} respectively. All results are plotted on a logarithmic scale. In these figures, we see that the execution time of the ILP resolution increases exponentially as the graph size increases, and only small instances are resolved within acceptable times. On the other hand, the acyclic orientation heuristic is very fast and produces results in very short times and even for very large graphs, the execution times remain within practical bounds.
 
@@ -137,6 +137,10 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 %\subsection{Execution of the Co-simulation}
 %
 %The results presented in this section show how the acyclic orientation and the scheduling heuristics perform in terms of execution time and optimality gap. In the next section, we evaluate the runtime performance, i.e. the execution of the co-simulation code that is generated based on the result of the scheduling heuristic. To this end, we applied our proposed heuristics on an industrial use case.
+
+\subsection{Execution Time of the Scheduling Algorithms for Co-simulation under Real-time Constraints}
+
+\subsection{Schedulability Rate}
 
 \section{Industrial Use Case} 
 

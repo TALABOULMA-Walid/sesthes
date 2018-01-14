@@ -236,7 +236,7 @@ In the context of FMI, we talk of model export and import. Model export means th
 
 In the design process of complex systems, it is often necessary to test the behavior of the system or a part of the system as it would be produced by the real system. Therefore, the simulation is executed with real-time constraints such that the progress of the simulation time matches the real-time. For example, if temperature takes three minutes to reach $25$°, the simulation has to take three minutes as well. In the same way, a co-simulation under real-time constraints has to be executed such that the simulated time is advanced at the same speed as real-time.
 
-A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available. Many HiL solutions are developed in such a way to run the simulated part on special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS).
+A typical application of real-time co-simulation is HiL. The key advantage of real-time co-simulation is that it allows testing the controller under real-like conditions even if the physical process is not available.
 
 Roughly speaking, the difference between real-time simulation and non real-time simulation is related to the notion of results validity. For non real-time simulation, one seeks to obtain results as soon as possible. The validity of the results depends only on their numerical accuracy. For real-time simulation, the validity of results depends on their numerical accuracy but also on their availability time, i.e. they have to be available within specific time \textit{deadlines}. If such deadlines are missed, the results are considered invalid even if their values are correct from a numerical standpoint.
 
@@ -285,6 +285,19 @@ CosiMate\footnote{www.cosimate.com/} is a co-simulation environment that enables
 
 \subsubsection{Hopsan}
 Hopsan\footnote{www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
+
+\subsection{Tools and Languages for Real-time Simulation}
+
+The additional timing constraints found in real-time simulation require the use of adapted tools. Many real-time simulation tools are developed in such a way to run the simulated part on special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS). In \cite{faruque:2015}, the authors give a list of the available real-time simulation tools and detail their characteristics. In the following, we present a non exhaustive list of tools for real-time simulation.
+
+\subsubsection{Simulink Coder}
+
+MATLAB/Simulink offers the Simulink Coder solution for real-time simulation. Simulink Coder generates C/C++ executable code from Simulink models and MATLAB functions. The generated code can be used in a real-time simulation such as HiL testing. The generated code can be deployed with or without a RTOS. Simulink Coder offers three execution codes. In the Single-Tasking Mode, the generated code is executed in a single thread. In the Multi-Tasking Mode, the user specifies sampling periods for parts of the generated code, called rates in Simulink Coder, which are executed and scheduled by a priority-based scheduler. The Asynchronous Mode allows specifying nonperiodic or asynchronous rates. Simulink Coder generates the necessary code to handle such rates.
+
+\subsubsection{RT-LAB}
+
+OPAL-RT\footnote{https://www.opal-rt.com/}, a company specializing in real-time simulation, develops RT-LAB real-time simulation software. RT-LAB transforms Simulink models into a real-time application by generating and compiling C code. The generated code can be run in parallel on multiple cores. OPAL-RT provides its own hardware targets for the execution of real-time simulation combining COTS parallel computing technologies. Also, its proposed solution uses a Linux based RTOS.   
+
 
 \section{Parallel Computing}
 

@@ -25,6 +25,39 @@ xMOD is a co-simulation and a virtual experimentation platform, developed at IFP
 
 In \cite{faure:2011} a set of rules is defined for propagating timing constraints from a physically available component to simulated models in a HiL co-simulation. It defines the constraints for each model of the co-simulation. In this thesis, we extend these rules to apply them on FMI compliant models. Furthermore, we propose multi-core scheduling algorithms to satisfy the defined timing constraints.
 
-The contributions of thesis thesis can be summarized in the following list:
+The contributions of this thesis are the following:
+
+\begin{itemize}
+
+\item \textbf{A dependence graph model for representing FMI co-simulations:} Our contributions consist in extending the dependence graph model of the RCOSIM approach to handle additional requirements and constraints as follows:
+
+\begin{enumerate}
+
+\item A multi-rate FMI co-simulation involves FMUs that are assigned different communication steps which define the data exchange rates of the FMUs. Such co-simulations cannot be handeled by RCOSIM because the dependence graph model fails to represent the different communication steps. We propose a transformation algorithm that transforms the dependence graph of a multi-rate FMI co-simulation. The result is a new graph that represents well the data exchange rates of the different FMUs. A scheduling algorithm can then be applied on the resulting graph.
+
+\item For some co-simulations, it is not possible to execute multiple functions of the same FMU in parallel because they share some resource, e.g. variables. Such functions are said to be mutually exclusive. The RCOSIM approach handles these constraints in a way that limits the acceleration of the co-simulation. We propose an acyclic orientation algorithm that is applied on the dependence graph of the co-simulation. The result is a new graph that defines an order of execution for functions that are mutually exclusive.
+
+\item We extend the propagation rules proposed in \cite{faure:2011} to FMI co-simulations. For this, we propose propagation algorithms that assign real-time constraints, i.e. release and deadline dates, to the nodes of the dependence graph. A multi-core real-time scheduling algorithm can then be applied on the dependence graph.
+
+\newcounter{enumTemp}
+\setcounter{enumTemp}{\theenumi}
+
+\end{enumerate}
+
+\item \textbf{Multi-core scheduling of FMI co-simulations:} We improve the scheduling heuristic used in the RCOSIM approach and propose other algorithms as follows:
+
+\begin{enumerate}
+
+\setcounter{enumi}{\theenumTemp}
+
+\item We improved the multi-core scheduling heuristic used in RCOSIM by accounting for synchronization cost. Also we proposed an Integer Linear Programming (ILP) formulation for the problem of scheduling for co-simulation acceleration. We compare the performances of the two algorithms in for different kinds of dependence graphs and architectures.
+
+\item We implemented a run-time scheduling solution using the Intel TBB library for the acceleration of FMI co-simulation. We compared the performance of this solution with that of our proposed heuristic by applying both on an industrial use case.
+
+\item We proposed a scheduling heuristic and an ILP formulation for the problem if scheduling FMI co-simulations under real-time constraints. We compare the performances of the two algorithms in for different kinds of dependence graphs and architectures.   
+
+\end{enumerate}
+
+\end{itemize}
 
 \section{Thesis Outline}

@@ -61,3 +61,15 @@ The contributions of this thesis are the following:
 \end{itemize}
 
 \section{Thesis Outline}
+
+The rest of this thesis is structured in six chapters. In chapter \ref{ch:2-bkgnd} we give basic concepts and preliminaries related to the different domains that are involved in the thesis. In section \ref{sec:MnS}, we present basic concepts of modeling and simulation. First we specify the type of systems that we are interested in. Than we briefly present several modeling formalisms with an emphasis on differential equations and hybrid modeling. Then, we present the principle of numerical simulation before defining the concept of co-simulation. Co-simulation under real-time constraints is defined next. Finally, we review some of the most know tools for modeling and simulation, and real-time simulation.
+
+In chapter \ref{ch:3-state}, we give a detailed description of the research problem of this thesis. We start, in the first section, by giving an overview of the problem. In the second section, we present the RCOSIM approach that we aim to improve and extend in this thesis. Next, we list the limitations of RCOSIM. Finally, we present the open research issues and the objectives of the thesis in detail.
+
+Chapter \ref{ch:4-accel} focuses on the first part of our contributions, i.e. a dependence graph model for representing FMI co-simulations. First, we present, in detail, the method of construction of the dependence graph of an FMI co-simulation, used in the RCOSIM approach. The next section is dedicated to multi-rate FMI co-simulation where we propose a transformation algorithm for multi-rate dependence graphs and give a small illustrative example. Then, we deal with the problem of handling mutual exclusivity constraints. We give a detailed description of the problem and formulate it as an acyclic oreintaiton problem. We propose a heuristic and ILP formulation that perform the acyclic orientation of the dependence graph. In lat section, we describe the problem of propagating real-time constraints before giving propagation algorithms. We give small examples to illustrate the algorithms.
+
+In chapter \ref{ch:5-sched}, we present our proposed scheduling heursitics and ILP formulations for both the acceleration of the co-simulation and the execution of HiL co-simulation under real-time constraints.
+
+We evaluate our proposed solutions in chapter \ref{ch:6-eval}. First, we propose a random generator of synthetic FMI co-simulations. Then we compare the performances of the heuristics and the ILP formulations for the acyclic orientation and the scheduling respectively. Finally, we evaluate out approach by applying it on an industrial use case. We compare its performance with RCOSIM and a run-time scheduling solution using Intel TBB.
+
+Chapter \ref{ch:7-concl} concludes this thesis. First, we give a summary of the objectives and the contributions of the thesis. Then, we present some perspectives for future work. 

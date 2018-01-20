@@ -1,25 +1,20 @@
 When designing complex cyber-physical systems, engineers have to integrate numerical models
 from different
 modeling environments in order to simulate the whole system and estimate its global
-performances. If some real parts of the system are already available, it is possible to connect these
+performances. If some parts of the system are physically available, it is possible to connect these
 physically available components to the simulation in a Hardware-in-the-Loop (HiL) approach. In this case, the
 simulation has to be performed in real-time where models execution consists in periodically
-reacting to the real (physically available) components and providing output update. The
+reacting to the real (physically available) components and providing periodic output updates. The
 increase of requirements on the simulation accuracy and its validity domain requires more
-complex models. Using such models, it becomes hard to ensure fast as well as real-time execution without using
+complex models. Using such models, it becomes hard to ensure fast or real-time execution without using
 multiprocessor architectures. FMI (Functional Mocked-up Interface), an increasingly common
 standard for model exchange and co-simulation, offers
 new opportunities for multi-core execution
-of numerical models, by enabling intra-model parallelization. One objective of this thesis is to
-define algorithms for extracting potential parallelism in a set of interconnected multi-rate models.
-Another one consists in proposing algorithms for the allocation and scheduling of models, taking % cosimulation: accleration et depasser les limites, garantir le temps réel pour le HiL
-into account their real-time, data dependencies and allocation constraints. Such algorithms aim to accelerate the execution of the co-simulation or ensure its real-time execution. Prior to this thesis,
-an approach has been developed at IFPEN which allows the parallelization of FMI models on
-multi-core processors. In the first part of the thesis, improvements have been proposed to overcome
-the limitations of this approach. In particular, we propose new algorithms in order to allow
+of numerical models%, by enabling intra-model parallelization
+. One goal of this thesis is the extraction of potential parallelism in a set of interconnected multi-rate models. We build on the RCOSIM approach that has been previously developed at IFPEN and which allows the parallelization of FMI models on multi-core processors. It is based on representing the co-simulation by a dependence graph model. In the first part of the thesis, improvements have been proposed to overcome the limitations of RCOSIM. In particular, we propose new algorithms in order to allow
 handling models that exchange data at different
-rates and schedule them on multi-core processors.
-The proposed algorithms allow also the optimization of the phase of analyzing the models structures and
-their data dependencies in order to compute their schedule on the multi-core processor. Finally, the
-proposed improvements allow more accurate measurements of the execution times of the models using a profiling technique and allow also handling some specific constraints like mutual exclusion constraints. This thesis is part of a joint action IFPEN - Inria in which Inria brings its
-real-time systems experience to the numerical simulation challenges of IFPEN.
+rates and schedule them on multi-core processors. Also, the improvements allow handling specific constraints such as mutual exclusion and real-time constraints. 
+Second, we propose algorithms for the allocation and scheduling of the dependence graphs, taking % cosimulation: accleration et depasser les limites, garantir le temps réel pour le HiL
+into account their real-time, data dependence and allocation constraints. These algorithms aim at accelerating the execution of the co-simulation or ensuring its real-time execution in a HiL approach.
+The proposed solutions have been tested on randomly generated dependence graphs and validated against an industrial use case which is an internal combustion engine co-simulation.
+This thesis is part of a joint action IFPEN - Inria in which Inria brings its real-time systems experience to the numerical simulation challenges of IFPEN.

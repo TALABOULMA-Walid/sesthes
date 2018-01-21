@@ -264,7 +264,7 @@ Building models of systems can be done manually and then transformed into softwa
 %\end{figure} 
 
 \subsubsection{MATLAB Simulink}
-Simulink\footnote{www.mathworks.com/products/simulink/}, developed by The Mathworks is a graphical modeling environment. Simulink can be used in the  process of designing embedded systems. It allows the simulation of embedded systems with the controlled physical processes. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB functions in Simulink models. Finally, Simulink enables automatic code generation from models.
+Simulink\footnote{www.mathworks.com/products/simulink}, developed by The Mathworks is a graphical modeling environment. Simulink can be used in the  process of designing embedded systems. It allows the simulation of embedded systems with the controlled physical processes. Models are built graphically in Simulink using block diagrams. In addition, Simulink is integrated in MATLAB which allows the incorporation of MATLAB functions in Simulink models. Finally, Simulink enables automatic code generation from models.
 
 \subsubsection{Modelica}
 Modelica is an object-oriented equation-based language for the modeling of complex physical systems developed by the Modelica Association. Modelica allows the modeling of physical systems by writing a set of equations. Modelica adopts an acausal approach, i.e. the direction of the signal is not specified in the model. The simulator has to perform symbolic manipulations in order to define inputs and outputs and find an order of execution for these equations. There exist several tools that are based on the Modelica language.
@@ -274,19 +274,23 @@ OpenModelica\footnote{www.openmodelica.org} is an open-source modeling and simul
 Dymola\footnote{www.3ds.com/products-services/catia/products/dymola}, developed by Dassault Syst\`emes AB, is a modeling and simulation environment based on the Modelica modeling language. Dymola supports the FMI standard and allows interfacing with other tools such as Simulink
 
 \subsubsection{LMS Imagine.Lab Amesim}
-LMS Imagine.Lab Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/amesim/} is a modeling and simulation software developed by Siemens PLM Software. It can be used for the modeling and simulation of mechatronic systems. It is based on the Modelica modeling language. It is oriented towards the modeling of complex physical systems instead of controller design. LMS Imagine.Lab Amesim provides libraries containing collections of components that can be loaded and connected by the user to build models. For simulation, LMS Imagine.Lab Amesim automatically selects a solver that is adapted to the problem. It supports the FMI standard.
+LMS Imagine.Lab Amesim\footnote{www.plm.automation.siemens.com/en\_us/products/lms/imagine-lab/amesim} is a modeling and simulation software developed by Siemens PLM Software. It can be used for the modeling and simulation of mechatronic systems. It is based on the Modelica modeling language. It is oriented towards the modeling of complex physical systems instead of controller design. LMS Imagine.Lab Amesim provides libraries containing collections of components that can be loaded and connected by the user to build models. For simulation, LMS Imagine.Lab Amesim automatically selects a solver that is adapted to the problem. It supports the FMI standard.
 
 \subsubsection{xMOD}
-xMOD\footnote{www.xmodsoftware.com/} is the modeling and co-simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models with different integration and communication step sizes. Also, it allows the co-simulation of models embedding different solvers or not. In the latter case, xMOD provides a list of different solvers from which the user can choose one for every model. xMOD does not replace original modeling and simulation tools. Instead, it promotes and facilitates their coupling and existence.
+xMOD\footnote{www.xmodsoftware.com} is the modeling and co-simulation software developed by IFP Energies nouvelles. It supports FMI and provides an environment for the integration of heterogeneous models built by different parties using different languages and tools. xMOD can execute models with different integration and communication step sizes. Also, it allows the co-simulation of models embedding different solvers or not. In the latter case, xMOD provides a list of different solvers from which the user can choose one for every model. xMOD does not replace original modeling and simulation tools. Instead, it promotes and facilitates their coupling and existence.
+
+\subsubsection{DACCOSIM}
+
+The Distributed Architecture for Controlled CO-SIMulation (DACCOSIM)\footnote{sourcesup.renater.fr/daccosim} \cite{galtie:2015} is co-simulation software developed and maintained by EDF Lab Paris-Saclay\footnote{www.edf.fr} and CentraleSup\'{e}lec\footnote{www.centralesupelec.fr}. It supports the FMI standard and allows distributed co-simulation of FMUs on multi-core architectures or clusters. DACOSSIM is able to execute FMUs with different fixed or variable integration steps. 
 
 \subsubsection{CosiMate}
 
-CosiMate\footnote{www.cosimate.com/} is a co-simulation environment that enables distributed co-simulation. Multiple simulators can be executed on different computers and communicate over a network. CosiMate supports the FMI standard, interfacing with Simulink, and several languages like Modelica, C++, and Java.
+CosiMate\footnote{www.cosimate.com} is a co-simulation environment that enables distributed co-simulation. Multiple simulators can be executed on different computers and communicate over a network. CosiMate supports the FMI standard, interfacing with Simulink, and several languages like Modelica, C++, and Java.
 
 \subsubsection{Hopsan}
 Hopsan\footnote{www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free multi-domain system co-simulation tool developed at the division of Fluid and Mechatronic Systems at Link\"oping university. Hopsan supports the FMI standard and model export to Simulink.
 
-\subsection{Tools and Languages for Real-time Simulation}
+%\subsection{Tools and Languages for Real-time Simulation}
 
 The additional timing constraints found in real-time simulation require the use of adapted tools. Many real-time simulation tools are developed in such a way to run the simulated part on special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS). In \cite{faruque:2015}, the authors give a list of the available real-time simulation tools and detail their characteristics. In the following, we present a non exhaustive list of tools for real-time simulation.
 
@@ -296,11 +300,19 @@ MATLAB/Simulink offers the Simulink Coder solution for real-time simulation. Sim
 
 \subsubsection{RT-LAB}
 
-OPAL-RT\footnote{www.opal-rt.com}, a company specializing in real-time simulation, develops RT-LAB real-time simulation software. RT-LAB transforms Simulink models into a real-time application by generating and compiling C code. The generated code can be run in parallel on multiple cores. OPAL-RT provides its own hardware targets for the execution of real-time simulation combining COTS parallel computing technologies. Also, its proposed solution uses a Linux based RTOS.
+OPAL-RT\footnote{www.opal-rt.com}, a company specializing in real-time simulation, develops RT-LAB real-time simulation software. RT-LAB transforms Simulink models into a real-time application by generating and compiling C code. The generated code can be run in parallel on multiple cores. OPAL-RT provides its own hardware targets for the execution of real-time simulation combining COTS parallel computing technologies. Its solution uses a Linux based RTOS.
 
 \subsubsection{dSpace}
 
-dSpace\footnote{www.dspace.com} features the Real-Time Interface (RTI). dSpace relies on Simulink as the modeling tool and uses RTI to extend Simulink Coder for automatic implementation of generated code by Simulink Coder on the real-time hardware of dSpace. An RTI library in Simulink allows adding blocks that implement I/O capabilities to Simulink models. The code generated by Simulink Coder from such models is prepared to be executed on dSpace hardware without manual editing of the code. 
+dSpace\footnote{www.dspace.com} features the Real-Time Interface (RTI). dSpace relies on Simulink as the modeling tool and uses RTI to extend Simulink Coder for automatic implementation of generated code by Simulink Coder on the real-time hardware of dSpace. An RTI library in Simulink allows adding blocks that implement I/O capabilities to Simulink models. The code generated by Simulink Coder from such models is prepared to be executed on dSpace hardware without manual editing of the code.
+
+\subsubsection{RTDS}
+
+Developed by RTDS Technologies\footnote{www.rtds.com}, RTDS is a real-time simulator of power systems. It consists of a custom hardware and a custom software. The hardware is composed of multiple chassis containing, each a multi-core processor. The RTDS software is designed for interfacing with the RTDS hardware. It consists of several modules necessary for creating, tuning, loading a simulation into the RTDS hardware, and plotting and visualizing the results.
+
+\subsubsection{Typhoon HiL}
+
+Multiple hardware and software solutions are proposed by Typhoon HiL\footnote{www.typhoon-hil.com}. It offers a complete software solution comprising a schematic editor, a module for interfacing with Typhoon hardware, a test suite to run some pre-certification tests, and a power systems toolbox offering a variety of built-in models. Typhoon HiL targets primarily real-time HiL simulation of power systems. 
 
 
 \section{Parallel Computing}

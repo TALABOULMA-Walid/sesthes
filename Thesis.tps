@@ -12,12 +12,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame0_View0,0]
-TopLine=371
+TopLine=383
 Cursor=32671
 
 [Frame1]
@@ -30,7 +30,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=figures\rtcosim.tex
 
@@ -48,7 +48,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=figures\tbbnodes.tex
 
@@ -66,12 +66,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame3_View0,0]
-TopLine=175
+TopLine=200
 Cursor=13347
 
 [Frame4]
@@ -84,7 +84,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=Thesis.tex
 
@@ -102,13 +102,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
-TopLine=0
-Cursor=36287
+TopLine=862
+Cursor=84113
 
 [Frame6]
 Flags=0
@@ -120,7 +120,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\ch3-state.tex
 
@@ -138,12 +138,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame7_View0,0]
-TopLine=391
+TopLine=393
 Cursor=25921
 
 [Frame8]
@@ -156,7 +156,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=figures\tbbvsrcosim.tex
 
@@ -174,7 +174,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=figures\genexample.tex
 
@@ -192,7 +192,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=figures\mbd.tex
 
@@ -210,7 +210,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=ociamthesis.cls
 
@@ -228,7 +228,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\abstract.tex
 
@@ -246,7 +246,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1916
-NormalPos.bottom=904
+NormalPos.bottom=405
 Class=LaTeXView
 Document=text\title-page.tex
 
@@ -256,5 +256,5 @@ Cursor=550
 
 [SessionInfo]
 FrameCount=14
-ActiveFrame=13
+ActiveFrame=5
 

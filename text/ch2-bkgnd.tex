@@ -281,7 +281,7 @@ xMOD\footnote{www.xmodsoftware.com} is the modeling and co-simulation software d
 
 \subsubsection{DACCOSIM}
 
-The Distributed Architecture for Controlled CO-SIMulation (DACCOSIM)\footnote{sourcesup.renater.fr/daccosim} \cite{galtie:2015} is co-simulation software developed and maintained by EDF Lab Paris-Saclay\footnote{www.edf.fr} and CentraleSup\'{e}lec\footnote{www.centralesupelec.fr}. It supports the FMI standard and allows distributed co-simulation of FMUs on multi-core architectures or clusters. DACOSSIM is able to execute FMUs with different fixed or variable integration steps. 
+The Distributed Architecture for Controlled CO-SIMulation (DACCOSIM)\footnote{sourcesup.renater.fr/daccosim} is co-simulation software developed and maintained by EDF Lab Paris-Saclay\footnote{www.edf.fr} and CentraleSup\'{e}lec\footnote{www.centralesupelec.fr}. It supports the FMI standard and allows distributed co-simulation of FMUs on multi-core architectures or clusters. DACOSSIM is able to execute FMUs with different fixed or variable integration steps. 
 
 \subsubsection{CosiMate}
 
@@ -589,7 +589,15 @@ Finally, a simulation can be parallelized across the system, i.e. the equations 
 
 Transmission Line Modeling (TLM) \cite{hui:1990} is a method that allows the decoupling and the parallelization of models by representing them using transmission line graphs such that decoupling points are chosen where variables change slowly because the models are considered to be connected by constants at these points. The approaches presented in \cite{sjolund:2010,braun:2012} are based on the TLM method. 
 
+An automatic parallelization approach based on task graph scheduling is presented in \cite{aronsson:2006}. For this, the simulation code is analyzed at the expression level to build the task graph. A clustering algorithm is, also, proposed in this work to merge tasks. Finally an offline scheduling heuristic is applied on the task graph.
+
 Co-simulation is naturally adapted to parallelization across the system approach. In fact, as shown in \cite{Benkhaled_A_2012_ECOSM}, splitting a model into several FMUs, by isolating discontinuities, may reduce the simulation time, even in the case of a sequential execution. In \cite{benkhaled:2014} the Refined CO-SIMulation (RCOSIM) approach is presented. It consists in using each FMU information on input/output causality to build a graph, with an increased granularity and then exploiting the potential parallelism by using a heuristic to build an offline multi-core schedule in order to accelerate the execution.
+
+The parallelization approach of the DACCOSIM tool is presented in \cite{galtie:2015}. Thanks to a graphical user interface, different FMUs of a co-simulation can be allocated to different multi-core computing nodes manually. If two dependent FMUs are allocated to different nodes, TCP connection is used for communication. Otherwise, interprocess communication is used. Each FMU is executed on its own thread on a distinct core. In addition, DACOSSIM is able to perform input extrapolation.
+
+
+
+In \cite{lundvall:2007}, the authors propose a solution that combines two paralleization approaches: paralleization across the time and parallelization across the system. In particular, the proposed solution allows performing several stages of the Runge-Kutta solver in parallel within a single step. In addition, paralleization across the system is performed by parallelizing the operations involved in evaluating the equations of the system. A task graph of these operations is built and then scheduled on a multi-core processor. 
 
 \subsection{Tools}
 

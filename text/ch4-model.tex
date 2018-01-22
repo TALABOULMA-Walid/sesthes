@@ -489,7 +489,7 @@ In the first step, the graph $G(V,\emptyset,D)$ obtained by removing all the arc
 It keeps a list of of already colored operations $L_k$ for each subgraph $G(V_k,\emptyset,D_k)$. The operations of every list $o_i \in L_k$ are sorted in increasing order of their assigned colors. At each iteration, the heuristic selects among the operations not yet colored $o_i \in V$, the operation which has the earliest start time $S(o_i)$ to be assigned a color. Ties are broken by selecting the operation with the least flexibility. We call the operation to be colored at a given iteration, the \textit{pending operation}. The heuristic checks in the order of $L_k$ if the edges which connect the pending operation $o_i \in V_k$ with the operations $o_j \in L_k$ are conflict edges. 
 If a conflict edge $[o_i,o_j] \in D_k: o_j \in L_k$ is detected, the pending operation is assigned the color $\alpha(o_j)$ and the colors assigned to all the already colored operations $o_{i'} \in L_k$ such that $\alpha(o_{i'}) \geq \alpha(o_{i})$, are increased $\alpha(o_{i'}) = \alpha(o_{i'})+1$. The corresponding edges are then accordingly assigned directions. Afterward, the timing attributes of the operations are updated using Algorithms \ref{algo:update_s} and \ref{algo:update_e}. At this point, the increase of $R$, the critical path of the graph, is evaluated. Next, the operations $o_{i'} \in L_k$: $\alpha(o_{i'}) > \alpha(o_{i})$ are reassigned their previous colors $\alpha(o_{i'}) = \alpha(o_{i'})-1$, and the pending operation is assigned the color $\phi(o_i)=\phi(o_i)+1$. The increase in the critical path is evaluated again similarly. After repeating this process for all the edges $[o_i,o_j] \in D_k: o_j \in L_k$, the pending operation is finally assigned the color which leads to the least increase in the critical path, and edges $[o_i,o_i'] \in D_k : o_i' \in l$ are assigned directions accordingly. The heuristic begins another iteration by selecting a new operation to be colored. The heuristic assigns a color to one operation at each iteration. Every operation is assigned a color higher than the colors of all its predecessors which guarantees that no cycle is generated. The heuristic finally stops when all the operations have been assigned colors. 
 %Dont forget to add case not conflict edge
-\begin{algorithm}[htb]		
+\begin{algorithm}[!htp]		
 	%\textbf{Input:} Mixed graph $G(V,A,D)$\;
 	%\textbf{Output:} Digraph $G(V,A')$\;
 	%Set $d$ the number of all occurrences of all FMUs\;
@@ -780,10 +780,9 @@ The last phase of the propagation of the release constraints is the loop back ph
 \begin{algorithm}[!htp]	
 	\SetKwFunction{propagate}{propagate}	
 	 Initialization\;
-	 Set $\Omega$ the set of all the operations\; 
 	 Set $O$ the set of input gate operations\;
 	 Set $T_{O_i}$ the period of the output of the real component that is connected to $o_i$\;
-	 Sort $O$ in a non decreasing order of $T_{O_i}: o_i \in O$\;
+	 Sort $O$ in a decreasing order of $T_{O_i}: o_i \in O$\;
 	 Set $HP$ the hyperperiod\;
 	
 	/* Forward propagation phase */
@@ -828,7 +827,53 @@ We now describe, in a similar way, the algorithm of deadline propagation. The pr
 
 In a similar way, the occurrences of a deadline constraint are propagated in an increasing order. For instance, let the operation $o_j$ be subject to the deadline constraint $T_I$. Suppose that the occurrences of $T_I$ are propagated in a decreasing order. Therefore, the last occurrence $d_i^m$ of $T_I$ is propagated first. This assigns the deadline constraint to $d_i^m$ to the operation occurrence $o_j^s | s = r(o_j)$ and all the preceding occurrences $o_j^{s'} | 0 \leq s' < s $ and their predecessors. The propagation of the preceding occurrence $d_i^{m-1}$ of $T_I$ assigns the deadline constraint $d_i^{m-1}$ to the operation occurrence $o_j^u$ where $u < s$ and propagates $d_i^{m-1}$ to all the preceding operation occurrences $o_j^{u'} | 0 < u' < u $ and their predecessors. This leads to traversing all the paths that end at $o_j^u$ twice. In order to avoid these necessary traversals, the occurrences of $T_I$ are traversed in a decreasing order. In the aforementioned example, after $d_i^{m-1}$ is propagated, the propagation of $d_i^m$ stops at $o_j^u$ by using expression \ref{eq:mulded}. Consequently, the paths that end at $o_j^u$ are not traversed again.
 
-Lastly, the loop forward phase of propagation is performed, always, in an increasing order of the deadline constraints. Algorithm details the prposed algorithm for the propagation of deadline constraints.     
+Lastly, the loop forward phase of propagation is performed, always, in an increasing order of the deadline constraints. Algorithm \ref{algo:deadline} details the proposed algorithm for the propagation of deadline constraints.
+
+\begin{algorithm}[!htp]	
+	\SetKwFunction{propagate}{propagate}	
+	 Initialization\;
+	 Set $O$ the set of output gate operations\;
+	 Set $T_{I_i}$ the period of the input of the real component that is connected to $o_i \in O$\;
+	 Sort $O$ in an increasing order of $T_{I_i}: o_i \in O$\;
+	 Set $HP$ the hyperperiod\;
+	
+	/* Backward propagation phase */
+	
+	\ForEach{operation $o_i \in O$} 
+	{
+		\For{$s \leftarrow 0$ \KwTo $r(o_i) - 1$ \KwBy $\frac{T_{O_i}}{H(o_i)}$}
+		{
+		  $k \leftarrow s \times \frac{H(o_i)}{T_{O_i}}$\;
+			$\mathcal{D}(o_i^s) \leftarrow T_{I_i^k}$\;
+			\propagate{$o_i^s$}\;	
+		}
+	}
+	
+	/* Loop forward propagation phase */
+	
+	\ForEach{FMU $M$ whose first occurrence of the state operation $o_i^0$ has been assigned a deadline date} 
+	{
+		  Let $o_i^u$ be the last occurrence of FMU $M$ in the operation graph\;
+			$\mathcal{D}(o_i^u) \leftarrow \mathcal{D}(o_i^0) + HP$\;
+			\propagate{$o_i^u$}\;	
+	}
+		
+	\SetKwProg{myproc}{Procedure}{}{}
+	\myproc{\propagate{$o_i$}}
+		{
+			\ForEach{$o_{i'} \in pred(o_i)$}
+			{
+				\If{$\mathcal{D}(o_{i'}) > \mathcal{D}(o_i)$}
+				{
+					$\mathcal{D}(o_{i'}) \leftarrow \mathcal{D}(o_i)$\;
+					\propagate{$o_{i'}$}\;
+				}
+			}
+			\KwRet\;
+		}
+	\caption{Deadline propagation algorithm}
+	\label{algo:deadline}
+\end{algorithm}   
 
 %\subsection{Example}
 

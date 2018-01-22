@@ -775,7 +775,54 @@ Let's start with the propagation of the release constraint. The propagation star
 
 The same idea applies to the order in which occurrences of a release constraint are propagated. For each release constraint, the proposed algorithm successively performs the propagation of its occurrences in a decreasing order, i.e. starting with the last occurrence and finishing with first one. Following the same reasoning presented in the previous paragraph, it can be seen how such order may avoid necessary traversals. Consider, for example, the propagation of occurrences of the release constraint $T_O$ applied to operation $o_i$. Suppose that the first occurrence $r_i^0$ of $T_O$ is propagated first. This assigns the release constraint $r_i^0$ to occurrence $o_i^s$ and leads to propagating $r_i^0$ to all subsequent occurrences $o_i^{s'} | s < s' < r(o_i) $ and their successors. Then, propagating the subsequent occurrence $r_i^1$ of $T_O$ assigns the release constraint $r_i^1$ to occurrence $o_i^u$ and leads to propagating $r_i^1$ to all subsequent occurrences $o_i^{u'} | u < u' < r(o_i) $ and their successors. As such, all the paths that start at $o_i^{u}$ are traversed twice. However, performing the propagation in a decreasing order of the occurrences of $T_O$ remedies to this issue. For instance, in above example, after $r_i^1$ is propagated, the propagation of $r_i^0$ stops at $o_i^{u}$ with the use of expression \ref{eq:mulrel}. Therefore, the paths starting at $o_i^{u}$ are not unnecessarily traversed again.
 
-The last phase of the propagation of the release constraints is the loop back phase. This phase is performed following the same technique, i.e. starting with the greatest constraint. Similarly, this avoids performing unnecessary traversals. Algorithm lists the proposed algorithm for propagation of release constraints.
+The last phase of the propagation of the release constraints is the loop back phase. This phase is performed following the same technique, i.e. starting with the greatest constraint. Similarly, this avoids performing unnecessary traversals. Algorithm \ref{algo:release} lists the proposed algorithm for propagation of release constraints.
+
+\begin{algorithm}[!htp]	
+	\SetKwFunction{propagate}{propagate}	
+	 Initialization\;
+	 Set $\Omega$ the set of all the operations\; 
+	 Set $O$ the set of input gate operations\;
+	 Set $T_{O_i}$ the period of the output of the real component that is connected to $o_i$\;
+	 Sort $O$ in a non decreasing order of $T_{O_i}: o_i \in O$\;
+	 Set $HP$ the hyperperiod\;
+	
+	/* Forward propagation phase */
+	
+	\ForEach{operation $o_i \in O$} 
+	{
+		\For{$s \leftarrow r(o_i) - 1$ \KwDownTo $0$ \KwBy $\frac{T_{O_i}}{H(o_i)}$}
+		{
+		  $k \leftarrow s \times \frac{H(o_i)}{T_{O_i}}$\;
+			$\mathcal{R}(o_i^s) \leftarrow T_{O_i^k}$\;
+			\propagate{$o_i^s$}\;	
+		}
+	}
+	
+	/* Loop back propagation phase */
+	
+	\ForEach{FMU $M$ whose last occurrence of the state operation $o_i^u$ has been assigned a release date} 
+	{
+		  Let $o_i^0$ be the first occurrence of FMU $M$ in the operation graph\;
+			$\mathcal{R}(o_i^0) \leftarrow \mathcal{R}(o_i^u) - HP$\;
+			\propagate{$o_i^0$}\;	
+	}
+		
+	\SetKwProg{myproc}{Procedure}{}{}
+	\myproc{\propagate{$o_i$}}
+		{
+			\ForEach{$o_{i'} \in succ(o_i)$}
+			{
+				\If{$\mathcal{R}(o_{i'}) < \mathcal{R}(o_i)$}
+				{
+					$\mathcal{R}(o_{i'}) \leftarrow \mathcal{R}(o_i)$\;
+					\propagate{$o_{i'}$}\;
+				}
+			}
+			\KwRet\;
+		}
+	\caption{Release propagation algorithm}
+	\label{algo:release}
+\end{algorithm} 
 
 We now describe, in a similar way, the algorithm of deadline propagation. The propagation starts with the backward operation. Deadline constraints are defined for gate operations and then propagated to the successors of every operation that is assigned a deadline constraint. The propagations of different deadline constraints are performed following an increasing order of the the periods of these constraints. As stated previously for the release propagation, this order is chosen in order to minimize the complexity of the propagation algorithm by avoiding unnecessary traversals of the graph. For example, consider an operation $o_j$ that is subject to two deadline constraints $T_{I1}$ and $T_{I2}$ such that $T_{I1} < T_{I2}$. Propagating $T_{I2}$ first leads to traversing twice all the paths that end at $o_j$, propagating $T_{I2}$ first and then $T_{I1}$. If, instead, $T_{I1}$ is propagated first, those paths are only traversed once, propagating $T_{I1}$. Then, the propagation of $T_{I2}$ is stopped at $o_j$ thanks to the rule given by expression \ref{eq:mulded}.
 

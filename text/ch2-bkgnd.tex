@@ -413,7 +413,7 @@ The classical standard for distributed memory programming is the Message Passing
 
 For more on parallel programming, one can refer to the survey presented in \cite{diaz:2012}. It gives a very interesting review of the available parallel programming models and tools.
 
-\subsection{Parallel Scheduling}
+\subsection{\label{subsec:parsched}Parallel Scheduling}
 
 Parallelization consists in partitioning a sequential program and allocating the different parts in order to be executed on multiple processors. In order to be parallelized, a program needs to be modeled in such a way to express the available parallelism. In general, a model of a program can be made by dividing the program into tasks of computations and defining dependence between them. 
 If the number of the tasks is equal to the number of processors, the parallelization of the program can be achieved by allocating each task to a distinct processor. However, this is not the case in practice, i.e. there are much more tasks than processors. In this case multiple tasks are allocated to one processor and must be executed sequentially.  
@@ -439,6 +439,13 @@ Scheduling research has been active for over 60 years now and so many methods an
 \subsubsection{Task Dependence Graph}
 
 A set of tasks $\mathcal{T}$ which express the parallelism of an application can be represented by a Directed Acyclic Graph (DAG) $G(V,A)$ called the task dependence graph. Each task $\tau_i \in \mathcal{T}$ is represented by a vertex $v_i \in V: 0 \leq i < n$ where $n$ is the number of tasks called, also, the size of graph $G(V,A)$. Dependence between tasks is represented by arcs $(v_i, v_j) \in A: 0 \leq i,j < n$. A vertex may have one or more incoming edges which connect it with its predecessors and one or more outgoing edges which connect it with its successors. A task cannot start its execution unless all its predecessors have finished their execution. Generally, dependence between two tasks is due to data transfer, i.e. one task is executed and produces data that another task needs to consume to start its execution. If a vertex has no predecessor it is called an entry or source vertex. A vertex that has no successor is called an exit or sink vertex. The vertices may be weighted by the execution times of the corresponding tasks. Figure \ref{fig:dagex} shows an example of a task dependence graph. In the remainder of the thesis, for the sake of simplicity we will use the term dependence graph instead of task dependence graph.
+
+%A task dependence graph is a DAG denoted $G(V,A)$ where:
+%
+%\begin{itemize}
+%\item $V$ is the set of vertices of the graph. The size of the graph $n$ is equal to the number of its vertices. Each vertex $v_i: 0 \leq i < n$ represents a task which is an atomic unit of computation, i.e. it cannot be allocated to several computing resources.
+%\item $A$ is the set of arcs of the graph. A directed arc is denoted as a pair $(v_i,v_j)$ and describes a precedence constraint between $v_i$ and $v_j$, i.e. $v_i$ has to finish its execution before $v_j$ can start its execution. $v_i$ is called the \textit{tail} vertex and $v_j$ is called the \textit{head} vertex. 
+%\end{itemize}
 
 \begin{figure}[phbt]
 \centering

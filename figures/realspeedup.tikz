@@ -11,7 +11,7 @@
         (7,   2.306397786)
         (8,  2.306397786)
     };
-    \addlegendentry{Speed-up with constrained allocation of operations}
+    \addlegendentry{Constrained allocation}
 
     \addplot[color=red,mark=square*,label=unconst]
         plot coordinates {
@@ -23,6 +23,6 @@
         (7,  1.095957175)
         (8,  1.253420685)
         }; 
-    \addlegendentry{Speed-up with unconstrained allocation of operations}
+    \addlegendentry{Unconstrained allocation}
     \end{axis}
 \end{tikzpicture}

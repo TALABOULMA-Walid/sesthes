@@ -670,7 +670,7 @@ Let's consider an operation graph $G(V,A)$ representing an FMU co-simulation. We
 
 \subsubsection{Propagation of release constraints}
 
-Let a release constraint of period $T_O$ be applied on an input operation $o_i$ of the operation graph. A subset of the occurrences of $o_i$, $o^s_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $p-th$ occurrence of the release constraint $r_i^p = t_k$ is applied on the occurrence $o^s_i | t = t_k$, i.e. the computation of $o_i$ for time step $t_k$. Since we consider the release constraint to be a multiple of the communication step of ${o_i}$, we can determine which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $r_i^p$ of the release constraint is applied on occurrence ${o^s}_i | s = p \times \frac{T_O}{H(o_i)}$. Each occurrence that is subject to occurrence $r_i^p$ is assigned a release $R(o^s_i) = r_i^p$. This constraint propagates towards all the successors of $o^s_i$. This propagation is given by expression \ref{eq:release} and illustrated in Figure \ref{fig:propagation}.
+Let a release constraint of period $T_O$ be applied on an input operation $o_i$ of the operation graph. A subset of the occurrences of $o_i$, $o^s_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $p-th$ occurrence of the release constraint $r_i^p = t_k$ is applied on the occurrence $o^s_i | t = t_k$, i.e. the computation of $o_i$ for time step $t_k$. Since we consider the release constraint to be a multiple of the communication step of ${o_i}$, we can determine which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $r_i^p$ of the release constraint is applied on occurrence ${o^s}_i | s = p \times \frac{T_O}{H(o_i)}$. Each occurrence that is subject to occurrence $r_i^p$ is assigned a release $R(o^s_i) = r_i^p$. This constraint propagates towards all the successors of $o^s_i$. This propagation is given by expression \ref{eq:release} and illustrated in Figure \ref{fig:rpropagation}.
 
 \begin{equation}
 \forall o_{i'} \in succ(o_i): R(o_{i'}) = R(o_i)
@@ -679,9 +679,9 @@ Let a release constraint of period $T_O$ be applied on an input operation $o_i$ 
 
 \begin{figure}[phbt]
 \centering
-\includestandalone{figures/propagation}
+\includestandalone{figures/rpropagation}
 \caption{Example of release propagation.}
-\label{fig:propagation}
+\label{fig:rpropagation}
 \end{figure}
 
 The propagation of the release constraint is performed iteratively. For each operation that is assigned a release constraint, this constraint is propagated towards all its successors as described above. Therefore, the process of propagation of a release constraint can be summarized as follows:
@@ -701,6 +701,13 @@ Now let a deadline constraint of period $T_I$ be applied on an output operation 
 \forall o_{j'} \in pred(o_j): D(o_{j'}) = D(o_j)
 \label{eq:release}
 \end{equation}
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/dpropagation}
+\caption{Example of deadline propagation.}
+\label{fig:dpropagation}
+\end{figure}
 
 The deadline constraint iteratively propagates such that eor each operation that is assigned a deadline constraint, this constraint propagates towards all its predecessors. The process of propagation of a deadline constraint can be summarized in the following steps:
 
@@ -736,9 +743,23 @@ Similarly, a deadline constraint can be written as follows:
 \label{eq:release}
 \end{equation}
 
-Let's consider that a release constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_i$.  Furthermore, consider that the length of the graph is equal to the Hyper Period $HP$. Then, the last occurrence $o_i^s$ that is assigned a release constraint during the forward propagation phase corresponds to the time step that is equal to the hyper period as shown in Figure. In order to propagate the release constraint to the operations that come before $o_i$ in the graph, one can loop back to the first occurrence of the state operation by performing a negative shift whose length is equal tot he hyperperiod as shown in Figure. This can be done for every FMU, for which the operations are assigned a release. An example is shown in Figure. Afterward, starting from the operations that are newly assigned release constraints, a new forward propagation phase can be done.  
+Let's consider that a release constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_i$.  Furthermore, consider that the length of the graph is equal to the Hyper Period $HP$. Then, the last occurrence $o_i^s$ that is assigned a release constraint during the forward propagation phase corresponds to the time step that is equal to the hyper period as shown in Figure. In order to propagate the release constraint to the operations that come before $o_i$ in the graph, one can loop back to the first occurrence of the state operation by performing a negative shift whose length is equal to the hyperperiod as shown in Figure. This can be done for every FMU, for which the operations are assigned a release. An example is shown in Figure. Afterward, starting from the operations that are newly assigned release constraints, a new forward propagation phase can be done.
 
-Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. The operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to the first occurrence. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation. This can be performed for every FMU whose operations were assigned deadline constraints. Figure shows an example of such looping. A backward propagation phase, starting from the operations that are newly assigned deadline constraints, can then be applied. See Figure. 
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/rloop}
+\caption{Example of a release back loop propagation.}
+\label{fig:rloop}
+\end{figure}  
+
+Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. The operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to the first occurrence. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation. This can be performed for every FMU whose operations were assigned deadline constraints. Figure shows an example of such looping. A backward propagation phase, starting from the operations that are newly assigned deadline constraints, can then be applied. See Figure.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/dloop}
+\caption{Example of a deadline forward loop propagation.}
+\label{fig:dloop}
+\end{figure}   
 
 \subsubsection{Necessary condition for covering the operation graph}
 

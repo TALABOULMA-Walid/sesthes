@@ -17,8 +17,8 @@ Class=LaTeXView
 Document=Thesis.tex
 
 [Frame0_View0,0]
-TopLine=0
-Cursor=0
+TopLine=27
+Cursor=3071
 
 [Frame1]
 Flags=0
@@ -125,8 +125,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame6_View0,0]
-TopLine=872
-Cursor=69699
+TopLine=889
+Cursor=69739
 
 [Frame7]
 Flags=0
@@ -161,7 +161,7 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame8_View0,0]
-TopLine=268
+TopLine=309
 Cursor=21201
 
 [Frame9]
@@ -197,8 +197,8 @@ Class=LaTeXView
 Document=figures\hilsetup.tex
 
 [Frame10_View0,0]
-TopLine=22
-Cursor=2244
+TopLine=0
+Cursor=849
 
 [Frame11]
 Flags=0
@@ -212,11 +212,11 @@ NormalPos.top=26
 NormalPos.right=1916
 NormalPos.bottom=904
 Class=LaTeXView
-Document=figures\propagation.tex
+Document=figures\rpropagation.tex
 
 [Frame11_View0,0]
 TopLine=0
-Cursor=1394
+Cursor=0
 
 [Frame12]
 Flags=0
@@ -230,13 +230,31 @@ NormalPos.top=26
 NormalPos.right=1916
 NormalPos.bottom=904
 Class=LaTeXView
-Document=figures\rtcosim.tex
+Document=figures\dpropagation.tex
 
 [Frame12_View0,0]
-TopLine=20
-Cursor=706
+TopLine=54
+Cursor=3556
+
+[Frame13]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=26
+NormalPos.right=1916
+NormalPos.bottom=904
+Class=LaTeXView
+Document=figures\rloop.tex
+
+[Frame13_View0,0]
+TopLine=47
+Cursor=3799
 
 [SessionInfo]
-FrameCount=13
-ActiveFrame=11
+FrameCount=14
+ActiveFrame=13
 

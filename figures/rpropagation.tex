@@ -1,6 +1,7 @@
 \documentclass[11pt]{standalone}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
 \usetikzlibrary{shapes.geometric}
 \usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,shapes.geometric,backgrounds,plotmarks,shapes.multipart,calc}
 \begin{document} 
@@ -44,15 +45,15 @@
 
 %arcs
 \path (o5) edge[-{Latex[]}] (o10);
-\path (o4) edge[-{Latex[]},draw=blue] (o8);
-\path (o4) edge[-{Latex[]},bend left=30,draw=blue] (o11);
-\path (o8) edge[-{Latex[]},draw=blue] (o1);
-\path (o8) edge[-{Latex[]},bend left=30,draw=blue] (o11);
-\path (o1) edge[-{Latex[]},draw=blue] (o7);
-\path (o1) edge[-{Latex[]},bend right=15,draw=blue] (o10);
-\path (o7) edge[-{Latex[]},draw=blue] (o2);
-\path (o7) edge[-{Latex[]},draw=blue] (o10);
-\path (o2) edge[-{Latex[]},draw=blue]  (o11);
+\path (o4) edge[-{Latex[]},blue] (o8);
+\path (o4) edge[-{Latex[]},bend left=30,blue] (o11);
+\path (o8) edge[-{Latex[]},blue] (o1);
+\path (o8) edge[-{Latex[]},bend left=30,blue] (o11);
+\path (o1) edge[-{Latex[]},blue] (o7);
+\path (o1) edge[-{Latex[]},bend right=15,blue] (o10);
+\path (o7) edge[-{Latex[]},blue] (o2);
+\path (o7) edge[-{Latex[]},blue] (o10);
+\path (o2) edge[-{Latex[]},blue]  (o11);
 \path (o9) edge[-{Latex[]}]  (o0);
 \path (o9) edge[-{Latex[]}, out=340,in=270]  (o11);
 \path (o0) edge[-{Latex[]}]  (o6);
@@ -62,36 +63,38 @@
 \path (o3) edge[-{Latex[]}]  (o11);
 \path (o0) edge[-{Latex[]}]  (o7);
 
-\path (o5_1) edge[-{Latex[]},draw=blue]  (o10_1);
-\path (o6_1) edge[-{Latex[]},draw=blue]  (o10_1);
-\path (o7_1) edge[-{Latex[]},draw=blue]  (o10_1);
-\path (o0_1) edge[-{Latex[]},draw=blue]  (o10_1);
-\path (o1_1) edge[-{Latex[]},draw=blue]  (o10_1);
+\path (o5_1) edge[-{Latex[]},blue]  (o10_1);
+\path (o6_1) edge[-{Latex[]},blue]  (o10_1);
+\path (o7_1) edge[-{Latex[]},blue]  (o10_1);
+\path (o0_1) edge[-{Latex[]},blue]  (o10_1);
+\path (o1_1) edge[-{Latex[]},blue]  (o10_1);
 
-\path (o10) edge[-{Latex[]},bend right = 25,draw=blue]  (o1_1);
-\path (o1) edge[-{Latex[]},bend left = 25,draw=blue]  (o1_1);
-\path (o8) edge[-{Latex[]},bend left = 25,draw=blue]  (o1_1);
+\path (o10) edge[-{Latex[]},bend right = 25,blue]  (o1_1);
+\path (o1) edge[-{Latex[]},bend left = 25,blue]  (o1_1);
+\path (o8) edge[-{Latex[]},bend left = 25,blue]  (o1_1);
 
-\path (o10) edge[-{Latex[]},draw=blue]  (o5_1);
+\path (o10) edge[-{Latex[]},blue]  (o5_1);
 \path (o5) edge[-{Latex[]},bend right = 12]  (o5_1);
 
-\path (o10) edge[-{Latex[]},draw=blue]  (o0_1);
+\path (o10) edge[-{Latex[]},blue]  (o0_1);
 \path (o0) edge[-{Latex[]},bend right = 25]  (o0_1);
 \path (o9) edge[-{Latex[]},bend right = 10]  (o0_1);
 
-\path (o10) edge[-{Latex[]},bend right = 10,draw=blue]  (o7_1);
-\path (o1_1) edge[-{Latex[]},draw=blue]  (o7_1);
-\path (o7) edge[-{Latex[]},bend left = 30,draw=blue]  (o7_1);
+\path (o10) edge[-{Latex[]},bend right = 10,blue]  (o7_1);
+\path (o1_1) edge[-{Latex[]},blue]  (o7_1);
+\path (o7) edge[-{Latex[]},bend left = 30,blue]  (o7_1);
 
-\path (o10) edge[-{Latex[]},bend left = 8,draw=blue]  (o6_1);
-\path (o0_1) edge[-{Latex[]},draw=blue]  (o6_1);
+\path (o10) edge[-{Latex[]},bend left = 8,blue]  (o6_1);
+\path (o0_1) edge[-{Latex[]},blue]  (o6_1);
 \path (o6) edge[-{Latex[]},bend right = 30]  (o6_1);
 
-\path (o10) edge[-{Latex[]},bend left = 19,draw=blue]  (o10_1);
+\path (o10) edge[-{Latex[]},bend left = 19,blue]  (o10_1);
 
 \node[rectangle,draw,fill=black,minimum height=.5cm, minimum width=.5cm,xshift=-1cm,label={[align=center,yshift=.5cm]south:Output\\($T_O = 4$)}] at(o4.west) (output){};
 
-\path (output) edge[-{Latex[]},draw=blue]  (o4);
+\path (output) edge[-{Latex[]},blue]  (o4);
+
+\path ([xshift=.3cm]o4.south) edge[->,dashed,blue, bend right = 60, line width=.5]  ([yshift=-.3cm]o8.west);
 
 %\begin{axis}[ left of = o5,
 		%xshift=-1cm,

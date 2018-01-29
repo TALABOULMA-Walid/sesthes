@@ -942,6 +942,16 @@ We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify
 
 \end{itemize}
 
-Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) >$ and $$ must be satisfied. 
+Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) \geq R(o_i)$ and $S(o_i) \geq E(O_j)$ must be satisfied. Therefore, the new release date of $o_i$ can be computed by expression \ref{eq:modre}.
 
+\begin{equation} 
+R(o_i) = max(R(o_i), max(F(o_j), o_j \in pred(o_i)))
+\label{eq:modre}
+\end{equation}
 
+Consider now the two operations $o_i$ and $o_j$ such that $o_j \in succ(o_i)$. For the operation graph to be schedulable, the relations $F(o_i) \leq D(o_i)$ and $F(o_i) \leq D(o_j) - C(o_j)$ must be satisfied. In fact, $D(o_j) - C(o_j)$ represents the latest time to start the execution of the successor $o_j$ and meet its deadline. Therefore, the new deadline date of $o_i$ can be computed by expression \ref{eq:modde}.
+
+\begin{equation} 
+D(o_i) = min(D(o_i), min(D(o_j) - C(o_j), o_j \in succ(o_i)))
+\label{eq:modde}
+\end{equation}   

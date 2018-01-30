@@ -930,7 +930,7 @@ Lastly, the loop forward phase of propagation is performed, always, in an increa
 
 \subsection{Accounting for Execution Times}
 
-The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented earlier following this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. Consequently, the execution times of the operations have to be accounted for when assigning release and deadline dates to the operations.
+The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented earlier follows this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. Consequently, the execution times of the operations have to be accounted for when assigning release and deadline dates to the operations.
 
 We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify the release and deadline dates assigned to each operation in order to account for execution times. This modification is needed given that:
 
@@ -942,7 +942,7 @@ We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify
 
 \end{itemize}
 
-Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) \geq R(o_i)$ and $S(o_i) \geq E(O_j)$ must be satisfied. Therefore, the new release date of $o_i$ can be computed by expression \ref{eq:modre}.
+Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) \geq R(o_i)$ and $S(o_i) \geq E(o_j)$ must be satisfied. Therefore, the new release date of $o_i$ can be computed by expression \ref{eq:modre}.
 
 \begin{equation} 
 R(o_i) = max(R(o_i), max(F(o_j), o_j \in pred(o_i)))

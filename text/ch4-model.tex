@@ -314,7 +314,7 @@ Variable & Type & Description  \\
  $S(o_i)$ & Integer & Start time of operation $o_i$\\
  $E(o_i)$ & Integer & End time of operation $o_i$\\
  $b_{ij}$ & Binary & Orientation decision variable associated with edge $[o_i,o_j] \in D$\\
- $P$ & Integer & Length of the critical path of the graph\\
+ $CP$ & Integer & Length of the critical path of the graph\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -342,7 +342,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 \item \textit{Precedence constraints:} The start time of each operation is equal to the maximum of the end times of all its predecessors. Expression \ref{orient:const_1} captures this constraint. Note that expression \ref{orient:const_1} indicates that the start time of operation $o_j$ is greater or equal to the end time of each predecessor $o_i$. This is sufficient to express $S(o_j) = max_{o_i \in pred(o_j)}(E(o_i))$ since the formulated problem is a minimization problem.
 
 \begin{equation}
-\forall (o_i,o_j) \in A, S(o_j) \geq E(o_i):
+\forall (o_i,o_j) \in A, S(o_j) \geq E(o_i)
 \label{orient:const_1}
 \end{equation}
 
@@ -365,7 +365,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 \label{orient:const_4}
 \end{equation} 
 
-\item \textit{Length of the critical path:} The critical path $P$ is equal to the maximum of the end times of all the operations (expression \ref{orient:const_5}).
+\item \textit{Length of the critical path:} The critical path $CP$ is equal to the maximum of the end times of all the operations as stated by expression \ref{orient:const_5}.
 
 \begin{equation}
 \forall o_i \in V, P \geq E(o_i)
@@ -383,26 +383,27 @@ min(P)
 \label{orient:obj}
 \end{equation}
 
+While exact algorithms such as ILP give optimal results, they suffer form very long execution times that are not acceptable for the users. For many real world applications, ILP fails to produce the results within acceptable times. Heuristics are usually good alternatives. While the optimality of the solution cannot be guaranteed when using heuristics, they, in most cases, provide results of good quality, not too far form the optimal solution within acceptable execution times.
 
 \subsection{Acyclic Orientation Heuristic}
 
-While exact algorithms such as ILP give optimal results, they suffer form very long execution times not acceptable for the users. For many real world applications, ILP fails to produce the results within acceptable times. Heuristics are usually good alternatives. While the optimality of the solution cannot be guaranteed when using heuristics, they, in most cases, provide results of good quality, not too far form the optimal solution within acceptable execution times. We propose in this section a heuristic for the acyclic orientation of the mixed graph $G(V,A,D)$. A straightforward acyclic orientation can be obtained by sorting the operations in a non decreasing order of their start times $S(o_i)$ and assigning directions to edges following this order, i.e. $\forall [o_i,o_j] \in D, S(o_i) \leq S(o_j), \alpha([o_i,o_j]) = (o_i,o_j)$. This is a fast greedy acyclic orientation, however it can be improved as we will show hereafter.
+We propose in this section a heuristic for the acyclic orientation of the mixed graph $G(V,A,D)$. A straightforward acyclic orientation can be obtained by sorting the operations in a non decreasing order of their start times $S(o_i)$ and assigning directions to edges following this order, i.e. $\forall [o_i,o_j] \in D, S(o_i) \leq S(o_j), \alpha([o_i,o_j]) = (o_i,o_j)$. This is a fast greedy acyclic orientation, however it can be improved as we show hereafter.
 
-Let $d$ be the sum of the repetition factors of all the FMUs. The set of operations $V$ can be represented as a union of mutually disjoint non empty subsets such that every subset contains all operations that belong to the same FMU and that correspond to the same occurrence:
+Let $s$ be the sum of the repetition factors of all the FMUs. The set of operations $V$ can be represented as a union of mutually disjoint non empty subsets such that every subset contains all operations that belong to the same FMU and that correspond to the same occurrence:
 
 \begin{equation}
-V = \bigcup_{k=1}^d V_k, \forall\ o_i^p, o_j^q \in V_k, k \in \{0, 1, \ldots, d\}, f_m(o_i^p)=f_m(o_j^q)\ \text{and}\ p = q
+V = \bigcup_{k=1}^s V_k:\ \forall\ o_i^p, o_j^q \in V_k,\ k \in \{0, 1, \ldots, s\},\ f_m(o_i^p)=f_m(o_j^q)\ \text{and}\ p = q
 \label{eq:opsubset}
 \end{equation}
 
-It is know that edges in the set $D$ exist only between operations that belong to the same FMU. Furthermore, for every edge $[o_i^p,o_j^q] \in D$, operations $o_i$ and $o_j$ correspond to the same occurrence. Even if operations which belong to the same FMU and correspond to different occurrences are mutually exclusive, it is not needed to connect them by an edge because an execution order is already ensured for these operations by the way the operation graph is constructed. In other words, all the operations of an FMU, and which correspond to the same occurrence have to finish their execution before the next occurrence of any operation can start its execution. Similarly to the operation set, the edge set $D$ can be subdivided into mutually disjoint non empty subsets:
+We know that edges in the set $D$ exist only between operations that belong to the same FMU. Furthermore, for every edge $[o_i^p,o_j^q] \in D$, operations $o_i^p$ and $o_j^q$ correspond to the same occurrence, i.e. $p = q$. Although operations which belong to the same FMU and correspond to different occurrences are mutually exclusive, it is not needed to connect them by an edge because an execution order is already ensured for these operations by the way the operation graph is constructed. In other words, all the operations of an FMU, and which correspond to the same occurrence $p$ have to finish their execution before the next occurrence $p+1$ of any operation can start its execution. Similarly to the operation set, the edge set $D$ can be subdivided into mutually disjoint non empty subsets:
 
 \begin{equation}
-D = \bigcup_{k=1}^d D_k, \forall\ [o_i^p, o_j^q] \in D_k, k \in \{0, 1, \ldots, d\}, f_m(o_i^p)=f_m(o_j^q)\ \text{and}\ p = q
+D = \bigcup_{k=1}^s D_k,\ \forall\ [o_i^p, o_j^q] \in D_k,\ k \in \{0, 1, \ldots, s\},\ f_m(o_i^p)=f_m(o_j^q)\ \text{and}\ p = q
 \label{eq:opsubset}
 \end{equation}
 
-In view of the above, we define the set of subgraphs which constitute the graph $G(V,\emptyset,D) = \bigcup_{k=1}^d G(V_k,D_k)$. Lemma \ref{lemma:orient} indicates the relationship between the acyclic orientations of the subgraphs $G(V_k,D_k)$ and the acyclic orientation of the mixed graph $G(V,A,D)$.
+In view of the above, we define the set of subgraphs which constitute the graph $G(V,\emptyset,D) = \bigcup_{k=1}^s G(V_k,D_k)$. Theorem \ref{theorem:orient} states the relationship between the acyclic orientations of the subgraphs $G(V_k,D_k)$ and the acyclic orientation of the mixed graph $G(V,A,D)$.
 
 \begin{theorem}
 An acyclic orientation of the mixed graph $G(V,A,D)$ can be obtained by finding an acyclic orientation for every subgraph $G_k(V_k,D_k)$ following the non decreasing order of the start times of the operations as described previously.
@@ -410,14 +411,14 @@ An acyclic orientation of the mixed graph $G(V,A,D)$ can be obtained by finding 
 \end{theorem}
 
 \begin{proof}
-In order to prove this, we have to show that every edge in $D$ is assigned a	direction and that the resulting orientation does not lead to the creation of a cycle. We use a proof by contradiction to prove this statement. Since every edge $[o_i, o_j]$ belongs to one subset of edges $D_k$, finding acyclic orientations for all the subgraphs $G_k(V_k)$ leads to assigning a direction to every edge in $D$. The existence of a cycle in the resulting graph means that there exists at least an edge $[o_i,o_j]$ that has been transformed into the arc $(o_i,o_j)$ and $S(o_i) > S(o_j)$. However, this is not possible because the greedy acyclic orientation assigns directions to edges following a non-decreasing order of the start times of the operations which contradicts the previous assertion and thus proves Theorem \ref{theorem:orient}.
+In order to prove this, we have to show that every edge in $D$ is assigned a	direction and that the resulting orientation does not lead to the creation of a cycle. We use a proof by contradiction to prove this statement. Since every edge $[o_i, o_j]$ belongs to one subset of edges $D_k$, finding acyclic orientations for all the subgraphs $G_k(V_k)$ leads to assigning a direction to every edge in $D$. The existence of a cycle in the resulting graph means that there exists at least an edge $[o_i,o_j]$, such that $S(o_i) > S(o_j)$, that has been transformed into the arc $(o_i,o_j)$. However, this is not possible because the greedy acyclic orientation assigns directions to edges following a non-decreasing order of the start times of the operations which contradicts the previous assertion and thus proves Theorem \ref{theorem:orient}.
 \end{proof}
 
-Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obtained by finding a vertex coloring for this subgraph. This vertex coloring can be seen as a sequence of assignments $\alpha_1, \alpha_2, \ldots, \alpha_{|D_k|}$, such that every assignment $\alpha_l$ assigns a color to one operation $o_i \in V_k$ and leads to assigning directions to edges that connect $o_i$ with other already colored operations $o_j \in V_k$. The number of assignments needed to perform the acyclic orientation of $G_k(V_k,D_k)$ is equal to the number of edges $|D_k|$. Following the coloring of an operation and the engendered assignment of directions, the attributes of some operations may change. Two situations have to be distinguished:
+Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obtained by finding a vertex coloring for this subgraph. This vertex coloring can be seen as a sequence of assignments $\alpha_1, \alpha_2, \ldots, \alpha_{|D_k|}$, such that every assignment $\alpha_l$ assigns a color to one operation $o_i \in V_k$ and leads to assigning directions to edges that connect $o_i$ with other already colored operations $o_j \in V_k$. The number of assignments needed to perform the acyclic orientation of $G_k(V_k,D_k)$ is at most equal to the number of edges $|D_k|$. Following the coloring of an operation and the engendered assignment of directions, the attributes of some operations may change. Two situations have to be distinguished:
 
 \begin{itemize}
 \item Coloring $\alpha_l$ of operation $o_i$ does not lead to assigning a direction to any conflict edge. In this case, no changes of the timing attributes occur.
-\item Coloring $\alpha_l$ of operation $o_i$ leads to assigning a direction to at least one conflict edge $[o_i,o_j] \in D_k$. Without any loss of generality, suppose that the edge $[o_i,o_j]$ is transformed into the arc $(o_i,o_j)$, then the start time $S(o_j)$ is changed to $S(o_j) \leftarrow E(o_i)$. This leads to changing the end time $E(o_j)$ also and possibly causes a domino effect for the start times and end times of all the descendants $o_{j'} \in desc(o_j)$ (see Algorithm \ref{algo:update_s}). Moreover, if $\overline{S}(o_j) > \overline{E}(o_i)$, the end time from end $\overline{E}(o_i)$ is changed to $\overline{E}(o_i) \leftarrow \overline{S}(o_j)$. Similarly, this leads to changing the start time from end $\overline{S}(o_j)$ and possibly causes a domino effect for the start times and end times of all the ancestors $o_{i'} \in ance(o_i)$ (see Algorithm \ref{algo:update_e}).
+\item Coloring $\alpha_l$ of operation $o_i$ leads to assigning a direction to at least one conflict edge $[o_i,o_j] \in D_k$. Without any loss of generality, suppose that the edge $[o_i,o_j]$ is transformed into the arc $(o_i,o_j)$. The start time $S(o_j)$ is changed as follows: $S(o_j) \leftarrow E(o_i)$. This leads to changing the end time $E(o_j)$ also and possibly causes a domino effect for the start times and end times of all the descendants $o_{j'} \in desc(o_j)$ (see Algorithm \ref{algo:update_s}). Moreover, if $\overline{S}(o_j) > \overline{E}(o_i)$, the end time from end $\overline{E}(o_i)$ is changed as follows: $\overline{E}(o_i) \leftarrow \overline{S}(o_j)$. Similarly, this leads to changing the start time from end $\overline{S}(o_j)$ and possibly causes a domino effect for the start times and end times of all the ancestors $o_{i'} \in ance(o_i)$ (see Algorithm \ref{algo:update_e}).
 \end{itemize}
 
 \begin{algorithm}[htb]
@@ -425,14 +426,14 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
 	\textbf{Output:} Update of the start and end times of a subset of operations $\{o_i\} \subset V$\;
 	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
-	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$.
+	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$\;
 	\ForEach{$(o_t,o_h) \in A_{k,l}$}
 		{
 			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
 				{
 					$S(o_h) \leftarrow E(o_t)$\;
 					$E(o_h) \leftarrow S(o_h) + C(o_h)$\;
-					
+					\update{$o_h$}\;
 				}
 		}
 	\SetKwProg{myproc}{Procedure}{}{}
@@ -440,13 +441,13 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 		{
 			\If{$succ(o_h) \neq \emptyset$}
 			{
-				\ForEach{$o_h^* \in succ(o_h)$}
+				\ForEach{$o_{h'} \in succ(o_h)$}
 						{
-							\If{$S(o_h^*) < E(o_h)$}
+							\If{$S(o_{h'}) < E(o_h)$}
 							{
-								$S(o_h^*) \leftarrow E(o_h)$\;
-								$E(o_h^*) \leftarrow S(o_h^*) + C(o_h^*)$\;
-								\update{$o_h^*$}\;
+								$S(o_{h'}) \leftarrow E(o_h)$\;
+								$E(o_{h'}) \leftarrow S(o_{h'}) + C(o_{h'})$\;
+								\update{$o_{h'}$}\;
 							}
 						}
 			}
@@ -462,7 +463,7 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
 	\textbf{Output:} Update of the start and end times from end of a subset of operations $\{o_i\} \subset V$\;
 	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
-	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$.
+	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$\;
 	\ForEach{$(o_t,o_h) \in A_{k,l}$}
 		{
 			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
@@ -481,13 +482,13 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 		{
 			\If{$pred(o_t) \neq \emptyset$}
 			{
-				\ForEach{$o_t^* \in pred(o_t)$}
+				\ForEach{$o_{t'} \in pred(o_t)$}
 						{
 							\If{$\overline{E}(o_t^*) < \overline{S}(o_t)$}
 							{
-								$\overline{E}(o_t^*) \leftarrow \overline{S}(o_t)$\;
-								$\overline{S}(o_t^*) \leftarrow \overline{E}(o_t^*) + C(o_t^*)$\;
-								\update{$o_h^*$}\;
+								$\overline{E}(o_{t'}) \leftarrow \overline{S}(o_t)$\;
+								$\overline{S}(o_{t'}) \leftarrow \overline{E}(o_{t'}) + C(o_{t'})$\;
+								\update{$o_{t'}$}\;
 							}
 						}
 			}

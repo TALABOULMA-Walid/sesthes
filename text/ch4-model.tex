@@ -250,7 +250,7 @@ A coloring of a mixed graph $G(V,A,D)$ exists only if it is cycle-free \cite{rie
 
 \subsection{Problem Formulation}
 
-Let $G(V,A)$ be a operation graph of an FMU co-simulation constructed as described in Section \ref{sec:4-depgrph}. In order to represent mutual exclusion constraints between FMU operations, the initial operation graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$, where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges. Once the mixed graph is constructed, directions have to be assigned to its edges in order to define an order of execution for mutually exclusive operations. The precedence and mutual exclusion relations represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5}. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. Otherwise, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j)]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
+Let $G(V,A)$ be an operation graph of an FMU co-simulation constructed as described in Section \ref{sec:4-depgrph}. In order to represent mutual exclusion constraints between FMU operations, the initial operation graph $G(V,A)$ is transformed into a mixed graph by connecting each pair of mutually exclusive operations $o_i, o_j$ by and edge $[o_i, o_j]$. The resulting mixed graph is denoted $G(V,A,D)$, where $V$ is the set of operations, $A$ is the set of arcs, and $D$ is the set of edges. Once the mixed graph is constructed, directions have to be assigned to its edges in order to define an order of execution for mutually exclusive operations. The precedence and mutual exclusion relations represented by the mixed graph $G(V,A,D)$ are given by expressions \ref{eq:color4} and \ref{eq:color5} respectively. If operations $o_i$ and $o_j$ are connected by an arc $(o_i,o_j)$, the time interval $(S(o_i), E(o_i)]$ must precede the time interval $(S(o_j), E(o_j)]$. Otherwise, if operations $o_i$ and $o_j$ are connected by an edge $[o_i,o_j]$, time intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ must be strictly disjoint.
 
 \begin{equation}
 \forall\ (o_i,o_j) \in A,\ E(o_i) \leq S(o_j)
@@ -262,16 +262,16 @@ Let $G(V,A)$ be a operation graph of an FMU co-simulation constructed as describ
 \label{eq:color5}
 \end{equation}
 
-The timing attributes of the operations in the mixed graph $G(V,A,D)$ are the same as in the initial graph $G(V,A)$ because the added set of edges $[o_i, o_j] \in D$ does not impact the computation of these attributes. The attributes of an operation $o_i$, connected by an edge with another operation, may change only when this edge is assigned a direction. 
+The timing attributes of the operations in the mixed graph $G(V,A,D)$ are the same as in the initial graph $G(V,A)$ because the added set of edges $[o_i, o_j] \in D$ does not impact the computation of these attributes. The attributes of an operation $o_i$, connected by an edge with another operation, may change only when this edge is assigned a direction following the order of the execution intervals of $o_i$ and $o_j$. 
 
-An edge $[o_i,o_j]$ is called a conflict edge if the intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ in the graph $G(V,A)$ overlap (equation \ref{eq:conflict}). If for a given edge $[o_i,o_j]$ either $E(o_i) \leq S(o_j)$ or $E(o_j) \leq S(o_i)$, there is no conflict and the edge can be assigned a direction. 
+An edge $[o_i,o_j]$ is called a conflict edge if the intervals $(S(o_i), E(o_i)]$ and $(S(o_j), E(o_j)]$ in the graph $G(V,A)$ overlap. This can be written in the form of expression \ref{eq:conflict}. If for a given edge $[o_i,o_j]$ either $E(o_i) \leq S(o_j)$ or $E(o_j) \leq S(o_i)$, there is no conflict and the edge can be assigned a direction. 
 
 \begin{equation}
 E(o_i) > S(o_j)\ \text{and}\ E(o_j) > S(o_i)
 \label{eq:conflict}
 \end{equation}
 
-It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependence. Still, we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. Following the definition given in the previous section, the corresponding coloring is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ which is equivalent to mapping the operations $o_i \in V$ to the time intervals $[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]$.
+It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the execution orders does not impact the numerical results of the co-simulation since these operations do not have data dependence. An order have to be defined only because we have to ensure mutual exclusion between them due to the non-thread-safe implementation of FMI. Following the definition given in the previous section, the corresponding vertex coloring is a function $\alpha: V \rightarrow \{1, 2, \ldots, k\}$ which is equivalent to mapping the operations $o_i \in V$ to the time intervals $[S(o_1), E(o_1)], [S(o_2), E(o_2)], \ldots, [S(o_n), E(o_n)]$.
 
 The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated as an optimization problem as follows:
 

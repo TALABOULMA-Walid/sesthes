@@ -121,16 +121,14 @@ Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,
 		%Initialization\;
 		\textbf{Input:} Initial operation operation graph $G(V,A)$\; 
 		\textbf{Output:} Transformed operation operation graph $G(V,A)$\;
-		Set $G_(V,A)$ the initial multi-rate operation operation graph and $G_M(V_M,A)$ the new mono-rate graph\; 
-		$V_M \leftarrow \emptyset$; $A \leftarrow \emptyset$\;
-		\ForEach{operation $o_i \in V$}
+		\ForEach{$o_i \in V$}
 		{
 			Compute the repetition factor of $o_i$: $r(o_i) \leftarrow \frac{HS}{H(o_i)}$\;
-			Repeat the operation $o_i$: $V \leftarrow V \cup \{o_i^p\}, p \in \{0, \dots,r(o_i)-1\}$\;
+			Repeat the operation $o_i$: $V \leftarrow V \cup \{o_i^p\}, p \in \{1, \dots,r(o_i)-1\}$\;
 		}
-		\ForEach{arc $(o_i,o_j) \in A$}
+		\ForEach{$(o_i,o_j) \in A$}
 		{
-			\If{$H(o_i) > H(o_j)$ /* $(o_i,o_j)$ is a slow to fast dependence */}
+			\If{$H(o_i) > H(o_j)$}
 			{
 					\For{$p \leftarrow 0$ \KwTo $r(o_i)-1$}
 					{
@@ -138,7 +136,7 @@ Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,
 						Add the arc $(o_i^p,o_j^q)$ to the graph: $A \leftarrow A \cup \{(o_i^p,o_j^q)\}$\;
 					}
 			}
-			\ElseIf{$H(o_i) < H(o_j)$ /* $(o_i,o_j)$ is a fast to slow dependence */}
+			\ElseIf{$H(o_i) < H(o_j)$}
 			{
 					\For{$q \leftarrow 0$ \KwTo $r(o_j)-1$}
 					{
@@ -154,7 +152,7 @@ Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,
 					}
 			}
 		}
-		\ForEach{operation $o_i \in V$}
+		\ForEach{$o_i \in V$}
 		{
 			\For{$p \leftarrow 0$ \KwTo $r(o_i)-2$}
 			{
@@ -162,13 +160,13 @@ Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,
 			}
 			
 		}
-		\ForEach{operation $o_i \in V: tpe(o_i) = state$}
+		\ForEach{$o_i \in V: tpe(o_i) = state$}
 		{
 					\For{$p \leftarrow 0$ \KwTo $r(o_i)-2$}
 					{
-					  \ForEach{operation $o_j \in V: f_m(o_j) = f_m(o_i)$ and $tpe(o_i) \in \{input,output\}$}
+					  \ForEach{$o_j \in V: f_m(o_j) = f_m(o_i)$ and $tpe(o_i) \in \{input,output\}$}
 						{
-							Add an arc $(o_i^p,o_j^{p+1})$ to the graph: $A \leftarrow A \cup \{(o_i^p,o_j^{p+1})\}$\;
+							Add the arc $(o_i^p,o_j^{p+1})$ to the graph: $A \leftarrow A \cup \{(o_i^p,o_j^{p+1})\}$\;
 						}
 					
 					}
@@ -226,7 +224,7 @@ The operation graph model can be extended in order to represent scheduling probl
 \end{itemize}
 
 Operations belonging to the same FMU can be executed in either order but not in parallel. Undirected edges can be added between these operations in order to represent such mutual exclusion constraints. This transforms the operation graph into a mixed graph. In order to compute a schedule for such mixed graph, an execution order has to be defined for each pair of operations connected by an undirected edge which is interpreted by assigning a direction to this edge. Cycles must not be introduced in the graph while assigning directions to edges, otherwise, the scheduling problem becomes infeasible. Once all edges have been assigned directions, the result is a new operation graph which is a DAG.
-Since the final goal is to accelerate the execution of the co-simulation which comes down to minimizing the makespan of the operation graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the resulting DAG. We recall that the length of the critical path of the operation graph represents a lower bound on the makespan of the graph. This problem is known as \textit{acyclic orientation} \cite{barbosa:1999}.
+Since the final goal is to accelerate the execution of the co-simulation which comes down to minimizing the makespan of the operation graph, the acyclic orientation of the mixed graph has to minimize the length of the critical path of the resulting DAG. We recall that the length of the critical path of the operation graph represents a lower bound on the makespan of the graph. This problem is known as \textit{acyclic orientation} \cite{barbosa:1999}. We denote the acyclic orientation as a function $\phi:\ {[o_i,o_j] \in D} \rightarrow \{(o_i,o_j),(o_j,o_i)\}$
 
 %\subsubsection{Graph Coloring of Undirected Graphs}
 % Talk about Gallai–Hasse–Roy–Vitaver theorem
@@ -346,7 +344,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 \label{orient:const_1}
 \end{equation}
 
-\item \textit{Mutual exclusion constraints:} We define the binary variable $b_{ij}$ which is associated with the direction that is assigned to edge $[o_i,o_j]$. $b_{ij}$ is set to $1$ if the edge $[o_i,o_j]$ is assigned a direction from $o_i$ to $o_j$, i.e. $\alpha([o_i,o_j]) = (o_i,o_j)$ and to $0$ otherwise. Note that $b_{ij}$ is the complement of $b_{ji}$. For every pair of operations that are connected by and edge, we have to ensure that their time intervals are strictly disjoint, i.e. $\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint where $M$ is a large positive integer.
+\item \textit{Mutual exclusion constraints:} We define the binary variable $b_{ij}$ which is associated with the direction that is assigned to edge $[o_i,o_j]$. $b_{ij}$ is set to $1$ if the edge $[o_i,o_j]$ is assigned a direction from $o_i$ to $o_j$, i.e. $\phi([o_i,o_j]) = (o_i,o_j)$ and to $0$ otherwise. Note that $b_{ij}$ is the complement of $b_{ji}$. For every pair of operations that are connected by and edge, we have to ensure that their time intervals are strictly disjoint, i.e. $\forall\ [o_i,o_j] \in D,\  (S(o_i), E(o_i)] \cap (S(o_j), E(o_j)] = \emptyset$. Expressions \ref{orient:const_2} and \ref{orient:const_3} capture this constraint where $M$ is a large positive integer.
 
 \begin{equation}
 \forall [o_i,o_j] \in E, S(o_i) \geq E(o_j) - M \times (1-b_{ij})
@@ -387,7 +385,7 @@ While exact algorithms such as ILP give optimal results, they suffer form very l
 
 \subsection{Acyclic Orientation Heuristic}
 
-We propose in this section a heuristic for the acyclic orientation of the mixed graph $G(V,A,D)$. A straightforward acyclic orientation can be obtained by sorting the operations in a non decreasing order of their start times $S(o_i)$ and assigning directions to edges following this order, i.e. $\forall [o_i,o_j] \in D, S(o_i) \leq S(o_j), \alpha([o_i,o_j]) = (o_i,o_j)$. This is a fast greedy acyclic orientation, however it can be improved as we show hereafter.
+We propose in this section a heuristic for the acyclic orientation of the mixed graph $G(V,A,D)$. A straightforward acyclic orientation can be obtained by sorting the operations in a non decreasing order of their start times $S(o_i)$ and assigning directions to edges following this order, i.e. $\forall [o_i,o_j] \in D, S(o_i) \leq S(o_j), \phi([o_i,o_j]) = (o_i,o_j)$. This is a fast greedy acyclic orientation, however it can be improved as we show hereafter.
 
 Let $s$ be the sum of the repetition factors of all the FMUs. The set of operations $V$ can be represented as a union of mutually disjoint non empty subsets such that every subset contains all operations that belong to the same FMU and that correspond to the same occurrence:
 
@@ -423,13 +421,15 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 
 \begin{algorithm}[htb]
 	\SetKwFunction{update}{update}
-	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
-	\textbf{Output:} Update of the start and end times of a subset of operations $\{o_i\} \subset V$\;
+	\SetKwInOut{Input}{Input}
+  \SetKwInOut{Output}{Output}
+	\Input{Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;}
+	\Output{Update of the start and end times of a subset of operations $\{o_i\} \subset V$\;}
 	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
 	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$\;
 	\ForEach{$(o_t,o_h) \in A_{k,l}$}
 		{
-			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
+			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$}
 				{
 					$S(o_h) \leftarrow E(o_t)$\;
 					$E(o_h) \leftarrow S(o_h) + C(o_h)$\;
@@ -460,13 +460,15 @@ Consider now that the acyclic orientation of each subgraph $G_k(V_k,D_k)$ is obt
 
 \begin{algorithm}[htb]		
 	\SetKwFunction{update}{update}
-	\textbf{Input:} Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;
-	\textbf{Output:} Update of the start and end times from end of a subset of operations $\{o_i\} \subset V$\;
+	\SetKwInOut{Input}{Input}
+  \SetKwInOut{Output}{Output}
+	\Input{Input Attributes of the mixed graph $G(V,A,D)$, partially colored subgraph $G_k(V_k,A_k,D_k)$\;}
+	\Output{Output Update of the start and end times from end of a subset of operations $\{o_i\} \subset V$\;}
 	Set $\alpha_l$ the last assignment of color made to an operation $o_i \in V_k$\;
 	Set $A_{k,l} = \{(o_t,o_h)\}$ the set of all arcs created from the orientations engendered by $\alpha_l$\;
 	\ForEach{$(o_t,o_h) \in A_{k,l}$}
 		{
-			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$ /* $(o_t,o_h)$ is a conflict edge */}
+			\If{$S(o_h) < E(o_t)$ and $S(o_t) < E(o_h)$}
 				{
 					\If{$\overline{E}(o_t) < \overline{S}(o_h)$}
 						{
@@ -503,94 +505,84 @@ In the first step, the graph $G(V,\emptyset,D)$ obtained by removing all the arc
 It keeps a list of of already colored operations $L_k$ for each subgraph $G(V_k,\emptyset,D_k)$. The operations of every list $o_i \in L_k$ are sorted in increasing order of their assigned colors. At each iteration, the heuristic selects among the operations not yet colored $o_i \in V$, the operation which has the earliest start time $S(o_i)$ to be assigned a color. Ties are broken by selecting the operation with the least flexibility. We call the operation to be colored at a given iteration, the \textit{pending operation}. The heuristic checks in the order of $L_k$ if the edges which connect the pending operation $o_i \in V_k$ with the operations $o_j \in L_k$ are conflict edges. 
 If a conflict edge $[o_i,o_j] \in D_k: o_j \in L_k$ is detected, the pending operation is assigned the color $\alpha(o_j)$ and the colors assigned to all the already colored operations $o_{i'} \in L_k$ such that $\alpha(o_{i'}) \geq \alpha(o_{i})$, are increased $\alpha(o_{i'}) \leftarrow \alpha(o_{i'})+1$. The corresponding edges are then accordingly assigned directions. Afterward, the timing attributes of the operations are updated using Algorithms \ref{algo:update_s} and \ref{algo:update_e}. At this point, the increase in $CP$, the critical path of the graph, is evaluated. Next, the operations $o_{i'} \in L_k$: $\alpha(o_{i'}) > \alpha(o_{i})$ are reassigned their previous colors $\alpha(o_{i'}) = \alpha(o_{i'})-1$, and the pending operation is assigned a new color $\alpha(o_i) \leftarrow \alpha(o_i)+1$. The increase in the critical path is evaluated again similarly. After repeating this process for all the edges $[o_i,o_{i'}] \in D_k:\ o_{i'} \in L_k$, the pending operation is finally assigned the color which leads to the least increase in the critical path, and edges $[o_i,o_{i'}] \in D_k : o_i' \in L_k$ are assigned directions accordingly. The heuristic begins another iteration by selecting a new operation to be colored. The heuristic assigns a color to one operation at each iteration. Every operation is assigned a color higher than the colors of all its predecessors which guarantees that no cycle is generated. The heuristic finally stops when all the operations have been assigned colors. 
 %Dont forget to add case not conflict edge
-\begin{algorithm}[!htp]		
-	%\textbf{Input:} Mixed graph $G(V,A,D)$\;
-	%\textbf{Output:} Digraph $G(V,A')$\;
-	%Set $d$ the number of all occurrences of all FMUs\;
-	%Partition the graph $G(V,\empty,D)$ into $d$ subgraphs: $ G(V,\emptyset,D)= \bigcup_{k=1}^d G_k(V_k,\emptyset,D_k)$\;
-	/* Create and initialize the lists $L_k$ */\\
-	\For{$k=1$ to $d$}
-	{
-		$L_k \leftarrow \emptyset$\;
-	}
-	Set $\Omega$ the set of all the operations not already colored: $\Omega \leftarrow V$\;
+\begin{algorithm}[!htp]
+	\SetKwFunction{evaluate}{evaluate}	
+	\SetKwInOut{Input}{Input}
+  \SetKwInOut{Output}{Output}
+	\Input{Mixed graph $G(V,A,D)$}
+	\Output{DAG $G(V,A)$\;}
+	Set $s$ the number of all occurrences of all FMUs\;
+	Partition the graph $G(V,\emptyset,D)$ into $s$ subgraphs: $ G(V,\emptyset,D)= \bigcup_{k=1}^s G_k(V_k,\emptyset,D_k)$\;
+	Initialize lists $L_k \leftarrow \emptyset: 0 \leq k < s$\;
+	Set $\Omega$ the set of all the operations not already colored\;
 	\While{$\Omega \neq \emptyset$}
 	{
-		Select the operation $o_i \in \Omega, o_i \in V_k$ whose start time $S(o_i) = \max_{o_j \in \Omega}(S(o_j))$. Break ties by selecting the operation with the least flexibility\;	
-		Set $\sigma \leftarrow \infty$; /* Initialize the increase in the critical path) */\\
-		\ForEach{$[o_i,o_j] \in D_k: o_j \in L_k$}
-		{
-			\ForEach{$c \in \{\alpha(o_j), \alpha(o_j)+1\}$ }
+		Select the operation $o_i \in V_k:\ S(o_i) = \max_{o_j \in \Omega}(S(o_j)), 0 \leq k < s$ (break ties by selecting the operation with the least flexibility)\;
+			\If{$L_k = \emptyset$}
 			{
-				\If{$S(o_i) < E(o_j)$ and $S(o_j) < E(o_i)$ /* $(o_i,o_j)$ is a conflict edge */}
+				$\alpha(o_i) \leftarrow 1;\ L_k \leftarrow L_k \cup \{o_i\}$\;
+			}
+		\Else
+		{
+		Set $\sigma \leftarrow \infty$; \tcp{Initialize the increase in the critical path}
+		\ForEach{$o_j \in L_k$}
+		{
+				\If{$S(o_i) < E(o_j)$ and $S(o_j) < E(o_i)$}
 				{
+				\ForEach{$c \in \{\alpha(o_j), \alpha(o_j)+1\}$ }
+			   {
 					$\alpha(o_i) \leftarrow c$\;
-					\ForEach{$o_{i'} \in L_k$ such that $\alpha(o_{i'}) \geq \alpha(o_i)$}
+					\evaluate{$o_i, L_k$}\;
+					\ForEach{$o_{i'} \in L_k$: $\alpha(o_{i'}) > \alpha(o_i)$}
+							{
+								Reassign $o_{i'}$ its previous color: $\alpha(o_{i'}) \leftarrow \alpha(o_{i'})-1$\;
+							}
+					}
+				}
+				\If{$S(o_i) \geq E(o_j)$}
+				{
+					$\alpha(o_i) \leftarrow \alpha(o_j)+1$\;
+					\evaluate{$o_i, L_k$}\;
+				}
+				\Else
+				{
+					$\alpha(o_i) \leftarrow \alpha(o_j)$\;
+					\evaluate{$o_i, L_k$}\;
+				}
+			
+			$\alpha(o_i)=color$\;
+			\ForEach{$o_{i'} \in L_k$}
+			{
+				\If{$\alpha(o_{i'}) > \alpha(o_i)$}
+				{
+					Assign a direction to the edge $[o_i,o_{i'}] \in D_k: \phi([o_i,o_{i'}])\leftarrow (o_i,o_{i'})$\;
+				}
+				\Else
+				{
+					Assign a direction to the edge $[o_i,o_{i'}] \in D_k: \phi([o_i,o_{i'}])\leftarrow (o_{i'},o_i)$\;
+				}
+			}
+			Update the timing attributes using Algorithms \ref{algo:update_s} and \ref{algo:update_e}\;
+			Remove $o_i$ from $\Omega;\ L_k \leftarrow L_k \cup \{o_i\}$\;
+		}
+		}
+	}
+	\SetKwProg{myproc}{Procedure}{}{}
+	\myproc{\evaluate{$o_i, L_k$}}
+		{
+			 \ForEach{$o_{i'} \in L_k:\ \alpha(o_{i'}) \geq \alpha(o_i)$}
 						{
+							
 								$\alpha(o_{i'}) \leftarrow \alpha(o_{i'}) + 1$\;
 								Update the timing attributes using Algorithms \ref{algo:update_s} and \ref{algo:update_e}\;
 						}
 						Compute the new critical path and set $\sigma'$ the increase in the critical path\;
 						\If{$\sigma' < \sigma$}
 							{
-								$color \leftarrow \alpha(o_i)$\;
-								$\sigma \leftarrow \sigma'$\;
+								$color \leftarrow \alpha(o_i);\ \sigma \leftarrow \sigma'$\;
 							}
-						\ForEach{$o_{i'} \in L_k$ such that $\alpha(o_{i'}) > \alpha(o_i)$}
-							{
-								Reassign $o_{i'}$ its previous color: $\alpha(o_{i'}) \leftarrow \alpha(o_{i'})-1$\;
-							}
-				}
-				%\If{$S(o_j) \geq E(o_j)$}
-				%{
-					%$\alpha(o_i) \leftarrow \alpha(o_j)+1$\;
-					%\ForEach{$o_{i'} \in L_k$ such that $\alpha(o_{i'}) \geq \alpha(o_i)$}
-						%{
-							%
-								%$\alpha(o_{i'}) \leftarrow \alpha(o_{i'}) + 1$
-								%Update the timing attributes using Algorithms \ref{update_s} and \ref{update_e}\;
-						%}
-						%Compute the new critical path and set $\sigma'$ the increase in the critical path\;
-						%\If{$\sigma' < \sigma$}
-							%{
-								%$color \leftarrow \alpha(o_i)$,
-								%$\sigma \leftarrow \sigma'$
-							%}
-				%}
-				%\Else{}
-				%{
-					%$\alpha(o_i) \leftarrow \alpha(o_j)$\;
-					%\ForEach{$o_{i'} \in L_k$ such that $\alpha(o_{i'}) \geq \alpha(o_i)$}
-						%{
-							%
-								%$\alpha(o_{i'}) \leftarrow \alpha(o_{i'}) + 1$\;
-								%Update the timing attributes using Algorithms \ref{update_s} and \ref{update_e}\;
-						%}
-						%Compute the new critical path and set $\sigma'$ the increase in the critical path\;
-						%\If{$\sigma' < \sigma$}
-							%{
-								%$color \leftarrow \alpha(o_i)$\;
-								%$\sigma \leftarrow \sigma'$\;
-							%}
-				%}
-			}
-			$\alpha(o_i)=color$\;
-			\ForEach{$o_{i'} \in L_k$}
-			{
-				\If{$\alpha(o_{i'}) > \alpha(o_i)$}
-				{
-					Assign a direction to the edge $[o_i,o_{i'}] \in D_k: \alpha([o_i,o_{i'}])\leftarrow (o_i,o_{i'})$
-				}
-				\Else
-				{
-					Assign a direction to the edge $[o_i,o_{i'}] \in D_k: \alpha([o_i,o_{i'}])\leftarrow (o_{i'},o_i)$
-				}
-			}
-			Update the timing attributes using Algorithms \ref{algo:update_s} and \ref{algo:update_e}\;
-			Remove $o_i$ from $\Omega$\;
+			 \KwRet\;
 		}
-	}
-	
  
 	\caption{Acyclic orientation heuristic}
 	\label{algo:ao}
@@ -609,11 +601,11 @@ The outermost loop (while loop) of the acyclic orientation heuristic is repeated
 
 \section{\label{sec:grphrtsc}Dependence Graph with Real-time Constraints}
 
-Real-time (co-)simulation, a widely used term in the literature, refers to co-simulation that requires that the amount of time needed to compute all equations of a model must be less than the integration step size of the model \cite{belanger:2010}. In this thesis, we talk instead about \textit{co-simulation under real-time constraints}. The difference between the two notions will be clarified through this section. In particular, we are interested in such co-simulation within the context of HiL testing. In this section, we focus on defining these real-time constraints which are not given as it is usually the case in classical real-time systems. First, we explain what these constraints are and where they originate from. Then, we describe how to define real-time constraints for a specific co-simulation. The work presented in this section is based on the method of propagating real-time constraints described in \cite{faure:2011}. This method was proposed for co-simulations where only partial information about intra-model dependence is available. Our work is an adaptation of this method to FMU co-simulation represented by a dependence graph which provides information about input/output/state dependence.
+Real-time (co-)simulation, a widely used term in the literature, refers to co-simulation that requires that the amount of time needed to compute all equations of a model must be less than the integration step size of the model \cite{belanger:2010}. In this thesis, we talk instead about \textit{co-simulation under real-time constraints}. The difference between the two notions will be clarified through this section. In particular, we are interested in such co-simulation within the context of HiL testing. In this section, we focus on defining these real-time constraints which are not given as it is usually the case in classical real-time systems. First, we explain what these constraints are and where they originate from. Then, we describe how to define real-time constraints for a co-simulation represented by an operation graph. The work presented in this section is based on the method of propagating real-time constraints described in \cite{faure:2011}. This method was proposed for co-simulations where only partial information about intra-model dependence is available. Our work is an adaptation of this method to FMU co-simulation represented by a dependence graph which provides information about input/output/state dependence.
 
 \subsection{Preliminaries}
 
-A HiL setup is composed of a simulated component and a physically available component that is interfaced with the simulated component via inputs and outputs. It should be noted that multiple parts may be physically available and involved in HiL, e.g. multiple controllers interacting with multiple parts of physical processes. We refer to all these parts as the real component. Figure \ref{fig:hilSetup} shows a basic example of a HiL co-simulation. The simulated component is represent by an operation graph. It consists of two FMUs $A$ and $B$ whose operations are colored green and yellow respectively. The real component has one input and one output connected to an output operation and and an input operation of the simulated component respectively. 
+A HiL setup is composed of a simulated component and a physically available component that is interfaced with the simulated component via inputs and outputs. It should be noted that multiple parts may be physically available and involved in HiL, e.g. multiple controllers interacting with multiple parts of physical processes. We refer to all these parts as the real component. Figure \ref{fig:hilSetup} shows a basic example of a HiL co-simulation. The simulated component is represent by an operation graph. It consists of two FMUs $A$ and $B$ whose operations are colored in green and yellow respectively. The real component has one input and one output connected to an output operation and and an input operation of the simulated component respectively. 
 
 \begin{figure}[phbt]
 \centering
@@ -622,13 +614,15 @@ A HiL setup is composed of a simulated component and a physically available comp
 \label{fig:hilSetup}
 \end{figure}
 
-The goal of the HiL testing phase in the model based design process is mainly to run realistic tests. In other words, it aims at estimating the performance of the real component by providing a realistic environment through the simulated component. The simulated component has to interact with the real component at the same rate as its real counterpart. As such, the inputs and outputs of the real component, which are periodically sampled, define real-time constraints which involve that the simulated time have to match the real time. These constraints are initially defined on the outputs and inputs of the simulated component that are connected with the inputs and outputs of the real component respectively. Since these inputs and outputs of the simulated component depend on other operations of the co-simulation, the real-time constraints are propagated to the other operations.
+The goal of the HiL testing phase in the model based design process is mainly to run realistic tests. In other words, it aims at estimating the performance of the real component by providing a realistic environment through the simulated component. The simulated component has to interact with the real component at the same rate as its real counterpart. As such, the inputs and outputs of the real component, which are periodically sampled, define real-time constraints which involve that the simulated time has to match the real time. These constraints are initially defined on the outputs and inputs of the simulated component that are connected with the inputs and outputs of the real component respectively. Since these inputs and outputs of the simulated component depend on other operations of the co-simulation, the real-time constraints are propagated towards the other operations.
 
-In \cite{faure:2011}, it has been shown that the real-time constraints have to be propagated in different ways depending on the type of the operation (input, output, state) and also the type of intra-model connections (direct feedthrough, non direct feedthrough). In this work, the author dealt with co-simulation at the model level, i.e. a co-simulation is represented by a graph of models. Moreover, the author distinguishes between direct feed through and non direct feedthrough models. A direct feedthrough model contains at least one output which directly depends on an input while a non direct feedthrough models contains none. For further details, one should consult the original work. Because we adopted a different approach which takes advantage of the FMI standard to represent a co-simulation with finer granularity, we cannot apply the method proposed in \cite{faure:2011}. In the following, we give some preliminaries about the propagation of real-time constraints on a dependence graph representing an FMU co-simulation. 
+In \cite{faure:2011}, it has been shown that the real-time constraints have to be propagated in different ways depending on the type of the operation (input, output, state) and also the type of intra-model connections (direct feedthrough, non direct feedthrough). In this work, the author dealt with co-simulation at the model level, i.e. a co-simulation is represented by a graph of models. Moreover, the author distinguishes between direct feedthrough and non direct feedthrough model. A direct feedthrough model contains at least one output which directly depends on an input while a non direct feedthrough models contains none. For further details, one should consult the original work. Because we adopted a different approach which takes advantage of the FMI standard to represent a co-simulation with finer granularity, we cannot apply the method proposed in \cite{faure:2011}. Instead, we propose a new method that we present in this section. First, we give in the following some preliminaries about the propagation of real-time constraints on a dependence graph representing an FMU co-simulation. 
 
-Different hardware and software components such as communication buses and software acquisition modules are used to connect the real component with the simulated component (co-simulation). In our work, we abstract the details about all these communication components away by representing the connection as a data dependence between an input (resp. output) of the real component and an output (resp. input) of the co-simulation. The co-simulation periodically reads and writes data from and to the real component. Therefore, the real-time constrainsts are initially defined on the inputs and outputs that are directly connected with the real component. For instance, the real component sends data via its output to update an input of the co-simulation every $20ms$.
+Different hardware and software components such as communication buses and software acquisition modules are used to connect the real component with the simulated component (co-simulation). In our work, we abstract the details about all these communication components away by representing the connection as a data dependence between an input (resp. output) of the real component and an output (resp. input) of the co-simulation (see Figure \ref{fig:hilSetup}). The co-simulation periodically reads and writes data from and to the real component. Therefore, the real-time constrainsts are initially defined on the inputs and outputs that are directly connected with the real component. For instance, the real component sends data via its output to update an input of the co-simulation every $20ms$.
 
-We consider that the simulated component consists in an FMU co-simulation represented as an operation graph constructed and upon which the different transformations (multi-rate, acyclic orientation) have been applied as described in previous sections. All operations of the co-simulation including the inputs (resp. outputs) of the co-simulation that are connected with the real component can have predecessors/successors or not. This is an important difference from the method proposed in \cite{faure:2011} where only inputs (resp. outputs) of the co-simulation do not have predecessors (resp. successors). We assume that every sampling period of the real component is a multiple of the communication steps of the different FMUs involved in the co-simulation. In contrast to \cite{faure:2011}, we do not consider the case where cycles exist in the operation graph since, as we showed previously, the operation graphs we deal with are cycle free by construction. 
+We consider that the simulated component consists in an FMU co-simulation represented as an operation graph constructed and upon which the different transformations (multi-rate, acyclic orientation) have been applied as described in previous sections. All operations of the co-simulation including the inputs (resp. outputs) of the co-simulation that are connected with the real component may have successors or not. This is an important difference from the method proposed in \cite{faure:2011} where outputs of the co-simulation do not have successors. 
+
+We assume that the sampling period of a given input/output of the real component is a multiple of the communication step size of the operation of the simulated component that is connected with it. In contrast to \cite{faure:2011}, we do not consider the case where cycles exist in the operation graph since, as we showed previously, the operation graphs we deal with are cycle-free by construction. 
 
 The propagation of real-time constraints loosens the constraints imposed on the co-simulation compared to classical real-time co-simulation \cite{belanger:2010}. The latter, indeed, requires setting a periodic deadline for the computations of each model's equations that is equal to its integration step size. This approach, in the case of HiL co-simulation where only data exchange between the real and the simulated component have to be performed in real-time, usually over-constrains the co-simulation. We chose to use the term co-simulation under real-time constraints over the term real-time co-simulation because, in our approach, not every operation is constrained to be executed in real-time, i.e. with periodic deadline that is equal to its integration step size. In the subsequent sections, we present how the real-time constraints are computed and propagated. %We consider special cases of operation graphs and present how they can be handled.
 

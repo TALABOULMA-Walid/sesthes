@@ -535,12 +535,12 @@ The most known real-time scheduling algorithms are the following:
 \begin{itemize}
 \item Fixed priorities
 \begin{itemize}
-\item Rate Monotonic (RM) \cite{liu:1973}: Tasks are assigned priorities inversely proportional to their periods. A set of tasks is schedulable by RM if $U \leq n(2^{\frac{1}{n}}-1)$: $D_i = T_i$. 
-\item Deadline Monotonic (DM) \cite{leung:1982}: Tasks are assigned priorities inversely proportional to their relative deadlines. Tasks are schedulable using DM if $\Delta \leq n(2^{\frac{1}{n}}-1)$: $D_i \leq T_i$. 
+\item Rate Monotonic (RM) \cite{liu:1973}: Tasks are assigned priorities inversely proportional to their periods. A set of tasks $\tau_i \in \mathcal{T}: D_i = T_i$ is schedulable by RM if $U \leq n(2^{\frac{1}{n}}-1)$. 
+\item Deadline Monotonic (DM) \cite{leung:1982}: Tasks are assigned priorities inversely proportional to their relative deadlines. A set of tasks $\tau_i \in \mathcal{T}: D_i \leq T_i$ is schedulable by DM if $\Delta \leq n(2^{\frac{1}{n}}-1)$. 
 \end{itemize}
 \item Dynamic priorities
 \begin{itemize}
-\item Earliest Deadline First (EDF) \cite{liu:1973}: Priorities of tasks are inversely proportional to their absolute deadlines. The priority of a task is fixed for one occurrence but may change from one occurrence to another. EDF can schedule a set of tasks iff: $U \leq 1: D_i = T_i$.
+\item Earliest Deadline First (EDF) \cite{liu:1973}: Priorities of tasks are inversely proportional to their absolute deadlines. The priority of a task is fixed for one occurrence but may change from one occurrence to another. EDF can schedule a set of tasks $\tau_i \in \mathcal{T}: D_i = T_i$ iff: $U \leq 1$.
 \item Least Laxity First (LLF) \cite{mok:1983}: Priorities of tasks are inversely proportional to their laxities. The priority may change for the same occurrence and from one occurrence to another. The schedulability test is the same as for EDF.
 \end{itemize}
 \end{itemize}

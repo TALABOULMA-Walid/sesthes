@@ -80,6 +80,10 @@
 
 \path (input) edge[-{Latex[]},red]  (o5);
 
+\node[rectangle,draw,fill=black,minimum height=.5cm, minimum width=.5cm,xshift=-1cm,label={[align=center,yshift=.5cm]south:Output}] at(o4.west) (output){};
+
+\path (output) edge[-{Latex[]}]  (o4);
+
 \node (c2) [invisible] at ([yshift=-1.2cm]o0_1){};
 
 \node[regular polygon,regular polygon sides=4,inner sep=-3.4,dashed,fill=red!20] at(input |- c2) (o10_0) {$o_{10}^{q-1}$};

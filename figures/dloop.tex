@@ -9,7 +9,7 @@
 
 \begin{scope}[framed,local bounding box=scope1,node distance=1.5cm,every node/.style={circle,draw},square/.style={regular polygon,regular polygon sides=4,inner sep=-.3},invisible/.style={minimum width=0mm,inner sep=0mm,outer sep=0mm,draw=none}]
 % Nodes
-\node[] (o5) {$o_5^p$};
+\node[fill=gray!50] (o5) {$o_5^p$};
 \node[above of = o5,yshift=1cm] (o4) {$o_4^p$};
 \node[right of = o4,yshift=-.5cm] (o8) {$o_8^p$};
 \node[right of = o8,yshift=-.5cm] (o1) {$o_1^p$};
@@ -82,17 +82,24 @@
 
 \path (input) edge[-{Latex[]}]  (o5);
 
+\node[rectangle,draw,fill=black,minimum height=.5cm, minimum width=.5cm,xshift=-1cm,label={[align=center,yshift=.5cm]south:Output}] at(o4.west) (output){};
+
+\path (output) edge[-{Latex[]}]  (o4);
+
+
 \node (c1) [invisible] at ([xshift=.2cm,yshift=-1.2cm]o10_1){};
 \node (c2) [invisible] at ([yshift=-1.2cm]o0_1){};
 
 
-\node[regular polygon,regular polygon sides=4,inner sep=-3.4,dashed,fill=red!20] at(input |- c2) (o10_0) {$o_{10}^{p-1}$};
+\node[regular polygon,regular polygon sides=4,inner sep=-3.4,dashed,fill=gray!50] at(input |- c2) (o10_0) {$o_{10}^{p-1}$};
 \path (o10_0) edge[-{Latex[]}]  (o5);
 
 
 \path ([xshift=.2cm,yshift=-.1cm]o10_1.south) edge[<-,dashed,red] (c1.north);
 \path ([yshift=-.1cm]c1.south) edge[out = 270,in=0,dashed,red] (c2.west);
 \path (c2.west) edge[dashed,red] ([xshift=.1cm]o10_0.east);
+
+\node[draw=none,above of = o5,yshift=-.9cm,text=red] {$4$};
 
 \node[draw=none,below of = o10_0,yshift=1cm,text=red] {$4$};
 \node[draw=none,below of = o6,text=red] {+$HP$};

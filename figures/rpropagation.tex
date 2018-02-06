@@ -96,7 +96,7 @@
 
 \node[rectangle,draw,fill=black,minimum height=.5cm, minimum width=.5cm,xshift=-1cm,label={[align=center,yshift=.5cm]south:Input}] at(o5.west) (input){};
 
-\path (input) edge[-{Latex[]}]  (o5);
+\path (input) edge[{Latex[]}-]  (o5);
 
 \path ([xshift=.3cm]o4.south) edge[->,dashed,blue, bend right = 60, line width=.5]  ([yshift=-.3cm]o8.west);
 

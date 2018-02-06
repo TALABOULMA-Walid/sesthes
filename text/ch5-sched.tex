@@ -407,7 +407,7 @@ where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (releas
 
 %Add here how we deal with the problem
 
-As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means, that such operations can be executed before launching the co-simulation under real-time constraints. Therfore, they do not appear in the first repetition of the schedu
+As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means that such operations can be executed before launching the co-simulation under real-time constraints. Therefore, they are not scheduled and are removed from the first repetition of the operation graph. See, for example, the operations colored in gray in Figure. But since these operations must appear in the subsequent repetitions of the operation graph and the schedule, we have to add the repetitions of these operations that belong to the second repetition of the operation graph to the operation graph pattern that is scheduled. See Figure.
 
 \section{Code Generation}
 

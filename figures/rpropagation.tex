@@ -94,25 +94,13 @@
 
 \path (output) edge[-{Latex[]},blue]  (o4);
 
+\node[rectangle,draw,fill=black,minimum height=.5cm, minimum width=.5cm,xshift=-1cm,label={[align=center,yshift=.5cm]south:Input}] at(o5.west) (input){};
+
+\path (input) edge[-{Latex[]}]  (o5);
+
 \path ([xshift=.3cm]o4.south) edge[->,dashed,blue, bend right = 60, line width=.5]  ([yshift=-.3cm]o8.west);
 
-%\begin{axis}[ left of = o5,
-		%xshift=-1cm,
-		%yshift=1.5cm,
-    %xmin=0, xmax=4.5,
-    %axis x line=bottom,% only show the bottom x axis
-    %hide y axis,    
-    %ymin=0,ymax=2,
-    %scatter/classes={%
-        %a={mark=o,draw=black}},
-				%ticks=none,
-				%x post scale=.2
-    %]
-		%\draw [-{Latex[]}] (axis cs: .5,0) -- (axis cs: .5,.2);
-		%\draw [-{Latex[]}] (axis cs: 2,0) -- (axis cs: 2,.2);
-		%\draw [-{Latex[]}] (axis cs: 3.5,0) -- (axis cs: 3.5,.2);
-%
-%\end{axis}
+
 \end{scope}
 
 \end{tikzpicture}

@@ -9,7 +9,7 @@
 
 \begin{scope}[framed,local bounding box=scope1,node distance=1.5cm,every node/.style={circle,draw},square/.style={regular polygon,regular polygon sides=4,inner sep=-.3},invisible/.style={minimum width=0mm,inner sep=0mm,outer sep=0mm,draw=none}]
 % Nodes
-\node[] (o5) {$o_5^p$};
+\node[fill=blue!20] (o5) {$o_5^p$};
 \node[above of = o5,yshift=1cm,fill=gray!50] (o4) {$o_4^p$};
 \node[right of = o4,yshift=-.5cm,fill=gray!50] (o8) {$o_8^p$};
 \node[right of = o8,yshift=-.5cm,fill=gray!50] (o1) {$o_1^p$};
@@ -17,10 +17,10 @@
 \node[right of = o7,fill=gray!50] (o2) {$o_2^p$};
 \node[square,right of = o2,yshift=-.5cm,fill=gray!50] (o11) {$o_{11}^p$};
 \node[square,below of = o2,fill=gray!50] (o10) {$o_{10}^p$};
-\node[below of = o10,yshift=.5cm] (o3) {$o_3^p$};
-\node[left of = o3,yshift=-.5cm] (o6) {$o_6^p$};
-\node[left of = o6] (o0) {$o_0^p$};
-\node[left of = o0,yshift=-.5cm] (o9) {$o_9^p$};
+\node[below of = o10,yshift=.5cm,fill=blue!20] (o3) {$o_3^p$};
+\node[left of = o3,yshift=-.5cm,fill=blue!20] (o6) {$o_6^p$};
+\node[left of = o6,fill=blue!20] (o0) {$o_0^p$};
+\node[left of = o0,yshift=-.5cm,fill=blue!20] (o9) {$o_9^p$};
 
 \node[right of = o11,yshift=.5cm,inner sep=0,fill=gray!50] (o1_1) {$o_1^{p+1}$};
 \node[below of = o1_1,inner sep=0,fill=gray!50] (o5_1) {$o_5^{p+1}$};
@@ -30,6 +30,7 @@
 \node[regular polygon,regular polygon sides=4,inner sep=-3.4,right of = o5_1,xshift=.5cm,fill=gray!50] (o10_1) {$o_{10}^{p+1}$};
 
 \node[draw=none,below of = o10_1,yshift=1cm,text=blue] {$0$};
+
 \node[draw=none,below of = o4,yshift=.9cm,text=blue] {$0$};
 \node[draw=none,below of = o8,yshift=.9cm,text=blue] {$0$};
 \node[draw=none,below of = o1,yshift=.9cm,text=blue] {$0$};
@@ -44,6 +45,12 @@
 \node[draw=none,below of = o7_1,yshift=.9cm,text=blue] {$0$};
 \node[draw=none,below of = o10_1,yshift=1cm,text=blue] {$0$};
 
+\node[draw=none,below of = o5,yshift=.9cm,text=blue] {$-4$};
+\node[draw=none,above of = o6,yshift=-.9cm,text=blue] {$-4$};
+\node[draw=none,above of = o0,yshift=-.9cm,text=blue] {$-4$};
+\node[draw=none,below of = o3,yshift=.9cm,text=blue] {$-4$};
+\node[draw=none,above of = o9,yshift=-.9cm,text=blue] {$-4$};
+
 %arcs
 \path (o5) edge[-{Latex[]}] (o10);
 \path (o4) edge[-{Latex[]}] (o8);
@@ -55,11 +62,11 @@
 \path (o7) edge[-{Latex[]}] (o2);
 \path (o7) edge[-{Latex[]}] (o10);
 \path (o2) edge[-{Latex[]}]  (o11);
-\path (o9) edge[-{Latex[]}]  (o0);
+\path (o9) edge[-{Latex[]},blue]  (o0);
 \path (o9) edge[-{Latex[]}, out=340,in=270]  (o11);
-\path (o0) edge[-{Latex[]}]  (o6);
+\path (o0) edge[-{Latex[]},blue]  (o6);
 \path (o0) edge[-{Latex[]},bend left=15]  (o10);
-\path (o6) edge[-{Latex[]}]  (o3);
+\path (o6) edge[-{Latex[]},blue]  (o3);
 \path (o6) edge[-{Latex[]}]  (o10);
 \path (o3) edge[-{Latex[]}]  (o11);
 \path (o0) edge[-{Latex[]}]  (o7);
@@ -99,36 +106,24 @@
 
 \path (input) edge[-{Latex[]}]  (o5);
 
+
 \node (c1) [invisible] at ([xshift=.2cm,yshift=-1.2cm]o10_1){};
 \node (c2) [invisible] at ([yshift=-1.2cm]o0_1){};
-\node (c3) [invisible] at ([yshift=-1cm]c2){};
 
-\node[regular polygon,regular polygon sides=4,inner sep=-3.4,dashed,fill=blue!20] at(output |- c2) (o10_0) {$o_{10}^{p-1}$};
-\path (o10_0) edge[-{Latex[]}]  (o5);
+\node[regular polygon,regular polygon sides=4,inner sep=-3.4,dashed,fill=gray!50] at(output |- c2) (o10_0) {$o_{10}^{p-1}$};
+\path (o10_0) edge[-{Latex[]},blue]  (o5);
 
-\node[regular polygon,regular polygon sides=4,inner sep=-3.4,right of = o10_0,dashed,fill=blue!20]  (o11_0) {$o_{11}^{p-1}$};
-\path (o11_0) edge[-{Latex[]}]  (o9);
-
-\node (c4) [invisible] at ([xshift=.2cm,yshift=-1.2cm]o11){};
-\node (c5) [invisible] at (o3 |- o11_0){};
+\node[regular polygon,regular polygon sides=4,inner sep=-3.4,right of = o10_0,dashed,fill=gray!50]  (o11_0) {$o_{11}^{p-1}$};
+\path (o11_0) edge[-{Latex[]},blue]  (o9);
 
 
-\path ([xshift=.2cm,yshift=-.1cm]o10_1.south) edge[dashed,blue] (c1.north);
-\path ([yshift=-.1cm]c1.south) edge[out = 270,in=0,dashed,blue] (c3.west);
-\path (c3.west) edge[dashed,blue] (o11_0 |- c3);
-\path (o11_0 |- c3) edge[->,dashed,blue,out=180,in=270] ([yshift=-.1cm]o10_0.south);
-
-\path ([xshift=.2cm,yshift=-.1cm]o11.south) edge[dashed,blue] (c4.north);
-\path ([yshift=-.1cm]c4.south) edge[out = 270,in=0,dashed,blue] (c5.west);
-\path (c5.west) edge[->,dashed,blue] ([xshift=.1cm]o11_0.east);
-
-
-
+%\path ([xshift=.2cm,yshift=-.1cm]o10_1.south) edge[dashed,blue] (c1.north);
+%\path ([yshift=-.1cm]c1.south) edge[out = 270,in=0,dashed,blue] (c2.west);
+%\path (c2.west) edge[->,dashed,blue] ([xshift=.1cm]o10_0.east);
+%
 \node[draw=none,above of = o10_0,yshift=-1cm,text=blue] {-$4$};
-\node[draw=none,below of = o6,text=blue,yshift=-1cm] {-$HP$};
-
 \node[draw=none,above of = o11_0,yshift=-1cm,text=blue] {-$4$};
-\node[draw=none,below of = o0,text=blue,xshift=.5cm] {-$HP$};
+%\node[draw=none,below of = o6,text=blue] {-$HP$};
 
 
 \end{scope}

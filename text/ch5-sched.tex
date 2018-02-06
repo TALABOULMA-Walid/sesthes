@@ -397,7 +397,17 @@ In offline scheduling, the schedule is computed over an interval of time. This s
 
 The length of the schedule interval for co-simulation under real-time constraints cannot be chosen in a straightforward manner to be equal to the Hyper-Period. This is because the operation graph features \textit{arbitrary deadlines}, i.e. relative deadlines that are greater than the periods.
 
-In the real-time literature, we find contributions regarding the schedule interval targeting different kinds of real-time tasks, schedulers, and architectures. For instance, in \cite{cucu:2006}, the authors study synchronous task systems, i.e. where the release dates of all tasks are equal to zero, with constrained deadlines, i.e. where the relative deadline of each task is less or equal to its period. They show that the schedule of such task system on uniform multiprocessors reaches a cyclic behavior after one Hyper-Period. In \cite{choquet:2004}
+In the real-time literature, we find contributions regarding the schedule interval targeting different kinds of real-time tasks, schedulers, and architectures. For instance, in \cite{cucu:2006}, the authors study synchronous task systems, i.e. where the release dates of all tasks are equal to zero, with constrained deadlines, i.e. where the relative deadline of each task is less or equal to its period. They show that the schedule of such task system on uniform multiprocessors reaches a cyclic behavior after one Hyper-Period. In \cite{cucu:2007}, a schedule interval is given for preemptive scheduling of tasks with arbitrary deadlines on uniform multiprocessors. A more general result is given in \cite{grolleau:2013} taking into account different constraints (mutual exclusion, precedence constraints, non-preemptive tasks, etc.) for uniprocessor and multiprocessor scheduling. The authors give an upper bound for the schedule interval when a \textit{deterministic memoryless} scheduler is used. A scheduler is deterministic and memoryless if and only if, when building the schedule, the scheduling decision is the same for any identical configuration encountered. The given bound is:
+
+\begin{equation} 
+\prod_{i=1}^n((\max(O_i + D_i - T_i, 0) + 1)) \times H
+\end{equation}
+
+where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (release date), relative deadline, and period of task $\tau_i$ respectively, and $H$ is the Hyper-Period. This result is applicable to non-preemptive scheduling with arbitrary deadlines which is the case in out problem. However, the proposed bound is intractable, i.e. as the size of the operation graph grows, it results in very large schedule intervals and we cannot guarantee to compute the schedule within an acceptable time.
+
+%Add here how we deal with the problem
+
+As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means, that such operations can be executed before launching the co-simulation under real-time constraints. Therfore, they do not appear in the first repetition of the schedu
 
 \section{Code Generation}
 

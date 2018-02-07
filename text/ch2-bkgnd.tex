@@ -10,7 +10,12 @@ The design of complex systems impose the study of their behavior before building
 
 \subsection{Systems}
 
-Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. A system is defined as a set of interacting parts which form a complex whole and operate towards a common goal. 
+Before detailing the concepts and methods of modeling and simulation of systems, it is important to understand what is meant by a system. See Definition \ref{def:system}.
+
+\begin{definition}
+A system is defined as a set of interacting parts which form a complex whole and operate towards a common goal.
+\label{def:system}
+\end{definition}
 
 In order to have clearer understanding, the notion of a system should be conceived in the scope of the context that it is used in. In engineering domains, in addition to the definition given above, a system can be seen as an entity which consumes inputs and produces outputs from and to the environment, and is characterized by an internal state. The state of the system is affected by the inputs that it consumes, and, in turn, affects the produced outputs. Figure \ref{fig:system} illustrates this view as usually found in block diagrams where $u$ represents the input of the system, $y$ the output, and $x$ the internal state.
 
@@ -132,7 +137,7 @@ Figure \ref{fig:cosim} shows the evolution of time and data exchange in a co-sim
 
 For larger co-simulations involving more models, different communication step sizes may be associated with different models. In this case, we talk about \textit{multi-rate} co-simulation.
 
-In this thesis, we are interested, in particular, in co-simulations that are compliant with the Functional Mock-up Interface (FMI) standard \cite{fmi:2014}, presented hereafter. There exist other standards which target the coupling of simulators, e.g. the High-Level Architecture (HLA) \cite{ieee1516:2012}. The HLA is an IEEE standard developed by the U.S. Modeling and Simulation Coordination Office (M\&S CO)\footnote{www.msco.mil}. We are interested in the FMI standard because it is adopted by many modeling and simulation tools and is becoming the state of the art standard for co-simulation, thanks to the different possibilities of simulators and models coupling that it offers.
+In this thesis, we are interested, in particular, in co-simulations that are compliant with the Functional Mock-up Interface (FMI) standard \cite{fmi:2014}, presented hereafter. There exist other standards which target the coupling of simulators, e.g. the High-Level Architecture (HLA) \cite{ieee1516:2012}. We are interested in the FMI standard because it is adopted by many modeling and simulation tools and is becoming the state of the art standard for co-simulation, thanks to the different possibilities of simulators and models coupling that it offers.
 
 In the context of CPS which contain embedded systems controlling physical processes, different kinds of co-simulation, presented below, can be performed depending on the stage of the controller design.
 
@@ -230,6 +235,25 @@ In the context of FMI, we talk about model export and import. Model export means
 %\end{figure}  
 
 %The High Level Architecture (HLA) \cite{} is another standard for distributed simulation.
+
+\subsubsection{The High-Level Architecture Standard}
+
+The High-Level Architecture (HLA) \cite{ieee1516:2012} is an IEEE standard developed by the U.S. Modeling and Simulation Coordination Office (M\&S CO)\footnote{www.msco.mil}. It consists in a specification of a software architecture that allows building a distributed simulation composed of several interacting simulations. Largely used for defense applications, it later gained popularity in the civil domain.
+
+In HLA, each involved simulation is called a \textit{federate} and the distributed simulation composed of interacting federates is called a \textit{federation}. The specification describes how communication is performed within a federation through the \textit{Run Time Infrastructure} (RTI) which is a middleware that provides services for data exchange, synchronization, and coordination between the federates.
+
+An HLA specification includes the following elements:
+
+\begin{itemize}
+
+\item An interface specification that describes how federates can be integrated and coordinate by using services provided by the RTI. An Application Programming Interface (API) is provided by the RTI to this end.
+
+\item Object Model Template (OMT)
+
+\item
+
+
+\end{itemize}
  
 
 \subsection{Co-simulation under Real-time Constraints}
@@ -294,6 +318,10 @@ Hopsan\footnote{www.iei.liu.se/flumes/system-simulation/hopsan?l=en} is a free m
 %\subsection{Tools and Languages for Real-time Simulation}
 
 The additional timing constraints found in real-time simulation require the use of adapted tools. Many real-time simulation tools are developed in such a way to run the simulated part on special dedicated hardware that provides an execution fast enough to ensure real-time constraints. Other solutions tend to enable real-time co-simulation using general purpose computers equipped with Real-Time Operations Systems (RTOS). In \cite{faruque:2015}, the authors give a list of the available real-time simulation tools and detail their characteristics. In the following, we present a non exhaustive list of tools for real-time simulation.
+
+\subsubsection{xMOD HiL}
+
+xMOD is doted with HiL capabilities. It allows connecting controller hardware to a desktop computer running co-simulation in xMOD using the CAN protocol to perform HiL testing. Also, it features a real-time communication driver, based on the UDP protocol to connect xMOD to different types of HiL platforms such as dSPACE (see below).
 
 \subsubsection{Simulink Coder}
 

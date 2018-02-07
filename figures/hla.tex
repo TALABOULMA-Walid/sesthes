@@ -1,0 +1,56 @@
+% Diagram of Android activity life cycle
+% Author: Pavel Seda 
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,arrows}
+
+
+\begin{document}  
+\tikzset{%
+ auto,>=latex',
+  % Specifications for style of nodes:
+            base/.style = {rectangle, draw=black,
+                           minimum width=4cm, minimum height=1cm,
+                           text centered},
+  fmu/.style = {rectangle, draw=black,fill=green!20,
+                           minimum width=3.3cm, minimum height=1cm},
+       model/.style = {rectangle, draw=black,fill=red!30,minimum width=1.3cm,minimum height=0.5cm},
+    solver/.style = {rectangle, draw=black,fill=green!30,minimum width=1.3cm, minimum height=0.5cm},
+         tool/.style = {rectangle, draw=black, fill=red!20,
+                          minimum width=12.3cm, minimum height=1cm},
+				 FMI/.style = {rectangle,draw=blue,dashed,fill=none,minimum width=10cm, minimum height=0.7cm},
+}  
+% Drawing part, node distance is 1.5 cm and every node
+% is prefilled with white background
+\begin{tikzpicture}[node distance=1.5cm,
+    every node/.style={fill=white}, align=center]
+  % Specification of nodes (position, etc.)
+  
+  
+  \node (fmu1) [fmu] {Federate 1};
+  \node (fmu2)  [fmu, right of=fmu1, xshift=3cm] {Federate 2};
+	
+	\node (fmu3)  [fmu, right of=fmu2, xshift=3cm] {Federate n};
+	
+	\node (tool) [tool, above of=fmu2, yshift=0.5cm] {Run Time Infrastructure (RTI)} ;
+	
+	
+  %\node (white1) [rectangle,above of=fmu1, yshift=0.625cm,minimum width=0.5cm,minimum height=0.5cm]
+     
+  % Specification of lines between nodes specified above
+  % with aditional nodes for description 
+\path (fmu2) -- node[auto=false]{\ldots} (fmu3);
+%\draw[-{Circle[open,length=0.4cm,width=0.4cm]},line width=0.7mm] (fmu1) -- ([yshift=0.7cm]fmu1.north); 
+\draw[-o,line width=0.7mm] (fmu1) -- ([yshift=0.55cm]fmu1.north);
+\draw[-o,line width=0.7mm] (fmu2) -- ([yshift=0.55cm]fmu2.north);
+\draw[-o,line width=0.7mm] (fmu3) -- ([yshift=0.55cm]fmu3.north);
+
+\draw[-{Arc Barb[reversed,round]},line width=0.7mm] ([yshift=1.0cm]fmu1.north) -- ++(0,-0.5);
+\draw[-{Arc Barb[reversed,round]},line width=0.7mm] ([yshift=1.0cm]fmu2.north) -- ++(0,-0.5);
+\draw[-{Arc Barb[reversed,round]},line width=0.7mm] ([yshift=1.0cm]fmu3.north) -- ++(0,-0.5);
+
+\node (fmi) [FMI,above of=fmu2, yshift=-0.5cm,label={[text=blue]west:Interface}] {} ;
+
+
+  \end{tikzpicture}
+\end{document}

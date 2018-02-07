@@ -1,3 +1,13 @@
+\documentclass{standalone}
+
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\pgfplotsset{compat=1.15}
+
+\begin{document}
+
 \begin{tikzpicture}
     \begin{axis}[
         xlabel=Number of cores,
@@ -26,3 +36,5 @@
     \addlegendentry{Unconstrained allocation}
     \end{axis}
 \end{tikzpicture}
+
+\end{document}

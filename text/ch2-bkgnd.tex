@@ -248,13 +248,20 @@ An HLA specification includes the following elements:
 
 \item An interface specification that describes how federates can be integrated and coordinate by using services provided by the RTI. An Application Programming Interface (API) is provided by the RTI to this end.
 
-\item Object Model Template (OMT)
+\item An Object Model Template (OMT) that specifies a framework for communication between the federates. It comprises the Federation Object Model (FOM) which describes the interactions for the whole federation and the Simulation Object Model (SOM) which describes the interactions for one federate.
 
-\item
-
+\item A set of rules about that have to be respected in the federations and the federates.
 
 \end{itemize}
- 
+
+Figure \ref{fig:hla} shows an example of an HLA federation.
+
+\begin{figure}[phbt]
+\centering
+\includestandalone{figures/hla}
+\caption{HLA federation.}
+\label{fig:hla}
+\end{figure} 
 
 \subsection{Co-simulation under Real-time Constraints}
 

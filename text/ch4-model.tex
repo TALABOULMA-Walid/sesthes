@@ -21,21 +21,25 @@ The entry point for the construction of a dependence graph of an FMU co-simulati
 
 \begin{figure}[htb]
 \centering
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[scale=0.2]{figures/Two_Models_Black_Box}
+  \includestandalone{figures/twomodelsbb}
   \caption{Inter-FMU dependence specified by the user}
   \label{fig:2mdlsbb}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
+	\vspace*{1cm}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[scale=0.2]{figures/Two_Models}
+  \includestandalone{figures/twomodels}
   \caption{Intra-FMU dependence provided by FMI}
   \label{fig:2mdlsintra}
 \end{subfigure}
 \caption{An example of inter and intra-FMU dependence of two FMUs connected by the user}
 \label{fig:2mdls}
 \end{figure}
+
+
 
 The information provided by FMI on input-output dependence allows transforming the FMU graph into a graph with an increased granularity. For each FMU, the inputs, outputs, and state are transformed into operations. An input, output, or state operation is defined as the set of FMU function calls that are used to compute the corresponding input, output, or state respectively. The co-simulation is described by a dependence graph $G(V,A)$, called the operation graph, where each vertex $o_i \in V: 0 \leq i < n$ represents one operation, each arc $(o_i,o_j) \in A: 0 \leq i,j < n$ represents a precedence relation between operations $o_i$ and $o_j$, and $n = |V|$ is the size of the operation graph. The operation graph is built by exploring the relations between the FMUs and between the operations of the same FMU. A vertex is created for each operation and arcs are then added between vertices if a precedence dependence exists between the corresponding operations. If FMI 1.0, which does not give information about the dependence between the state computation and the input and output variables computations, is used, we must add arcs between all input operations and the state operation of the same FMU. Furthermore, arcs connect all output operations and the state operation of the same FMU because the computation at the time step $t_k$ of an output must be performed with the same value of the state (computed at simulation step $t_k$) as for all the outputs belonging to the same FMU. An execution of the obtained graph corresponds to one simulation step. Therefore, running the co-simulation consists in repeatedly executing the graph until the desired number of steps is reached. A new execution of the graph cannot be started unless the previous one was totally finished. The operation graph corresponding to the FMUs of Figure~\ref{fig:2mdls} is shown in Figure~\ref{fig:dag}.
 
@@ -99,6 +103,8 @@ The flexibility $F(o_i)$ is defined by equation \ref{eq:flex}. It expresses the 
 
 The operation graph model presented in the previous section allows modeling only mono-rate FMU co-simulations. For some applications this model is sufficient to be used for multi-core scheduling. However, many industrial co-simulation applications feature behaviors that cannot be captured by this model. In particular, many industrial applications involve FMUs that are executed according to different communication step sizes. This is especially true when different FMUs of a co-simulation are provided by different parties. It is very common that an FMU provider designs the FMU in such a way that its proper functioning depends on using specific communication step sizes. It is, therefore, highly unrecommended, and in some cases even impossible, to change the communication step size of the FMU. In other cases, even if it is possible and acceptable to change the communication step size of a given FMU, better performance and/or accuracy could be obtained when using a specific communication step size. As a consequence, our operation graph model has to be extended in order to accommodate multi-rate data exchange between operations. 
 
+\subsection{Repeatable Pattern of a Multi-rate Dependence Graph}
+
 Consider an operation graph that is constructed as described in the previous section from a multi-rate co-simulation, i.e. a co-simulation where some FMUs are assigned different communication step sizes. Such graph is referred to as a \textit{multi-rate} operation graph. One way for making such operation graph suitable for multi-core scheduling is to transform it into a mono-rate graph. This section presents an algorithm that transforms the initial multi-rate operation graph $G(V,A)$ into a mono-rate operation operation graph. %$G_M(V_M,A)$ 
 The aim of this transformation is to ensure that each operation is executed according to the communication step size assigned to its respective FMU, and also to maintain a correct data exchange between the different FMUs, whether they are assigned different or identical communication step sizes. Similar algorithms have been used in the real-time scheduling literature to deal with multi-rate scheduling problems \cite{kermia:2009, ramamritham:1995}.
 
@@ -109,7 +115,11 @@ In the context of multi-rate FMU co-simulation, the hyperstep is the least commo
 \label{def:hyperstep}
 \end{definition}
 % where $n = |V|$ is the number of operations in the initial graph.
-. The hyperstep is the smallest interval of time steps for describing an infinitely repeatable pattern of all the operations. The transformation algorithm consists, first of all, in repeating each operation $o_i$, $r(o_i)$ times where $r(o_i)$ is called the repetition factor of $o_i$ and $r(o_i) = \frac{HS}{H(o_i)}$. Each repetition of the operation $o_i$ is called an occurrence of $o_i$ and corresponds to the execution of $o_i$ at a certain time step. We use a superscript to denote the number of each occurrence, e.g. $o_i^p$ denotes the $p^{th}$ occurrence of $o_i$. Operations belonging to the same FMU have the same repetition factor since they are all executed according to the communication step size assigned to the FMU that they belong to. Therefore, we define the repetition factor of an FMU to be equal to the repetition factor of its operations. Arcs are added between operations following the rules presented hereafter. Consider two operations $o_i, o_j \in V$ connected by an arc $(o_i,o_j) \in A$ in the initial operation graph. Adding an arc $(o_i^p,o_j^q)$ to $A$, depends on the time steps at which $o_i^p$ and $o_j^q$ are executed. In other words, if $t_{kp}$ and $t_{kq}$ are the time steps associated with $o_i^p$ and $o_j^q$ respectively, then the inequality $t_{kp} \leq t_{kq}$ is a necessary condition to add the arc $(o_i^p,o_j^q)$ to $A$. In addition, $o_j^q$ is connected with the latest occurrence of $o_i$ that satisfies this condition, i.e. with the occurrence $o_i^p: p=\max_{k_{p} \leq k_{q}}(0,1, \dots ,r(o_i)-1)$. In the case where $H(o_i) = H(o_j)$ (and therefore $r(o_i) = r(o_j)$), occurrences $o_i^p$ and $o_j^q$ which correspond to the same number, i.e. $p = q$, are connected by an arc. On the other hand, if $H(o_i) \neq H(o_j)$, we distinguish between two types of dependence: we call the arc $(o_i,o_j) \in A$ a \textit{slow to fast} (resp. \textit{fast to slow}) dependence if $H(o_i) > H(o_j)$ (resp. $H(o_i) < H(o_j)$). For a slow to fast dependence $(o_i,o_j) \in A$, one occurrence of $o_i$ is executed while several occurrences of $o_j$ are executed. In this case, arcs are added between each occurrence $o_i^p: p \in \{0,1, \dots ,r(o_i)-1\}$, and the occurrence $o_j^q$ such that:
+. The hyperstep is the smallest interval of time steps for describing an infinitely repeatable pattern of all the operations. The transformation algorithm consists, first of all, in repeating each operation $o_i$, $r(o_i)$ times where $r(o_i)$ is called the repetition factor of $o_i$ and $r(o_i) = \frac{HS}{H(o_i)}$. Each repetition of the operation $o_i$ is called an occurrence of $o_i$ and corresponds to the execution of $o_i$ at a certain time step. We use a superscript to denote the number of each occurrence, e.g. $o_i^p$ denotes the $p^{th}$ occurrence of $o_i$. Operations belonging to the same FMU have the same repetition factor since they are all executed according to the communication step size assigned to the FMU that they belong to. Therefore, we define the repetition factor of an FMU to be equal to the repetition factor of its operations. 
+
+\subsection{Multi-rate Transformation Rules}
+
+Arcs are added between operations following the rules presented hereafter. Consider two operations $o_i, o_j \in V$ connected by an arc $(o_i,o_j) \in A$ in the initial operation graph. Adding an arc $(o_i^p,o_j^q)$ to $A$, depends on the time steps at which $o_i^p$ and $o_j^q$ are executed. In other words, if $t_{kp}$ and $t_{kq}$ are the time steps associated with $o_i^p$ and $o_j^q$ respectively, then the inequality $t_{kp} \leq t_{kq}$ is a necessary condition to add the arc $(o_i^p,o_j^q)$ to $A$. In addition, $o_j^q$ is connected with the latest occurrence of $o_i$ that satisfies this condition, i.e. with the occurrence $o_i^p: p=\max_{k_{p} \leq k_{q}}(0,1, \dots ,r(o_i)-1)$. In the case where $H(o_i) = H(o_j)$ (and therefore $r(o_i) = r(o_j)$), occurrences $o_i^p$ and $o_j^q$ which correspond to the same number, i.e. $p = q$, are connected by an arc. On the other hand, if $H(o_i) \neq H(o_j)$, we distinguish between two types of dependence: we call the arc $(o_i,o_j) \in A$ a \textit{slow to fast} (resp. \textit{fast to slow}) dependence if $H(o_i) > H(o_j)$ (resp. $H(o_i) < H(o_j)$). For a slow to fast dependence $(o_i,o_j) \in A$, one occurrence of $o_i$ is executed while several occurrences of $o_j$ are executed. In this case, arcs are added between each occurrence $o_i^p: p \in \{0,1, \dots ,r(o_i)-1\}$, and the occurrence $o_j^q$ such that:
 
 \begin{equation}
 q = \left \lceil{p \times \frac{H(o_i)}{H(o_j)}}\right \rceil\;
@@ -121,7 +131,11 @@ We recall that for a slow to fast dependence, the master algorithm can preform e
 p = \left \lfloor{q \times \frac{H(o_j)}{H(o_i)}}\right \rfloor\;
 \end{equation}
 
-Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,o_i^{p'})$ where $p \in \{0,1, \dots ,r(o_i)-2\}$ and $p' = p + 1$. Finally, for each FMU, arcs are added between the $p^{th}$ occurrence of the state operation, where $p \in \{0,1, \dots ,r(o_i)-2\}$, and the $(p+1)^{th}$ occurrences of the input and output operations. The multi-rate graph transformation is detailed in Algorithm \ref{algo:mr}. The algorithm traverses all the graph by applying the aforementioned rules in order to transform the graph and finally stops when all the nodes and the edges have been visited.
+Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,o_i^{p'})$ where $p \in \{0,1, \dots ,r(o_i)-2\}$ and $p' = p + 1$. Finally, for each FMU, arcs are added between the $p^{th}$ occurrence of the state operation, where $p \in \{0,1, \dots ,r(o_i)-2\}$, and the $(p+1)^{th}$ occurrences of the input and output operations. 
+
+\subsection{Multi-rate Transformation Algorithm}
+
+The multi-rate graph transformation is detailed in Algorithm \ref{algo:mr}. The algorithm traverses all the graph by applying the aforementioned rules in order to transform the graph and finally stops when all the nodes and the edges have been visited.
 
 \begin{algorithm}[!htp]
 		%Initialization\;
@@ -204,7 +218,7 @@ In order to study the impact of mutual exclusion constraints, we have evaluated 
 
 \begin{figure}[phbt]
 \centering
-\icludestandalone{figures/theoreticalspeedup}
+\includestandalone{figures/theoreticalspeedup}
 \caption{Theoretical speed-up.}
 \label{fig:theoretical-speedup}
 \end{figure}
@@ -214,7 +228,7 @@ We implemented and tested both mutual exclusion strategies in order to compare t
 
 \begin{figure}[phbt]
 \centering
-\icludestandalone{figures/realspeedup}
+\includestandalone{figures/realspeedup}
 \caption{Runtime speed-up.}
 \label{fig:real-speedup}
 \end{figure}

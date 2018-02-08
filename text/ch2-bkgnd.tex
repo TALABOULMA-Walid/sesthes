@@ -406,10 +406,10 @@ It is possible to use both shared and distributed memory in a computer. In this 
 
 Much progress has been made in the design of parallel hardware. That being said, taking advantage of such architectures requires efficient ways for executing software on parallel hardware. A difficult yet integral step in this direction is the process of detecting the parallelism that is inherent in software. This parallelism can be classified into different categories based on the nature of computations that are performed. The main classes of software parallelism are the following:    
 
-\subsubsection{Data parallelism}
+\subsubsection{Data Parallelism}
 Data parallelism is characterized by performing the same computation on a large set of data. If several processors are available, the data can be distributed across them and the same computation is executed on each processor. For instance a for-loop can be parallelized by distributing the iterations over multiple processors. The same body of the for-loop is executed on all the processors but operates on a different range of iterations on each processor. Data parallelism corresponds to the SIMD parallel hardware.
 
-\subsubsection{Task parallelism}
+\subsubsection{Task Parallelism}
 In task parallelism, a program is divided into different computational tasks that are distributed across the processors to be performed in parallel. The challenge here is the question of how to divide the program efficiently so as to obtain the best speedup. In task parallelism, tasks can operate on different data sets. Usually, data dependence exists between the tasks. For instance, the result of one task is needed as input by another task. Such dependence reduces the parallelism. Task parallelism corresponds to the MIMD parallel hardware.
 
 \subsubsection{Pipeline Parallelism}
@@ -621,15 +621,15 @@ The performance of a simulation can be significantly improved through parallel e
 
 In order to achieve simulation acceleration through parallel execution, different approaches are possible. Parallelization approaches can be classified into three categories based on the level at which the parallelization is introduced.
 
-\subsubsection{Parallelization across the method}
+\subsubsection{Parallelization across the Method}
 In this category, we find approaches that seek to parallelize the integration method. For instance, a multi-stage solver requires several computations within one integration step and it is possible to perform such computations in parallel. Such approach is studied in \cite{iserles:1990} by proposing a theoretical framework for the parallelization of Runge-Kutta methods. Another approach consists in parallelizing operations on vectors for ODE resolution like in the PVODE solver \cite{byrne:1999} implemented using MPI. 
 
 In \cite{elmqvist:2015}, the authors propose a method for parallelization of modelica programs on CUDA-enabled GPUs. The proposed method relies on marking the functions to be executed on the GPU by identifying patterns that are GPU suitable such as loops. These functions are then automatically translated into GPU code. In \cite{gebremedhin:2012}, ParModelica, an algorithmic extension of Modelica is proposed. This extension is based on OpenCL and allows stating the parallelism using special declarations in the code. An approach for automatic parallelization of equations on many-core platforms is proposed in \cite{elmqvist:2014}. This approach organizes the equations into a set of layers containing, each, a number of sections that can be executed in parallel and computes an offline schedule for their execution. In \cite{clauberg:2012} an approach for the parallelization of multi-body simulation (simulation of systems composed of rigid and flexible bodies) on shared memory multiprocessors is proposed. This approach uses math-kernel libraries and OpenMP to parallelize matrix operations.
 
-\subsubsection{Parallelization across the time}
+\subsubsection{Parallelization across the Time}
 
 A simulation can be parallelized across the time steps. Examples of such approach are the Parareal algorithm \cite{lions:2001}, the Parallel Implicit Time-Integrator (PITA) \cite{farhat:2003}, and the Parallel Full Approximation Scheme in Space and Time (PFASST) \cite{emmett:2012}. These methods divide the time domain into a two-level grid. A solution is evaluated in parallel over a fine time grid to improve a solution obtained sequentially over a coarse time grid.
-\subsubsection{Parallelization across the system}
+\subsubsection{Parallelization across the System}
 
 Finally, a simulation can be parallelized across the system, i.e. the equations used in the simulation are solved in parallel. A well known approach that parallelizes across the system is Waveform Relaxation (WR) \cite{lelarasmee:1982}, initially introduced for the simulation of large scale integrated circuits. The WR method breaks down the system into coupled subsystems of equations and computes the waveform, i.e. the solution, of each subsystem over a given time interval while fixing the waveforms of the other subsystems. The parallelization is made possible by computing the waveforms of several subsystems in parallel. The term waveform is used as the method was originally used to solve differential equations describing electrical circuits where signals are referred to as waveforms. 
 

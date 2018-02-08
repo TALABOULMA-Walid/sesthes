@@ -313,7 +313,7 @@ The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated a
 %\item Optimal coloring $min(k)$ $\equiv$ Optimal length of the critical path $min(R)$
 %\end{itemize}
 
-\subsection{Resolution using Integer Linear Programming}
+\subsection{Resolution using Linear Programming}
 
 Let $G(V,A,D)$ be a mixed graph constructed form the operation graph $G(V,A)$ as described in the previous sections to represent precedence and mutual exclusion constraints between operations of an FMU co-simulation. In the following, we present an Integer Linear Programming formulation for the problem of acyclic orientation of $G(V,A,D)$. The proposed formulation is based on the scheduling notation which gives a more compact set of constraints compared to a formulation that uses the vertex coloring notation.
 
@@ -684,7 +684,7 @@ The final goal is to apply real-time multi-core scheduling algorithm on the oper
 
 %Let's consider an operation graph $G(V,A)$ representing an FMU co-simulation. We consider that the multi-rate transformation and the acyclic orientation have been applied on this operation graph. Therefore, the operation graph is seen as a mono-rate graph and the communication steps of the different FMUs are abstracted away. In other words, the occurrences of each operation become operations denoted $o_i$. Some of the operations are directly connected with the real component.
 
-\subsubsection{Propagation of release constraints}
+\subsubsection{Propagation of Release Constraints}
 
 Let a release constraint of period $T_y$ be applied on an input gate operation $o_i \in V$. A subset of the occurrences of $o_i$, $o^s_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $z^{th}$ occurrence of the release constraint $z \times T_y = t_k$ is applied on the occurrence $o^{s, t_k}_i $, i.e. the occurrence $p$ of operation $o_i$ executed at time step $t_k$, where $0 \leq p < r(o_i)$ and $t_k \in \mathbb{R}^+$. Since we consider the release constraint period to be a multiple of the communication step size of ${o_i}$, we can determine which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $z \times T_y$ of the release constraint is applied on occurrence $o_i^p:\ p = z \times \frac{T_y}{H(o_i)}$. Therefore $o_i^p$ is assigned a release $R(o_i^p) = z \times T_y$. Once $o_i^p$ is released and executed, the operations that depend on $o_i^p$ can be released. Therefore, the release constraint $R(o_i^p)$ is propagated towards all the successors of $o_i^p$. This propagation is given by expression \ref{eq:release}.
 
@@ -711,7 +711,7 @@ The process of propagating a release constraint can be summarized as follows:
 \item Repeat the previous step for ever operation that is newly assigned a release constraint.
 \end{enumerate}
 
-\subsubsection{Propagation of deadline constraints}
+\subsubsection{Propagation of Deadline Constraints}
 
 Now let a deadline constraint of period $T_x$ be applied on an output gate operation $o_j$ of the operation graph. Occurrences of this deadline constraint are applied on a subset of the occurrences of operation $o_j$, $o_j^q: 0 \leq q < r(o_j)$ that appear in the operation graph. The $w^{th}$ occurrence of the deadline constraint $w \times T_x = t_k$ is applied on the occurrence $o^{q,t_k}_j $, i.e. the occurrence $q$ of operation $o_j$ executed at time step $t_k$, where $0 \leq q < r(o_j)$ and $t_k \in \mathbb{R}^+$. The deadline constraint is a multiple of the communication step size of $o_j$, hence, we can compute which occurrences of $o_j$ are subject to occurrences of the deadline constraint. The occurrence $w \times T_x = t_k$ of the deadline constraint is applied on occurrence $o_j^q:\ q = w \times \frac{T_x}{H(o_j)}$. Each occurrence of the operation $o_j$ that is subject to an occurrence of the deadline constraint $w \times \frac{T_x}{H(o_j)}$ is assigned a deadline $D(o_j^q) = w \times \frac{T_x}{H(o_j)}$. This constraint is, then, propagated towards all the predecessors of $o_j^q$. The propagation of a deadline constraint is given by Expression \ref{eq:release}.
 
@@ -738,7 +738,7 @@ The process of propagating a deadline constraint can be summarized in the follow
 \item Repeat the previous step for ever operation that is newly assigned a deadline constraint.
 \end{enumerate}
 
-\subsubsection{Propagation of real-time constraints through looping}
+\subsubsection{Propagation of Real-time Constraints through Looping}
 
 It can be seen that the propagation of the real-time constraints is based on graph traversal. The Breadth First Search (BFS) or the DFS (Depth First Search) graph traversal algorithms can be used to perform this propagation. On the one hand, the release constraints are propagated following the topological ordering of the graph since the constraint is always propagated from a predecessor to a successor. We refer to such propagation as \textit{forward propagation}. On the other hand, the deadline constraint is propagated in reverse topological ordering of the graph because the constraint is always propagated from a successor to a predecessor. We refer to such propagation as \textit{backward propagation}. This means that the release (resp. deadline) constraint cannot propagate towards the operations that come before (resp. after) the input (resp. output) gate operation that is subject to this constraint.
 
@@ -818,7 +818,7 @@ Figure \ref{fig:dloop2} shows the forward loop propagation that is is then perfo
 \label{fig:dpropagation3}
 \end{figure} 
 
-\subsubsection{Necessary condition for covering the operation graph}
+\subsubsection{Necessary Condition for Covering the Operation Graph}
 
 After presenting the method for assigning real-time constraints to the operations, we give, here, a necessary condition to satisfy Property \ref{prop:constr}. We recall that if Property \ref{prop:constr} is not satisfied, it is not possible to apply a real-time multi-core scheduling algorithm on the operation graph. For the propagation of real-time constraints to result in an operation graph that satisfies Property \ref{prop:constr}, the necessary condition stated in Theorem \ref{theo:coverage} must be satisfied.
 

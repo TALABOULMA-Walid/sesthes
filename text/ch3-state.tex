@@ -45,11 +45,11 @@ We aim in this thesis at proposing solutions to overcome the limitations of the 
 
 Most industrial applications are multi-rate, i.e. the different FMUs of the co-simulation are executed according to different communication step sizes. In order to parallelize a multi-rate co-simulation, it is needed to incorporate this information in the dependence graph model. Depending on how this information is added, the multi-core scheduling heuristic used in RCOSIM may need to be modified. Therefore, the research question related to this point is how should the dependence graph model be extended in order to allow RCOSIM to handle multi-rate co-simulation and what is the impact of such extension on the multi-core scheduling problem?
 
-\subsubsection{Mutual exclusion constraints in FMU Co-simulation}
+\subsubsection{Mutual Exclusion Constraints in FMU Co-simulation}
 
 The non thread safe implementation of FMUs implies that at any instant during the execution of the co-simulation, one and only one function of the same FMU can be executed. Consequently, if the scheduling heuristic allocates two or more functions belonging to the same FMU to different cores, a mechanism that ensures these operations are executed in strictly different time intervals must be set up. We address the following questions: How can such mutual exclusion constraints be satisfied while optimizing the exploitation of the potential parallelism? Should the dependence graph model be extended or should these constraints be handled by the multi-core scheduling heuristic?
 
-\subsubsection{Specification of real-time constraints for FMU Co-simulation}
+\subsubsection{Specification of Real-time Constraints for FMU Co-simulation}
 
 In a co-simulation under real-time constraints, and more specifically HiL co-simulation, the physically available part periodically exchanges data with the simulated part, according to specific periods. The simulated part has to deliver data to the physically available components following these periods. Therefore, their execution has to be done within specific deadlines. Otherwise, the co-simulation fails. Given the periods of data exchange, we seek to define what are the constraints that have to be respected by the different FMUs in order to satisfy the real-time constraints. In other words, how should the executions of the different simulated FMUs be bounded so as to be able to deliver data in time to the real components at every period?
 

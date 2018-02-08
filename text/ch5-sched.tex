@@ -40,7 +40,7 @@ The acceleration of the co-simulation corresponds to the minimization of the mak
 
 In this section, we give our ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation.
 
-%\subsubsection{Variables and constants}
+%\subsubsection{Variables and Constants}
 %
 %Tables \ref{tab:varilpsched} and \ref{tab:consilpsched} summarize the variables and the constants that are used in the ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation.
 %
@@ -156,7 +156,7 @@ The makespan is equal to the latest end time among the end times of all the oper
 \label{sched:const_10}
 \end{equation}
 
-\subsubsection{Objective function}
+\subsubsection{Objective}
 
 The objective of this linear program is to minimize the makespan of the dependence graph.
 
@@ -211,7 +211,7 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 
 The scheduling heuristic contains three nested loop. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times where $n$ is the number of operations in the operation graph. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(np)$, where $p$ is the number of cores. From the foregoing, the complexity of our heuristic is evaluated to $\mathcal{O}(pn^2)$.
 
-\section{Scheduling of FMU Co-simulation with Real-time Constraints}
+\section{Scheduling of FMU Co-simulation under Real-time Constraints}
 
 In this section, we are interested in scheduling FMU co-simulation while ensuring a set of real-time constraints  is satisfied. We consider FMU co-simulation in the context of HiL consisting of a simulated component and a real component. Also, we consider that the real-time constraints that are applied by the real component have been propagated through the operation graph as described in Section \ref{sec:grphrtsc}. Therefore, the aim here consists in scheduling the operations of the operations graph on a multi-core architecture, such as these constraints are satisfied. Note that in contrast to the previous section, how much the execution is sped up is not of a crucial important here as long as the real-time constraints are respected. Hereafter, we present an ILP formulation and a heuristic for scheduling operation graphs under real-time constraints.
 

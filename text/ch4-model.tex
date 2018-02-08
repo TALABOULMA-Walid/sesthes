@@ -103,30 +103,68 @@ The operation graph model presented in the previous section allows modeling only
 
 \subsection{Repeatable Pattern of a Multi-rate Dependence Graph}
 
-Consider an operation graph that is constructed as described in the previous section from a multi-rate co-simulation, i.e. a co-simulation where some FMUs are assigned different communication step sizes. Such graph is referred to as a \textit{multi-rate} operation graph. In the case of mono-rate co-simulation, the intial dependence graph constructed from the co-simulation is sufficient because it describes a repeatable pattern for the execution of the co-simulation. As such, a schedule of this graph can be run repeatedly in order to run the co-simulation. In such schedule, each operation appears exactly once. In the case of multi-rate co-simulation, the intial operation graph does not describe a pattern that can be repeatedly executed. One way for making such operation graph suitable for multi-core scheduling is to transform it into a mono-rate graph. In a schedule of the resulting mono-rate graph , each operation appears exactly once. The aim of this transformation is to obtain a repeatable pattern of the operation graph while ensuring that each operation is executed according to the communication step size assigned to its respective FMU, and also maintaining a correct data exchange between the different FMUs, whether they are assigned different or identical communication step sizes. Similar algorithms have been used in the real-time scheduling literature to deal with multi-rate scheduling problems \cite{kermia:2009, ramamritham:1995}.
+Consider an operation graph that is constructed as described in the previous section from a multi-rate co-simulation, i.e. a co-simulation where some FMUs are assigned different communication step sizes. Such graph is referred to as a \textit{multi-rate} operation graph. In the case of mono-rate co-simulation, the intial operation graph constructed from the co-simulation is sufficient because it describes a repeatable pattern for the execution of the co-simulation. As such, a schedule of this graph can be run repeatedly in order to run the co-simulation. In such schedule, each operation appears exactly once. In the case of multi-rate co-simulation, the intial operation graph does not describe a pattern that can be repeatedly executed. One way for making such operation graph suitable for multi-core scheduling is to transform it into a mono-rate graph. In a schedule of the resulting mono-rate graph , each operation appears exactly once. The aim of this transformation is to obtain a repeatable pattern of the operation graph while ensuring that each operation is executed according to the communication step size assigned to its respective FMU, and also maintaining a correct data exchange between the different FMUs, whether they are assigned different or identical communication step sizes. Similar algorithms have been used in the real-time scheduling literature to deal with multi-rate scheduling problems \cite{kermia:2009, ramamritham:1995}.
 
-In the case of mono-rate co-simulation, the length of the repeatable pattern is equal to the unique communication step size. In order to perform a transofrmation of a multi-rate dependence graph, we need, first, to specify the length of the repeatable pattern. We define the notion of \textit{hyperstep} (HS) in Definition \ref{def:hyperstep}. 
+In the case of mono-rate co-simulation, the length of the repeatable pattern is equal to the unique communication step size. In order to perform a transformation of a multi-rate operation graph, we need, first, to specify the length of the repeatable pattern. We define the notion of \textit{hyperstep} (HS) in Definition \ref{def:hyperstep}. 
 
 \begin{definition}
 In the context of multi-rate FMU co-simulation, the hyperstep is the least common multiple ($lcm$) of the communication step sizes of all the operations: $HS=lcm(H(o_1),H(o_2), \dots ,H(o_n))$.
 \label{def:hyperstep}
 \end{definition}
 
-The hyperstep is the smallest interval of time steps for describing an infinitely repeatable pattern of all the operations. The transformation consists, first of all, in repeating each operation $o_i$, $r(o_i)$ times where $r(o_i)$ is called the repetition factor of $o_i$ and $r(o_i) = \frac{HS}{H(o_i)}$. Each repetition of the operation $o_i$ is called an occurrence of $o_i$ and corresponds to the execution of $o_i$ at a certain time step. We use a superscript to denote the number of each occurrence, e.g. $o_i^p$ denotes the $p^{th}$ occurrence of $o_i$. Operations belonging to the same FMU have the same repetition factor since they are all executed according to the communication step size assigned to the FMU that they belong to. Therefore, we define the repetition factor of an FMU to be equal to the repetition factor of its operations. 
+The hyperstep is the smallest interval of time steps for describing an infinitely repeatable pattern of all the operations. The transformation consists, first of all, in repeating each operation $o_i$, $r(o_i)$ times where $r(o_i)$ is called the repetition factor of $o_i$ and $r(o_i) = \frac{HS}{H(o_i)}$. Each repetition of the operation $o_i$ is called an occurrence of $o_i$ and corresponds to the execution of $o_i$ at a certain time step. We use a superscript to denote the number of each occurrence, e.g. $o_i^p$ denotes the $p^{th}$ occurrence of $o_i$. Operations belonging to the same FMU have the same repetition factor since they are all executed according to the communication step size assigned to the FMU that they belong to. Therefore, we define the repetition factor of an FMU to be equal to the repetition factor of its operations. Figure \ref{fig:reppattern} shows an example of the execution of two operations $o_i$ and $o_j$ such that $H(o_i) = 2$ and $H(o_j) = 3$. In this example, the  hyperstep is $HS = lcm(2,3) = 6$ and the repetitions factors are $r(o_i) = \frac{6}{2} = 3$ and $r(o_j) = \frac{6}{3} = 2$. It can be seen that the execution pattern over an interval of length $6$ is repeated.
+
+\begin{figure}[htb]
+\centering
+  \includestandalone{figures/reppattern}
+\caption{A basic example of a repeatable pattern of a multi-rate co-simulation}
+\label{fig:reppattern}
+\end{figure}
 
 \subsection{Multi-rate Transformation Rules}
 
-Arcs are added between operations following the rules presented hereafter. Consider two operations $o_i, o_j \in V$ connected by an arc $(o_i,o_j) \in A$ in the initial operation graph. Adding an arc $(o_i^p,o_j^q)$ to $A$, depends on the time steps at which $o_i^p$ and $o_j^q$ are executed. In other words, if $t_{kp}$ and $t_{kq}$ are the time steps associated with $o_i^p$ and $o_j^q$ respectively, then the inequality $t_{kp} \leq t_{kq}$ is a necessary condition to add the arc $(o_i^p,o_j^q)$ to $A$. In addition, $o_j^q$ is connected with the latest occurrence of $o_i$ that satisfies this condition, i.e. with the occurrence $o_i^p: p=\max_{k_{p} \leq k_{q}}(0,1, \dots ,r(o_i)-1)$. In the case where $H(o_i) = H(o_j)$ (and therefore $r(o_i) = r(o_j)$), occurrences $o_i^p$ and $o_j^q$ which correspond to the same number, i.e. $p = q$, are connected by an arc. On the other hand, if $H(o_i) \neq H(o_j)$, we distinguish between two types of dependence: we call the arc $(o_i,o_j) \in A$ a \textit{slow to fast} (resp. \textit{fast to slow}) dependence if $H(o_i) > H(o_j)$ (resp. $H(o_i) < H(o_j)$). For a slow to fast dependence $(o_i,o_j) \in A$, one occurrence of $o_i$ is executed while several occurrences of $o_j$ are executed. In this case, arcs are added between each occurrence $o_i^p: p \in \{0,1, \dots ,r(o_i)-1\}$, and the occurrence $o_j^q$ such that:
+In order to complete the multi-rate transformation, we need to specify dependence between the occurrences that are added by creating arcs. Arcs are added between operations following the rules presented hereafter. Consider two operations $o_i, o_j \in V$ connected by an arc $(o_i,o_j) \in A$ in the initial operation graph. Adding an arc $(o_i^p,o_j^q)$ to $A$, depends on the time steps at which $o_i^p$ and $o_j^q$ are executed. Let $t_{kp}$ and $t_{kq}$ be the time steps at which $o_i^p$ and $o_j^q$ are executed respectively. An arc is added between occurrences $o_i^p$ and $o_j^q$ if the following conditions are satisfied:
+
+\begin{enumerate}
+
+\item $o_i^p$ is executed at a time step that precedes or matches the time step at which $o_i^p$ is executed, i.e. $t_{kp} \leq t_{kq}$.
+
+\item $o_i^p$ is the latest occurrence of $o_i$ that satisfies the first condition, i.e. $p=\max\{p':\ 0 \leq p' < r(o_i)\ and\ t_{kp'} \leq t_{kq}\}$ where $t_{kp'}$ denotes the times step at which occurrence $o_i^{p'}$ is executed.  
+
+\end{enumerate}
+
+In the case where $H(o_i) = H(o_j)$, and therefore $r(o_i) = r(o_j)$, occurrences $o_i^p$ and $o_j^q$ which correspond to the same number, i.e. $p = q$, are connected by an arc. On the other hand, if $H(o_i) \neq H(o_j)$, we distinguish between two types of dependence: we call the arc $(o_i,o_j) \in A$ a \textit{slow to fast} (resp. \textit{fast to slow}) dependence if $H(o_i) > H(o_j)$ (resp. $H(o_i) < H(o_j)$). For a slow to fast dependence $(o_i,o_j) \in A$, one occurrence of $o_i$ is executed while several occurrences of $o_j$ are executed. In this case, arcs are added between each occurrence $o_i^p: p \in \{0,1, \dots ,r(o_i)-1\}$, and the occurrence $o_j^q$ such that:
 
 \begin{equation}
 q = \left \lceil{p \times \frac{H(o_i)}{H(o_j)}}\right \rceil\;
 \end{equation}
 
-We recall that for a slow to fast dependence, the master algorithm can preform extrapolation of the inputs of the receiving FMU. For a fast to slow dependence $(o_i,o_j) \in A$, arcs are added between each occurrence $o_i^p$, and the occurrence $o_j^q: q \in \{0,1, \dots ,r(o_j)-1\}$ such that:
+Let operations $o_i$ and $o_j$ shown in Figure \ref{fig:reppattern} be connected by an arc $(o_j,o_i)$ in the initial operation graph. For $q = 1$, the added arcs between the occurrences of $o_i$ and $o_j$ can be represented on the time chart of the execution as shown in Figure \ref{fig:slow2fast}.
+
+\begin{figure}[htb]
+\centering
+  \includestandalone{figures/slow2fast}
+\caption{Slow to fast dependence}
+\label{fig:slow2fast}
+\end{figure} 
+
+
+We recall that for a slow to fast dependence, the master algorithm can preform extrapolation of the inputs of the receiving FMU. 
+
+For a fast to slow dependence $(o_i,o_j) \in A$, arcs are added between each occurrence $o_i^p$, and the occurrence $o_j^q: q \in \{0,1, \dots ,r(o_j)-1\}$ such that:
 
 \begin{equation}
 p = \left \lfloor{q \times \frac{H(o_j)}{H(o_i)}}\right \rfloor\;
 \end{equation}
+
+Let operations $o_i$ and $o_j$ shown in Figure \ref{fig:reppattern} be connected by an arc $(o_i,o_j)$ in the initial operation graph. For $p = 1$, the added arcs between the occurrences of $o_i$ and $o_j$ can be represented on the time chart of the execution as shown in Figure \ref{fig:fast2slow}.
+
+\begin{figure}[htb]
+\centering
+  \includestandalone{figures/fast2slow}
+\caption{Fast to slow dependence}
+\label{fig:fast2slow}
+\end{figure}
 
 Arcs are added also between the occurrences of the same operation, i.e. $(o_i^p,o_i^{p'})$ where $p \in \{0,1, \dots ,r(o_i)-2\}$ and $p' = p + 1$. Finally, for each FMU, arcs are added between the $p^{th}$ occurrence of the state operation, where $p \in \{0,1, \dots ,r(o_i)-2\}$, and the $(p+1)^{th}$ occurrences of the input and output operations. 
 

@@ -39,13 +39,11 @@ The entry point for the construction of a dependence graph of an FMU co-simulati
 \label{fig:2mdls}
 \end{figure}
 
-
-
 The information provided by FMI on input-output dependence allows transforming the FMU graph into a graph with an increased granularity. For each FMU, the inputs, outputs, and state are transformed into operations. An input, output, or state operation is defined as the set of FMU function calls that are used to compute the corresponding input, output, or state respectively. The co-simulation is described by a dependence graph $G(V,A)$, called the operation graph, where each vertex $o_i \in V: 0 \leq i < n$ represents one operation, each arc $(o_i,o_j) \in A: 0 \leq i,j < n$ represents a precedence relation between operations $o_i$ and $o_j$, and $n = |V|$ is the size of the operation graph. The operation graph is built by exploring the relations between the FMUs and between the operations of the same FMU. A vertex is created for each operation and arcs are then added between vertices if a precedence dependence exists between the corresponding operations. If FMI 1.0, which does not give information about the dependence between the state computation and the input and output variables computations, is used, we must add arcs between all input operations and the state operation of the same FMU. Furthermore, arcs connect all output operations and the state operation of the same FMU because the computation at the time step $t_k$ of an output must be performed with the same value of the state (computed at simulation step $t_k$) as for all the outputs belonging to the same FMU. An execution of the obtained graph corresponds to one simulation step. Therefore, running the co-simulation consists in repeatedly executing the graph until the desired number of steps is reached. A new execution of the graph cannot be started unless the previous one was totally finished. The operation graph corresponding to the FMUs of Figure~\ref{fig:2mdls} is shown in Figure~\ref{fig:dag}.
 
 \begin{figure}[htb]
 \centering
-  \includegraphics[scale=0.5]{figures/Operation_Graph_Two_Models}
+  \includestandalone{figures/opgraph2models}
 \caption{Operation graph obtained from the FMUs of Figure~\ref{fig:2mdls}}
 \label{fig:dag}
 \end{figure} 
@@ -202,7 +200,7 @@ Figure \ref{fig:dagmr} shows the graph obtained by applying the multi-rate trans
 \begin{figure}[htb]
 \captionsetup{justification=centering}
 \centering
-  \includegraphics[scale=0.5]{figures/Operation_Graph_Two_Models_Multirate}
+  \includestandalone{figures/opgraph2modelsmr}
 \caption{Graph obtained by applying the multi-rate transformation algorithm on the graph of Figure~\ref{fig:dag}}
 \label{fig:dagmr}
 \end{figure}

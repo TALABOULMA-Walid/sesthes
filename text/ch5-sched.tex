@@ -73,9 +73,9 @@ $mkp$ & Integer  \\
 Variable & Type & Description  \\
 \midrule
  $x_{ij}$ & Binary & Decision variable for scheduling operation $o_i$ on core $p_j$\\
+ $S(o_i)$ & Integer & Start time of operation $o_i$\\
  $E(o_i)$ & Integer & End time of operation $o_i$\\
- $b_{ij}$ & Binary & Orientation decision variable associated with edge $[o_i,o_j] \in D$\\
- $CP$ & Integer & Length of the critical path of the graph\\
+ $sync_{ijk}$ & Binary & Synchronization between $o_i$ and $o_j$ if scheduled $o_j$ on $p_k$ \\
 \bottomrule
 \end{tabular}
 \end{table}

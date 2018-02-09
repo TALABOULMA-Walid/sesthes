@@ -330,16 +330,39 @@ It should be noted that, for a given edge $[o_i, o_j]$, choosing either of the e
 
 The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated as an optimization problem as follows:
 
-\begin{itemize}[label={},topsep=1pt,parsep=1pt,partopsep=1pt,leftmargin=*]	
-\item \textbf{Input:} Mixed graph $G(V,A,D)$
-\item \textbf{Output:} DAG $G(V,A)$
-\item \textbf{Find:} Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$
-\item \textbf{Minimize:} Number of colors $k$
-\item \begin{subjecto}
-			      \item $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$
-				   	\item $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$
-       \end{subjecto}
-\end{itemize}
+%\begin{itemize}[label={},topsep=1pt,parsep=1pt,partopsep=1pt,leftmargin=*]	
+%\item \textbf{Input:} Mixed graph $G(V,A,D)$
+%\item \textbf{Output:} DAG $G(V,A)$
+%\item \textbf{Find:} Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$
+%\item \textbf{Minimize:} Number of colors $k$
+%\item \begin{subjecto}
+			      %\item $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$
+				   	%\item $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$
+       %\end{subjecto}
+%\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l  l}
+  \rule{0pt}{5ex}	
+	\textbf{Input} & Mixed graph $G(V,A,D)$\\
+	\rule{0pt}{5ex}									  
+	
+  \textbf{Output} & DAG $G(V,A)$\\
+	\rule{0pt}{5ex}									  
+  
+	\textbf{Find} & Coloring $\alpha: V \rightarrow \{1, 2, \ldots, k\}$\\
+	\rule{0pt}{5ex}
+	
+	\textbf{Minimize} & Number of colors $k$\\
+	\rule{0pt}{5ex}									 
+	
+	\textbf{Subject to} & Precedence constraints: $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\\
+	\rule{0pt}{5ex}
+											& Mutual exclusion constraints: $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$
+										 
+\end{tabular}
+\end{table}
 
 %This formulation is stated as a vertex coloring problem, however, it is possible to state the problem using either vertex coloring notation or scheduling notation. Thus, we note the following equivalence:
 %

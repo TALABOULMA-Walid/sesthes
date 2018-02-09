@@ -2,84 +2,113 @@
 
 \minitoc
 
-This chapter presents methods for scheduling an operation graph on a multi-core architecture. Once the operation graph has been constructed and undergone the different phases of transformations as shown in the previous chapter, it is scheduled on the multi-core platform. First, we consider scheduling the operation with the goal of accelerating the execution of co-simulation. Second, we consider scheduling the operation graph while satisfying real-time constraints.  
+This chapter presents methods for scheduling an operation graph on a multi-core architecture. Once the operation graph has been constructed and undergone the different phases of transformations as described in the previous chapter, it is scheduled on the multi-core platform. First, we consider scheduling the operation graph with the goal of accelerating the execution of the co-simulation. Second, we consider scheduling the operation graph while satisfying real-time constraints.  
 
 \section{Scheduling of Dependence Graphs for Co-simulation Acceleration}
 
-In order to achieve fast execution of the co-simulation on a multi-core processor, an efficient allocation and scheduling of the operation graph has to be achieved. The scheduling algorithm takes into account functional and non functional specification in order to produce an allocation of the operation graph vertices (operations) to the cores of the processor, and assign a starting time to each operation. We present here-after a linear programming model and a heuristic for scheduling FMU dependence graphs on multi-core processors with the aim of accelerating the execution of the co-simulation.
+In order to achieve fast execution of the co-simulation on a multi-core processor, an efficient allocation and scheduling of the operation graph has to be achieved. The scheduling algorithm has to be applied taking into account functional and non functional specification in order to produce an allocation of the operation graph vertices (operations) to the cores of the processor, and assign a starting time to each operation. We present here-after a linear programming model and a heuristic for scheduling operation graphs on multi-core processors with the aim of accelerating the execution of the co-simulation. Note that no real-time constraints are involved when the goal is to accelerate the co-simulation. Therefore, the transformations that are applied on the operation graph ahead of applying the scheduling algorithm are only the multi-rate transformation and the acyclic orientation. 
 
 \subsection{\label{5:shed-prob}Problem Formulation}
 
-The acceleration of the co-simulation corresponds to the minimization of the makespan of the dependence graph. The makespan is the total execution time of the whole graph. The dependence graph that is fed as input to the scheduling algorithm is a DAG, therefore, it represents a partial order relationship in the execution of the operations, since two operations connected by an arc must be executed sequentially whereas the other ones can be executed in parallel. The scheduling algorithm makes decisions on allocating the operations to the cores while respecting this partial order and trying to minimize the total execution time of the dependence graph. In addition to the execution time of the operations, the scheduling algorithm has to take into considerations, the cost of inter-core synchronization. The scheduling problem can be stated as an optimization problem as follows:
+The acceleration of the co-simulation corresponds to the minimization of the makespan of the operation graph. The makespan is the total execution time of the whole graph. The operation graph that is fed as input to the scheduling algorithm is a DAG, therefore, it represents a partial order relationship in the execution of the operations, since two operations connected by an arc must be executed sequentially whereas the other ones can be executed in parallel. A scheduling algorithm makes decisions on allocating the operations to the cores while respecting this partial order and trying to minimize the total execution time of the operation graph. In addition to the execution time of the operations, the scheduling algorithm has to take into consideration, the cost of inter-core synchronization. The set of cores is denoted $P = \{p_1, p_2, \ldots, p_m\}$ where $m$ is the number of cores. The scheduling problem can be stated as an optimization problem as follows:
 
 \begin{table}[h]
 \centering
 \begin{tabular}{l  l}
   \rule{0pt}{5ex}	
-	\textit{Input} & Operation graph $G_F(V_F,A_F)$\\
+	\textbf{Input} & Operation graph $G(V,A)$\\
 	\rule{0pt}{5ex}									  
 	
-  \textit{Output} & Offline Schedule of operations on multi-core processor\\
+  \textbf{Output} & Offline Schedule of operations on a multi-core processor\\
 	\rule{0pt}{5ex}									  
   
-	\textit{Find} & Allocation of operations to cores, $\alpha: V \rightarrow P$\\
+	\textbf{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
 	\rule{0pt}{5ex}
-                & Assignment of start times to operations, $\beta: V \times P \rightarrow \mathbb{N}$\\
+                & Assignment of start times to operations: $\beta: V \times P \rightarrow \mathbb{N}$\\
 	\rule{0pt}{5ex}
 	
-	\textit{Minimize} & Makespan of the graph $P = max(E(o_i))_{o_i \in V}$\\
+	\textbf{Minimize} & Makespan of the graph: $min(mkp):\ mkp = \max_{o_i \in V}(E(o_i))$\\
 	\rule{0pt}{5ex}									 
 	
-	\textit{Subject to} & Precedence constraints of the graph $G_F(V_F,A_F)$\\
+	\textbf{Subject to} & Precedence constraints: $\forall\ (o_i,o_j) \in A,\ S(o_j) \geq E(o_i)$\\
 										 
-	
 \end{tabular}
 \end{table}
 
 \subsection{Resolution using Linear Programming}
 
-In this section, we give our ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation.
+As a first attempt to solve the problem of scheduling the operation graph, we decided to use the ILP approach which is an exact algorithm. By using ILP, we guarantee that the obtained schedule is optimal. In addition, ILP allows us to model the problem by means of linear relationships between variables and feed this model to an existing ILP solver to compute the solution. Below, we give our ILP formulation of the problem of scheduling the operation graph for co-simulation acceleration.
 
-%\subsubsection{Variables and Constants}
-%
-%Tables \ref{tab:varilpsched} and \ref{tab:consilpsched} summarize the variables and the constants that are used in the ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation.
-%
-%\begin{table}
-%\caption{Variables used in the ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation}
-%\centering
-%\label{tab:varilpsched}
-%\begin{tabular}{c c}
-%\toprule
-%Variable & Type \\
-%\midrule
- %$x(o_i)$ & Binary  \\
-%$S(o_i)$ & Integer   \\
-%$E(o_i)$ & Integer  \\
-%$sync_{ijp}$ & Binary   \\
-%$b_{ijp}$ & Binary  \\
-%$Q_{ip}$ & Integer  \\
-%$V_{ip}$ & Binary  \\
-%$mkp$ & Integer  \\
-%
-%\bottomrule
-%\end{tabular}
-%\end{table}
-%
-%\begin{table}
-%\caption{Constants used in the ILP formulation of the task scheduling problem for the acceleration of FMU co-simulation}
-%\centering
-%\label{tab:consilpsched}
-%\begin{tabular}{c c}
-%\toprule
-%Constant & Type \\
-%\midrule
-%
-%$M$ & Integer  \\
-%$C(o_i)$ & Integer  \\
-%
-%\bottomrule
-%\end{tabular}
-%\end{table}
+\subsubsection{Variables and Constants}
+
+Tables \ref{tab:varilpsched} and \ref{tab:consilpsched} summarize respectively the variables and the constants that are used in the ILP formulation of the scheduling problem for co-simulation acceleration.
+
+\begin{table}
+\caption{Variables used in the ILP formulation of the scheduling problem for co-simulation acceleration}
+\centering
+\label{tab:varilpsched}
+\begin{tabular}{c c}
+\toprule
+Variable & Type \\
+\midrule
+ $x(o_i)$ & Binary  \\
+$S(o_i)$ & Integer   \\
+$E(o_i)$ & Integer  \\
+$sync_{ijp}$ & Binary   \\
+$b_{ijp}$ & Binary  \\
+$Q_{ip}$ & Integer  \\
+$V_{ip}$ & Binary  \\
+$mkp$ & Integer  \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\caption{Variables used in the ILP formulation of the acyclic orientation problem}
+\centering
+\label{table:varilporient}
+\begin{tabular}{l l l}
+\toprule
+Variable & Type & Description  \\
+\midrule
+ $x_{ij}$ & Binary & Decision variable for scheduling operation $o_i$ on core $p_j$\\
+ $E(o_i)$ & Integer & End time of operation $o_i$\\
+ $b_{ij}$ & Binary & Orientation decision variable associated with edge $[o_i,o_j] \in D$\\
+ $CP$ & Integer & Length of the critical path of the graph\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\caption{Constants used in the ILP formulation of acyclic orientation problem}
+\centering
+\label{table:consilporient}
+\begin{tabular}{l l l}
+\toprule
+Constant & Type & Decription\\
+\midrule
+ $C(o_i)$ & Integer & Execution time of operation $o_i$\\
+ $M$ & Integer & Large positive number\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Constants used in the ILP formulation of the scheduling problem for co-simulation acceleration}
+\centering
+\label{tab:consilpsched}
+\begin{tabular}{c c}
+\toprule
+Constant & Type \\
+\midrule
+
+$M$ & Integer  \\
+$C(o_i)$ & Integer  \\
+
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsubsection{Constraints}
 
@@ -158,7 +187,7 @@ The makespan is equal to the latest end time among the end times of all the oper
 
 \subsubsection{Objective}
 
-The objective of this linear program is to minimize the makespan of the dependence graph.
+The objective of this linear program is to minimize the makespan of the operation graph.
 
 \begin{equation}
 min(P)

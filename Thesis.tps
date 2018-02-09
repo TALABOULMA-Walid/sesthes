@@ -17,7 +17,7 @@ Class=LaTeXView
 Document=figures\reppattern.tex
 
 [Frame0_View0,0]
-TopLine=54
+TopLine=0
 Cursor=0
 
 [Frame1]
@@ -107,7 +107,7 @@ Class=LaTeXView
 Document=text\ch2-bkgnd.tex
 
 [Frame5_View0,0]
-TopLine=1015
+TopLine=1016
 Cursor=85326
 
 [Frame6]
@@ -125,7 +125,7 @@ Class=LaTeXView
 Document=text\ch3-state.tex
 
 [Frame6_View0,0]
-TopLine=63
+TopLine=64
 Cursor=8392
 
 [Frame7]
@@ -143,8 +143,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame7_View0,0]
-TopLine=218
-Cursor=18479
+TopLine=222
+Cursor=19550
 
 [Frame8]
 Flags=0
@@ -161,7 +161,7 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame8_View0,0]
-TopLine=198
+TopLine=220
 Cursor=8581
 
 [Frame9]
@@ -179,7 +179,7 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame9_View0,0]
-TopLine=252
+TopLine=297
 Cursor=15620
 
 [Frame10]
@@ -215,8 +215,8 @@ Class=LaTeXView
 Document=figures\slow2fast.tex
 
 [Frame11_View0,0]
-TopLine=40
-Cursor=0
+TopLine=64
+Cursor=2665
 
 [Frame12]
 Flags=0
@@ -233,10 +233,10 @@ Class=LaTeXView
 Document=figures\fast2slow.tex
 
 [Frame12_View0,0]
-TopLine=30
-Cursor=1519
+TopLine=67
+Cursor=2662
 
 [SessionInfo]
 FrameCount=13
-ActiveFrame=12
+ActiveFrame=7
 

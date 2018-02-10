@@ -43,39 +43,22 @@ As a first attempt to solve the problem of scheduling the operation graph, we de
 
 Tables \ref{tab:varilpsched} and \ref{tab:consilpsched} summarize respectively the variables and the constants that are used in the ILP formulation of the scheduling problem for co-simulation acceleration.
 
-\begin{table}
-\caption{Variables used in the ILP formulation of the scheduling problem for co-simulation acceleration}
-\centering
-\label{tab:varilpsched}
-\begin{tabular}{c c}
-\toprule
-Variable & Type \\
-\midrule
- $x(o_i)$ & Binary  \\
-$S(o_i)$ & Integer   \\
-$E(o_i)$ & Integer  \\
-$sync_{ijp}$ & Binary   \\
-$b_{ijp}$ & Binary  \\
-$Q_{ip}$ & Integer  \\
-$V_{ip}$ & Binary  \\
-$mkp$ & Integer  \\
-
-\bottomrule
-\end{tabular}
-\end{table}
-
 \begin{table}[!htbp]
 \caption{Variables used in the ILP formulation of the acyclic orientation problem}
 \centering
-\label{table:varilporient}
+\label{tab:varilpsched}
 \begin{tabular}{l l l}
 \toprule
 Variable & Type & Description  \\
 \midrule
- $x_{ij}$ & Binary & Decision variable for scheduling operation $o_i$ on core $p_j$\\
+ $x_{ik}$ & Binary & Decision variable for scheduling operation $o_i$ on core $p_k$\\
  $S(o_i)$ & Integer & Start time of operation $o_i$\\
  $E(o_i)$ & Integer & End time of operation $o_i$\\
- $sync_{ijk}$ & Binary & Synchronization between $o_i$ and $o_j$ if scheduled $o_j$ on $p_k$ \\
+ $sync_{ijk}$ & Binary & Synchronization between $o_i$ and $o_j$ if $o_j$ scheduled on $p_k$ \\
+ $b_{ij}$ & Binary & $o_i$ is executed before $o_j$\\
+ $Q_{ik}$ & Integer & Earliest start time of successors $o_i$ oi that are scheduled on $p_k$\\
+ $V_{ik}$ & Binary & $o_i$ not scheduled on $p_k$\\
+ $mkp$ & Integer & Makespan\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -83,39 +66,24 @@ Variable & Type & Description  \\
 \begin{table}[!htbp]
 \caption{Constants used in the ILP formulation of acyclic orientation problem}
 \centering
-\label{table:consilporient}
+\label{tab:consilpsched}
 \begin{tabular}{l l l}
 \toprule
 Constant & Type & Decription\\
 \midrule
  $C(o_i)$ & Integer & Execution time of operation $o_i$\\
  $M$ & Integer & Large positive number\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}
-\caption{Constants used in the ILP formulation of the scheduling problem for co-simulation acceleration}
-\centering
-\label{tab:consilpsched}
-\begin{tabular}{c c}
-\toprule
-Constant & Type \\
-\midrule
-
-$M$ & Integer  \\
-$C(o_i)$ & Integer  \\
-
+ $synCost$ & Integer & Cost of synchronization\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsubsection{Constraints}
 
-We define the decision binary variables $x_{ij}$ which indicate whether the operation $o_i$ is allocated to core $p_j$ or not. Expression \ref{sched:const_1} gives the constraint that each operation has to be allocated to one and only one core.
+We define the decision binary variables $x_{ik}$ which indicates whether the operation $o_i$ is allocated to core $p_k$ or not. Expression \ref{sched:const_1} states the constraint that each operation has to be allocated to one and only one core.
 
 \begin{equation}
-\forall\ o_i \in V, \sum_{p_j \in P}x_{ij}=1
+\forall\ o_i \in V, \sum_{p_k \in P}x_{ik}=1
 \label{sched:const_1}
 \end{equation}
 
@@ -129,59 +97,59 @@ The end time of each operation $o_i$ is computed using the expression \ref{sched
 For operations that are allocated to the same core and that are completely independent, i.e. no path exists between them, we have to ensure that they are executed in non overlapping time intervals. Expressions \ref{sched:const_11} and \ref{sched:const_12} capture this constraint. $b_{ij}$ is a binary variable that is set to one if $o_i$ is executed before $o_j$.
 
 \begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_i) \leq S(o_j) + M \times (3 - x_{ip} - x_{jp} - b_{ij}) 
+\forall p_k \in P, \forall\ o_i, o_j \in V, (o_i,o_j), (o_j,o_i) \notin A, E(o_i) \leq S(o_j) + M \times (3 - x_{ik} - x_{jk} - b_{ij}) 
 \label{sched:const_11}
 \end{equation}
 
 \begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_j) \leq S(o_i) + M \times (2 - x_{ip} - x_{jp} + b_{ij}) 
+\forall p_k \in P, \forall\ o_i, o_j \in V, (o_i,o_j), (o_j,o_i) \notin A, E(o_j) \leq S(o_i) + M \times (2 - x_{ik} - x_{jk} + b_{ij}) 
 \label{sched:const_12}
 \end{equation}
 
-The cost of synchronization is taken into account according to the synchronization model described in Chapter \ref{ch:3-state}. In other words, a synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor that is allocated to a different core and if its start time is the earliest among the successors of this predecessor that are allocated to the same core as the operation $o_j$. $sync_{ijp}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p$. Therefore, $sync_{ijp} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = max_{o_{j'} \in succ(o_i)\ \text{and}\ \alpha(o_{j'}) = p}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ip}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors, in other words, if the successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ip}$ denotes the earliest start time among the start times of all successors of $o_i$ that are allocated to processor $p$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
+The cost of synchronization is taken into account as follows. A synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor $o_i$ that is allocated to a different core and if its start time is the earliest among the successors of $o_i$ that are allocated to the same core as the operation $o_j$. $sync_{ijk}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p_k$. Therefore, $sync_{ijk} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = max_{\{o_{j'} \in succ(o_i):\  \alpha(o_{j'}) = p\}}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ik}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors. In other words, if a successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ik}$ denotes the earliest start time among the start times of all the successors of $o_i$ that are allocated to processor $p_k$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
 
 
 \begin{equation}
-\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijp}= V_{ip}
+\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijk}= Q_{ik}
 \label{sched:const_3}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijp} \leq x_{jp}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jp}: \forall o_i \in V
 \label{sched:const_4}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), V_{ip} \geq x_{jp} - x_{ip}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jp} - x_{ik}: \forall o_i \in V
 \label{sched:const_5}
 \end{equation}
 
 \begin{equation}
- \forall o_i \in V, V_{ip} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ip}\big)
+ \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ik}\big)
 \label{sched:const_6}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \leq S(o_j) + M \times (1-x_{jp})
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jp})
 \label{sched:const_7}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \geq S(o_j) - M \times (1-sync_{ijp})
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \geq S(o_j) - M \times (1-sync_{ijk})
 \label{sched:const_8}
 \end{equation}
 
-The start time of each operation is computed using expression \ref{sched:const_9}. The synchronization cost is introduced taking into account the synchronizations with all predecessors of $o_j$ that are allocated to different cores. 
+The start time of each operation $o_j$ is computed using expression \ref{sched:const_9}. The synchronization cost is introduced taking into account the synchronizations with all the predecessors of $o_j$ that are allocated to different cores. 
 
 \begin{equation}
-\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p \in P, \forall o_{i'} \in pred(o_j)}sync_{ijp}\times synCost\Big]
+\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p_k \in P, \forall o_{i'} \in pred(o_j)}sync_{i'jk}\times synCost\Big]
 \label{sched:const_9}
 \end{equation}
 
-The makespan is equal to the latest end time among the end times of all the operations as captured by expession \ref{sched:const_10}
+The makespan is equal to the latest end time among the end times of all the operations as stated by expession \ref{sched:const_10}
 
 \begin{equation}
-\forall o_i \in V, P \geq E(o_i) 
+\forall o_i \in V, mkp \geq E(o_i) 
 \label{sched:const_10}
 \end{equation}
 
@@ -190,45 +158,65 @@ The makespan is equal to the latest end time among the end times of all the oper
 The objective of this linear program is to minimize the makespan of the operation graph.
 
 \begin{equation}
-min(P)
+min(mkp)
 \label{sched:obj}
-\end{equation}
-
+\end{equation} 
 
 \subsection{Multi-core Scheduling Heuristic}
 
 Multi-core scheduling problems are known to be NP-hard resulting in exponential resolution times when exact algorithms are used. Heuristics have been extensively used in order to solve multi-core scheduling problems. In most situations they lead to results of good quality in practicle resolution times. In particular, list heuristics presented in Chapter \ref{ch:2-bkgnd} are widely used in the context of offline multi-core scheduling.
 
-A variety of list multi-core scheduling heuristics exist in the literature and each heuristic may be suitable for some specific kinds of multi-core scheduling problems. We detail in this section a heuristic that we have chosen to apply on the final graph $G_F(V_F,A_F)$ in order to minimze its makespan. Because of the number of fine-grained operations, and since the execution times and the dependence between the operations are known before runtime, it is more convenient to use an offline scheduling heuristic which has the advantage of introducing lower overhead than online scheduling heuristics. We use an offline scheduling heuristic similar to the one proposed in \cite{grandpierre:1999} which is a fast greedy algorithm whose cost function corresponds well to our minimization objective. In accordance with the principle of list scheduling heuristics, this heuristic is priority-based, i.e. it builds a list of operations that are ready to be scheduled, called candidate operations and selects one operation based on the evaluation of the cost function. We denote by $\rho$ the cost function and call it the schedule pressure. It expresses the degree of criticality of scheduling an operation. The schedule pressure of an operation is computed using its flexibility and the penalty of scheduling which refers to the increase in the critical path resulting from scheduling an operation.  
+A variety of list multi-core scheduling heuristics exist in the literature and each heuristic may be suitable for some specific kinds of multi-core scheduling problems. We detail in this section a heuristic that we have chosen to apply on the operation graph $G(V,A)$ in order to minimize its makespan. Because of the number of fine-grained operations, and since the execution times and the dependence between the operations are known before runtime, it is more convenient to use an offline scheduling heuristic which has the advantage of introducing lower overhead than online scheduling heuristics. We use an offline scheduling heuristic similar to the one proposed in \cite{grandpierre:1999} which is a fast greedy algorithm whose cost function corresponds well to our minimization objective. In accordance with the principle of list scheduling heuristics, this heuristic is priority-based, i.e. it builds a list of operations that are ready to be scheduled, called candidate operations and selects one operation based on the evaluation of the cost function. We denote by $\rho$ the cost function and call it the \textit{schedule pressure}. It expresses the degree of criticality of scheduling an operation. The schedule pressure of an operation is computed using its flexibility and the penalty of scheduling which refers to the increase in the critical path resulting from scheduling an operation as stated by expression \ref{eq:pressure}.
 
-The heuristic considers the different timing attributes of each operation $o_i \in V_F$ in order to compute a schedule that minimizes the makespan of the graph. The heuristic schedules the operations of the graph $G_F(V_F,A_F)$ on the different cores iteratively and aims at minimizing the schedule pressure of an operation on a specific core while taking into account the synchronization costs. %Let $P^{n}(o_i,p_j)$ be the schedule pressure 
-The heuristic updates the set of candidate operations to be scheduled at each iteration. An operation is added to the set of candidate operations if it has no predecessor or if all its predecessors have already been scheduled. For each candidate operation, the schedule pressure is computed on each core and the operation is allocated to its best core, the one that minimizes the pressure. Then, a list of candidate operation-best core pairs is obtained. Finally, the operation with the largest pressure on its best core is selected and scheduled. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled.   
+\begin{equation}
+\rho = S(o_i) + C(o_i) + E(o_i) - CP;
+\label{eq:pressure}
+\end{equation}
+
+The heuristic considers the different timing attributes of each operation $o_i$ in order to compute a schedule that minimizes the makespan of the graph. It schedules the operations on the different cores iteratively and aims at minimizing the schedule pressure of an operation on a specific core while taking into account the synchronization costs. %Let $P^{n}(o_i,p_j)$ be the schedule pressure 
+The heuristic updates the set of candidate operations to be scheduled at each iteration. An operation is added to the set of candidate operations if it has no predecessor or if all its predecessors have already been scheduled. For each candidate operation, the schedule pressure is computed on each core and the operation is allocated to its best core, the one that minimizes the pressure. Then, a list of candidate operation-best core pairs is obtained. Finally, the operation with the largest pressure on its best core is selected and scheduled. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:sched} details the scheduling heuristic. 
 
 \begin{algorithm}[!htp]		
-	  Initialization\;
-		Set $\Omega$ the set of all the operations\;  
-		Set $P$ the set of all the available cores\; 
- 		Set $O$ the set of operations without predecessors\;  		
+	  \SetKwInOut{Input}{Input}
+		\SetKwInOut{Output}{Output}
+		\Input{Operation graph $G(V,A)$, set of cores $P$\;}
+	  \Output{Schedule of operations $o_i \in V$ on cores $p_k \in P$\;}  
+ 		Set $O$ the set of operations without predecessors\;
+		Set $sync$ the cost of one synchronization operation
+		Set $L_k: p_k \in P$ the length of schedule of core $p_k$\;
+		\ForEach{$p_k \in P$}
+		{
+			$L_k \leftarrow 0$\;
+		}
  		\While{$O \neq \emptyset$}
 		{
- 			\ForEach{operation $o_i \in O$} 
+ 			\ForEach{$o_i \in O$} 
 			{
- 				Set $\sigma$ to $\infty$; (cost of $o_i$ is set to the maximum value)\;
- 				\ForEach{$p \in P$}
+ 				$\rho \leftarrow \infty$; \tcp{Initialize the schedule pressure of $o_i$}
+				$S(o_i) \leftarrow max_{o_j \in pred(o_i)}(E(o_j))$\;
+ 				\ForEach{$p_k \in P$}
 				{
-  				$S'(o_i) \leftarrow max(S(o_i) , L_p)$; (new start time of $o_i$ when executed on $p$)\;
-  				$\sigma' \leftarrow S'(o_i) + C(o_i) + \overline{E}(o_i) - R$; (cost of $o_i$ when executed on $p)$\;
-  				\If{$\sigma' < \sigma$}
+					$syncCost \leftarrow 0$\;
+					$S(o_i) \leftarrow \max(S(o_i) , L_k)$; \tcp{Start time of $o_i$ if executed on $p_k$}
+					\ForEach{$o_j \in pred(o_i)$}
 					{
-  					Set $\sigma \leftarrow \sigma'$\;
-  					Set $BestCore(o_i) \leftarrow p$\;
+						\If{$o_j$ is scheduled on a core $p_{k'} \neq p_k$}
+						{
+							syncCost \leftarrow syncCost + sync\; 
+						}
+					}
+  				$\rho' \leftarrow S(o_i) + C(o_i) + \overline{E}(o_i) - CP$; \tcp{Cost of $o_i$ if executed on $p_k$}
+  				\If{$\rho' < \rho$}
+					{
+  					Set $\rho \leftarrow \rho'$\;
+  					$BestCore(o_i) \leftarrow p_k$\;
   				}
   			}
   		 }
-  		 Find $o_{i'}$ with maximal cost $\sigma$ in $O$\; 
-  		 Schedule $o_{i'}$ on its core $\mathrm{BestCore}(o_{i'})$\;
-  		 Set $p' := \mathrm{BestCore}(o_{i'})$\;
-  		 $L_{\mathrm{p'}} := L_{\mathrm{p'}} + C(o_{i'})$; (Advance the time of $p'$)\;
+  		 Find $o_{i'}$ with maximal cost $\rho$ in $O$\; 
+  		 Schedule $o_{i'}$ on its core $BestCore(o_{i'})$\;
+  		 $p_{best} \leftarrow \mathrm{BestCore}(o_{i'})$\;
+  		 $L_{best} \leftarrow L_{best} + C(o_{i'})$;
   		 Remove $o_{i'}$ from the set $O$\;
   		 Add to the set $O$ all successors of $o_{i'}$ for which all predecessors are already scheduled\;
 		}

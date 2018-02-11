@@ -58,7 +58,7 @@ The notation $tpe(o_i)$ is used to refer the type of the operation $o_i$, i.e. $
 \begin{equation}
 S(o_i)=\begin{cases}
     0, & \text{if $pred(o_i)=\emptyset$}.\\
-    max_{o_j \in pred(o_i)}(E(o_j)), & \text{otherwise}.
+    \max_{o_j \in pred(o_i)}(E(o_j)), & \text{otherwise}.
   \end{cases}
 	\label{eq:sfs}
 \end{equation}
@@ -73,7 +73,7 @@ The latest end time from end denoted $\overline{E}(o_i)$ and the latest start ti
 \begin{equation}
 \overline{E}(o_i)=\begin{cases}
     0, & \text{if $succ(o_i)=\emptyset$}.\\
-    max_{o_j \in succ(o_i)}(\overline{S}(o_j)), & \text{otherwise}.
+    \max_{o_j \in succ(o_i)}(\overline{S}(o_j)), & \text{otherwise}.
   \end{cases}
 	\label{eq:efe}
 \end{equation}
@@ -341,7 +341,7 @@ The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated a
        %\end{subjecto}
 %\end{itemize}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{l  l}
   \rule{0pt}{5ex}	
@@ -358,7 +358,6 @@ The problem of acyclic orientation of the mixed graph $G(V,A,D)$ can be stated a
 	\rule{0pt}{5ex}									 
 	
 	\textbf{Subject to} & Precedence constraints: $\forall\ (o_i,o_j) \in A,\ \alpha(o_i) < \alpha(o_j)$\\
-	\rule{0pt}{5ex}
 											& Mutual exclusion constraints: $\forall\ [o_i,o_j] \in D,\ \alpha(o_i) \neq \alpha(o_j)$
 										 
 \end{tabular}
@@ -417,7 +416,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 
 \begin{itemize}
 
-\item \textit{Precedence constraints:} The start time of each operation is equal to the maximum of the end times of all its predecessors. Expression \ref{orient:const_1} captures this constraint. Note that expression \ref{orient:const_1} indicates that the start time of operation $o_j$ is greater or equal to the end time of each predecessor $o_i$. This is sufficient to express $S(o_j) = max_{o_i \in pred(o_j)}(E(o_i))$ since the formulated problem is a minimization problem.
+\item \textit{Precedence constraints:} The start time of each operation is equal to the maximum of the end times of all its predecessors. Expression \ref{orient:const_1} captures this constraint. Note that expression \ref{orient:const_1} indicates that the start time of operation $o_j$ is greater or equal to the end time of each predecessor $o_i$. This is sufficient to express $S(o_j) = \max_{o_i \in pred(o_j)}(E(o_i))$ since the formulated problem is a minimization problem.
 
 \begin{equation}
 \forall (o_i,o_j) \in A, S(o_j) \geq E(o_i)
@@ -604,7 +603,7 @@ If a conflict edge $[o_i,o_j] \in D_k: o_j \in L_k$ is detected, the pending ope
 			}
 		\Else
 		{
-		Set $\sigma \leftarrow \infty$; \tcp{Initialize the increase in the critical path}
+		Set $\sigma \leftarrow \infty$\; \tcp{Initialize the increase in the critical path}
 		\ForEach{$o_j \in L_k$}
 		{
 				\If{$S(o_i) < E(o_j)$ and $S(o_j) < E(o_i)$}
@@ -902,7 +901,7 @@ Gate operations are always subject to only one constraint because they are direc
 We denote by $\mathcal{R}(o_i)$ the set of release constraints propagated towards the operation $o_i$ and by $\mathcal{D}(o_j)$ the set of deadline constraints propagated towards the operation $o_j$. The set $\mathcal{R}(o_i)$ is built as the union of all the release constraints propagated towards $o_i$ from its predecessors, i.e. $\mathcal{R}(o_i) = \{R(o_{i'}):\ o_{i'} \in pred(o_i)\}$. Each operation $o_i$ must be assigned only one release constraint which is chosen from the set $\mathcal{R}(o_i)$. A release constraint specifies the earliest date the associated operation can start its execution. As such, the most constraining release constraint has to be chosen from the set $\mathcal{R}(o_i)$ as stated by expression \ref{eq:mulrel}.
 
 \begin{equation}
-\forall o_i \in V, R(o_i) = max_{R(o_{i'}) \in \mathcal{R}(o_i)}(R(o_{i'}))
+\forall o_i \in V, R(o_i) = \max_{R(o_{i'}) \in \mathcal{R}(o_i)}(R(o_{i'}))
 \label{eq:mulrel}
 \end{equation}
 
@@ -919,7 +918,7 @@ The process of propagating the release constraints described previously becomes 
 In the same way, the set $\mathcal{D}(o_j)$ is built as the union of all the deadline constraints propagated towards $o_j$ from its successors, i.e. $D(o_{j'}):\ o_{j'} \in succ(o_j)$. Each operation must be assigned only one deadline constraint which is chosen from the set $\mathcal{D}(o_j)$. A deadline constraint specifies the latest date by which the associated operation must finish its execution. Therefore, the most constraining deadline constraint is selected from the set $\mathcal{D}(o_j)$ as specified by expression \ref{eq:mulded}.
 
 \begin{equation}
-\forall o_j \in V, D(o_j) = min_{D(o_{j'}) \in \mathcal{D}(o_j) }(D(o_{j'}))
+\forall o_j \in V, D(o_j) = \min_{D(o_{j'}) \in \mathcal{D}(o_j) }(D(o_{j'}))
 \label{eq:mulded}
 \end{equation}
 

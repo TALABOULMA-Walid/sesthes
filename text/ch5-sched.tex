@@ -12,7 +12,7 @@ In order to achieve fast execution of the co-simulation on a multi-core processo
 
 The acceleration of the co-simulation corresponds to the minimization of the makespan of the operation graph. The makespan is the total execution time of the whole graph. The operation graph that is fed as input to the scheduling algorithm is a DAG, therefore, it represents a partial order relationship in the execution of the operations, since two operations connected by an arc must be executed sequentially whereas the other ones can be executed in parallel. A scheduling algorithm makes decisions on allocating the operations to the cores while respecting this partial order and trying to minimize the total execution time of the operation graph. In addition to the execution time of the operations, the scheduling algorithm has to take into consideration, the cost of inter-core synchronization. The set of cores is denoted $P = \{p_1, p_2, \ldots, p_m\}$ where $m$ is the number of cores. The scheduling problem can be stated as an optimization problem as follows:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{l  l}
   \rule{0pt}{5ex}	
@@ -23,11 +23,10 @@ The acceleration of the co-simulation corresponds to the minimization of the mak
 	\rule{0pt}{5ex}									  
   
 	\textbf{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
-	\rule{0pt}{5ex}
                 & Assignment of start times to operations: $\beta: V \times P \rightarrow \mathbb{N}$\\
 	\rule{0pt}{5ex}
 	
-	\textbf{Minimize} & Makespan of the graph: $min(mkp):\ mkp = \max_{o_i \in V}(E(o_i))$\\
+	\textbf{Minimize} & Makespan of the graph: $\min(mkp):\ mkp = \max_{o_i \in V}(E(o_i))$\\
 	\rule{0pt}{5ex}									 
 	
 	\textbf{Subject to} & Precedence constraints: $\forall\ (o_i,o_j) \in A,\ S(o_j) \geq E(o_i)$\\
@@ -35,7 +34,7 @@ The acceleration of the co-simulation corresponds to the minimization of the mak
 \end{tabular}
 \end{table}
 
-\subsection{Resolution using Linear Programming}
+\subsection{\label{subsec:ilpschedacc}Resolution using Linear Programming}
 
 As a first attempt to solve the problem of scheduling the operation graph, we decided to use the ILP approach which is an exact algorithm. By using ILP, we guarantee that the obtained schedule is optimal. In addition, ILP allows us to model the problem by means of linear relationships between variables and feed this model to an existing ILP solver to compute the solution. Below, we give our ILP formulation of the problem of scheduling the operation graph for co-simulation acceleration.
 
@@ -106,7 +105,7 @@ For operations that are allocated to the same core and that are completely indep
 \label{sched:const_12}
 \end{equation}
 
-The cost of synchronization is taken into account as follows. A synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor $o_i$ that is allocated to a different core and if its start time is the earliest among the successors of $o_i$ that are allocated to the same core as the operation $o_j$. $sync_{ijk}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p_k$. Therefore, $sync_{ijk} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = max_{\{o_{j'} \in succ(o_i):\  \alpha(o_{j'}) = p\}}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ik}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors. In other words, if a successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ik}$ denotes the earliest start time among the start times of all the successors of $o_i$ that are allocated to processor $p_k$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
+The cost of synchronization is taken into account as follows. A synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor $o_i$ that is allocated to a different core and if its start time is the earliest among the successors of $o_i$ that are allocated to the same core as the operation $o_j$. $sync_{ijk}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p_k$. Therefore, $sync_{ijk} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = \max_{\{o_{j'} \in succ(o_i):\  \alpha(o_{j'}) = p\}}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ik}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors. In other words, if a successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ik}$ denotes the earliest start time among the start times of all the successors of $o_i$ that are allocated to processor $p_k$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
 
 
 \begin{equation}
@@ -169,7 +168,7 @@ Multi-core scheduling problems are known to be NP-hard resulting in exponential 
 A variety of list multi-core scheduling heuristics exist in the literature and each heuristic may be suitable for some specific kinds of multi-core scheduling problems. We detail in this section a heuristic that we have chosen to apply on the operation graph $G(V,A)$ in order to minimize its makespan. Because of the number of fine-grained operations, and since the execution times and the dependence between the operations are known before runtime, it is more convenient to use an offline scheduling heuristic which has the advantage of introducing lower overhead than online scheduling heuristics. We use an offline scheduling heuristic similar to the one proposed in \cite{grandpierre:1999} which is a fast greedy algorithm whose cost function corresponds well to our minimization objective. In accordance with the principle of list scheduling heuristics, this heuristic is priority-based, i.e. it builds a list of operations that are ready to be scheduled, called candidate operations and selects one operation based on the evaluation of the cost function. We denote by $\rho$ the cost function and call it the \textit{schedule pressure}. It expresses the degree of criticality of scheduling an operation. The schedule pressure of an operation is computed using its flexibility and the penalty of scheduling which refers to the increase in the critical path resulting from scheduling an operation as stated by expression \ref{eq:pressure}.
 
 \begin{equation}
-\rho = S(o_i) + C(o_i) + E(o_i) - CP;
+\rho = S(o_i) + C(o_i) + \overline{E(o_i)} - CP
 \label{eq:pressure}
 \end{equation}
 
@@ -182,7 +181,7 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 		\Input{Operation graph $G(V,A)$, set of cores $P$\;}
 	  \Output{Schedule of operations $o_i \in V$ on cores $p_k \in P$\;}  
  		Set $O$ the set of operations without predecessors\;
-		Set $sync$ the cost of one synchronization operation
+		Set $sync$ the cost of one synchronization operation\;
 		Set $L_k: p_k \in P$ the length of schedule of core $p_k$\;
 		\ForEach{$p_k \in P$}
 		{
@@ -193,7 +192,7 @@ The heuristic updates the set of candidate operations to be scheduled at each it
  			\ForEach{$o_i \in O$} 
 			{
  				$\rho \leftarrow \infty$; \tcp{Initialize the schedule pressure of $o_i$}
-				$S(o_i) \leftarrow max_{o_j \in pred(o_i)}(E(o_j))$\;
+				$S(o_i) \leftarrow \max_{o_j \in pred(o_i)}(E(o_j))$\;
  				\ForEach{$p_k \in P$}
 				{
 					$syncCost \leftarrow 0$\;
@@ -202,9 +201,11 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 					{
 						\If{$o_j$ is scheduled on a core $p_{k'} \neq p_k$}
 						{
-							syncCost \leftarrow syncCost + sync\; 
+							$syncCost \leftarrow syncCost + sync$\; 
 						}
 					}
+					$S(o_i) \leftarrow S(o_i) + syncCost$\;
+					$E(o_i) \leftarrow S(o_i) + C(o_i)$\;
   				$\rho' \leftarrow S(o_i) + C(o_i) + \overline{E}(o_i) - CP$; \tcp{Cost of $o_i$ if executed on $p_k$}
   				\If{$\rho' < \rho$}
 					{
@@ -216,7 +217,7 @@ The heuristic updates the set of candidate operations to be scheduled at each it
   		 Find $o_{i'}$ with maximal cost $\rho$ in $O$\; 
   		 Schedule $o_{i'}$ on its core $BestCore(o_{i'})$\;
   		 $p_{best} \leftarrow \mathrm{BestCore}(o_{i'})$\;
-  		 $L_{best} \leftarrow L_{best} + C(o_{i'})$;
+  		 $L_{best} \leftarrow L_{best} + C(o_{i'})$\;
   		 Remove $o_{i'}$ from the set $O$\;
   		 Add to the set $O$ all successors of $o_{i'}$ for which all predecessors are already scheduled\;
 		}
@@ -226,34 +227,34 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 
 \subsubsection{Complexity}
 
-The scheduling heuristic contains three nested loop. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times where $n$ is the number of operations in the operation graph. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(np)$, where $p$ is the number of cores. From the foregoing, the complexity of our heuristic is evaluated to $\mathcal{O}(pn^2)$.
+The scheduling heuristic contains three nested loops. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times where $n$ is the number of operation in the operation graph. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(nm)$, where $m$ is the number of cores. From the foregoing, the complexity of the heuristic is evaluated to $\mathcal{O}(mn^2)$.
 
 \section{Scheduling of FMU Co-simulation under Real-time Constraints}
 
-In this section, we are interested in scheduling FMU co-simulation while ensuring a set of real-time constraints  is satisfied. We consider FMU co-simulation in the context of HiL consisting of a simulated component and a real component. Also, we consider that the real-time constraints that are applied by the real component have been propagated through the operation graph as described in Section \ref{sec:grphrtsc}. Therefore, the aim here consists in scheduling the operations of the operations graph on a multi-core architecture, such as these constraints are satisfied. Note that in contrast to the previous section, how much the execution is sped up is not of a crucial important here as long as the real-time constraints are respected. Hereafter, we present an ILP formulation and a heuristic for scheduling operation graphs under real-time constraints.
+In this section, we are interested in multi-core scheduling of FMU co-simulation under real-time constraints. We consider FMU co-simulation in the context of HiL consisting of a simulated component and a real component. Also, we consider that the real-time constraints that are applied by the real component have been propagated through the operation graph as described in Section \ref{sec:grphrtsc}. Therefore, the aim here consists in scheduling the operations of the operations graph on a multi-core architecture, such that these constraints are satisfied. Note that in contrast to the previous section, how much the execution is sped up is not of a crucial importance here as long as the real-time constraints are respected. Hereafter, we present an ILP formulation and a heuristic for scheduling operation graphs under real-time constraints.
 
 \subsection{Problem Formulation}
 
-The problem of scheduling FMU co-simulation under real-time constraints can be considered as a satisfaction problem instead of an optimization problem. In fact, the basic problem does not involve an objective function to be optimized, the goal being to ensure the real-time constraints are satisfied. More precisely, the problem consists in scheduling the operations of the operation graph such that each operation starts its execution no earlier than its release date and finishes its execution by its deadline date. Obviously, there are other constraints that are common with the acceleration problem, namely, respecting the partial order of the operation graph. Also, the cost of inter-core synchronization is taken into account in computing the schedule. The scheduling of FMU co-simulation under real-time constraints can be stated as a satisfaction problem as follows:
+The problem of scheduling FMU co-simulation under real-time constraints can be considered as a satisfaction problem instead of an optimization problem. In fact, in its basic form, the problem does not involve an objective function to be optimized, the goal being to ensure the real-time constraints are satisfied. More precisely, the problem consists in scheduling the operations of the operation graph such that each operation starts its execution no earlier than its release date and finishes its execution by its deadline date. There are other constraints that are common with the problem of scheduling for co-simulation acceleration, namely, respecting the partial order of the operation graph. Also, the cost of inter-core synchronization is taken into account in computing the schedule in the same way. The scheduling of FMU co-simulation under real-time constraints can be stated as a satisfaction problem as follows:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{l  l}
   \rule{0pt}{5ex}	
-	\textit{Input} & Operation graph $G_F(V_F,A_F)$\\
+	\textit{Input} & Operation graph $G(V,A)$\\
 	\rule{0pt}{5ex}									  
 	
-  \textit{Output} & Offline Schedule of operations on multi-core processor\\
+  \textit{Output} & Offline Schedule of operations on a multi-core processor\\
 	\rule{0pt}{5ex}									  
   
-	\textit{Find} & Allocation of operations to cores, $\alpha: V \rightarrow P$\\
+	\textit{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
 	\rule{0pt}{5ex}
-                & Assignment of start times to operations, $\beta: V \times P \rightarrow \mathbb{N}$\\
+                & Assignment of start times to operations: $\beta: V \times P \rightarrow \mathbb{N}$\\
 	\rule{0pt}{5ex}								 
 	
-	\textit{Subject to} & Precedence constraints of the graph $G_F(V_F,A_F)$\\
-											& Start time greater or equal to the release date $\forall o_i \in V_F, S(o_i) \geq R(o_i)$\\
-											& End time less or equal to the deadline date $\forall o_i \in V_F, E(o_i) \leq D(o_i)$\\
+	\textit{Subject to} & Precedence constraints: $\forall (o_i,o_j) \in A, S(o_j) \geq E(o_i)$\\
+											& Release constraints: $\forall o_i \in V, S(o_i) \geq R(o_i)$\\
+											& Deadline constraints: $\forall o_i \in V, E(o_i) \leq D(o_i)$\\
 										 
 	
 \end{tabular}
@@ -261,7 +262,7 @@ The problem of scheduling FMU co-simulation under real-time constraints can be c
 
 \subsection{Accounting for Dependence in Real-time Scheduling}
 
-The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented earlier follows this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. Consequently, the execution times of the operations have to be accounted for when assigning release and deadline dates to the operations.
+The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented in Chapter \ref{ch:4-accel} follows this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. Consequently, the execution times of the operations have to be accounted for when assigning release and deadline dates to the operations.
 
 We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify the release and deadline dates assigned to each operation in order to account for execution times. This modification is needed given that:
 
@@ -269,98 +270,27 @@ We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify
 
 \item The execution of an operation can start no earlier than its release but also only after the execution of all its predecessors is finished.
 
-\item The execution of an operation must be finished before its deadline and also be finished so that the execution of of its successors can be finished before their deadlines.
+\item The execution of an operation must be finished before its deadline and also be finished so that the execution of its successors can be finished before their deadlines.
 
 \end{itemize}
 
-Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) \geq R(o_i)$ and $S(o_i) \geq E(o_j)$ must be satisfied. Therefore, the new release date of $o_i$ can be computed by expression \ref{eq:modre}.
+Let $o_i$ and $o_j$ be two operations such that $o_j \in pred(o_i)$. For a given schedule of the operation graph to be valid, the relations $S(o_i) \geq R(o_i)$ and $S(o_i) \geq E(o_j)$ must be satisfied. Therefore, a new release date for $o_i$ can be computed using expression \ref{eq:modre}.
 
 \begin{equation} 
-R(o_i) = max(R(o_i), max(F(o_j), o_j \in pred(o_i)))
+R(o_i) = \max(R(o_i), \max_{o_j \in pred(o_i)}(E(o_j)))
 \label{eq:modre}
 \end{equation}
 
-Consider now the two operations $o_i$ and $o_j$ such that $o_j \in succ(o_i)$. For the operation graph to be schedulable, the relations $F(o_i) \leq D(o_i)$ and $F(o_i) \leq D(o_j) - C(o_j)$ must be satisfied. In fact, $D(o_j) - C(o_j)$ represents the latest time to start the execution of the successor $o_j$ and meet its deadline. Therefore, the new deadline date of $o_i$ can be computed by expression \ref{eq:modde}.
+Consider now two operations $o_i$ and $o_j$ such that $o_j \in succ(o_i)$. For the operation graph to be schedulable, the relations $E(o_i) \leq D(o_i)$ and $E(o_i) \leq D(o_j) - C(o_j)$ must be satisfied. In fact, $D(o_j) - C(o_j)$ represents the latest time to start the execution of the successor $o_j$ such that its deadline can be met. Therefore, a new deadline date of $o_i$ can be computed using expression \ref{eq:modde}.
 
 \begin{equation} 
-D(o_i) = min(D(o_i), min(D(o_j) - C(o_j), o_j \in succ(o_i)))
+D(o_i) = \min(D(o_i), \min_{o_j \in succ(o_i)}(D(o_j) - C(o_j)))
 \label{eq:modde}
-\end{equation}   
-
-\subsection{Resolution using Linear Programming}
-
-The ILP formulation that we propose is, in most part, similar the ILP formulation for co-simulation acceleration. The main differences consist, first, in adding the inequalities that express the real-time constraints. Second, it is possible not to set an objective function since the real-time scheduling consists in a satisfaction problem.
-
-Therefore, the ILP formulation for multi-core scheduling of co-simulation under real-time constraints is given below. The start date of every operation must be at the earliest equal to its release date. Expression \ref{schedRT:const_01} captures this constraint. The deadline date of every operation is the latest time before which the operation has to finish its execution. Expression \ref{schedRT:const_02} specifies this constraint.
-
-\begin{equation}
-\forall\ o_i \in V, \sum_{p_j \in P}x_{ij}=1
-\label{schedRT:const_1}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, E(o_i) = S(o_i) + C(o_i)
-\label{schedRT:const_2}
-\end{equation}
-
-\begin{equation}
-\forall\ o_i \in V, S(o_i) \geq R(o_i)
-\label{schedRT:const_01}
-\end{equation}
-
-\begin{equation}
-\forall\ o_i \in V, E(o_i) \leq D(o_i)
-\label{schedRT:const_02}
-\end{equation}
-
-\begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_i) \leq S(o_j) + M \times (3 - x_{ip} - x_{jp} - b_{ij}) 
-\label{schedRT:const_11}
-\end{equation}
-
-\begin{equation}
-\forall p \in P, \forall\ o_i \in V, \forall\ o_j \in V, (o_i,o_j), (o_j,o_i) \notin A_F, E(o_j) \leq S(o_i) + M \times (2 - x_{ip} - x_{jp} + b_{ij}) 
-\label{schedRT:const_12}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijp}= V_{ip}
-\label{schedRT:const_3}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijp} \leq x_{jp}: \forall o_i \in V
-\label{schedRT:const_4}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), V_{ip} \geq x_{jp} - x_{ip}: \forall o_i \in V
-\label{schedRT:const_5}
-\end{equation}
-
-\begin{equation}
- \forall o_i \in V, V_{ip} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ip}\big)
-\label{schedRT:const_6}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \leq S(o_j) + M \times (1-x_{jp})
-\label{schedRT:const_7}
-\end{equation}
-
-\begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ip} \geq S(o_j) - M \times (1-sync_{ijp})
-\label{schedRT:const_8}
 \end{equation} 
-
-\begin{equation}
-\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p \in P, \forall o_{i'} \in pred(o_j)}sync_{ijp}\times synCost\Big]
-\label{schedRT:const_9}
-\end{equation}
 
 \subsection{Scheduling Interval}
 
-In offline scheduling, the schedule is computed over an interval of time. This schedule is then executed repetitively. For the acceleration of co-simulation, we have seen that the length of the schedule interval is equal to the hyperstep. For co-simulation under real-time constraints, a natural approach is to apply techniques that are used for classical real-time systems (such co-simulation is considered a real-time system after all). For this, we need first to represent the operation graph with a model that involves the parameters that are usually used for classical real-time systems. In particular, we need to define a relative deadline and a period for each operation. Note that, so far, we have only spoken about sampling periods of data exchange between the real and the simulated component. Although related to the sampling periods, the periods that we seek to define for each operation are different and correspond to task periods that are found in classical real-time systems. We handle this requirement as follows. We consider that every operation that appears in the hyperperiod pattern of the operation graph is a distinct operation. In other words, occurrences of one operation are not regarded as repetitions of a single operation. Accordingly, we consider that the operation graph is \textit{mono-period}, i.e. all the operations have the same period. The value of this period is equal to the hyperperiod. The relative deadline of each operation can then be defined as the duration between its release and deadline.   
+In offline scheduling, the schedule is computed over an interval of time. This schedule is then executed repetitively. For the acceleration of co-simulation, we have seen that the length of the schedule interval is equal to the hyperstep. For co-simulation under real-time constraints, a natural approach is to apply techniques that are used for classical real-time systems (such co-simulation is considered a real-time system after all). For this, we need first to represent the operation graph with a model that involves the parameters that are usually used for classical real-time systems. In particular, we need to define a relative deadline and a period for each operation. Note that, so far, we have only spoken about sampling periods of data exchange between the real and the simulated component. Although related to the sampling periods, the periods that we seek to define for each operation are different and correspond to task periods that are found in classical real-time systems. We handle this requirement as follows. We consider that every operation that appears in the hyperperiod pattern of the operation graph is a distinct operation. In other words, occurrences of one operation are not regarded as repetitions of a single operation. Accordingly, we consider that the operation graph is \textit{mono-period}, i.e. all the operations have the same period. The value of this period is equal to the hyperperiod (see Definition\ref{def:hyperperiod}). The relative deadline of each operation can then be defined as the duration between its release and deadline.   
 
 In the real-time literature, we find contributions regarding the schedule interval targeting different kinds of real-time tasks, schedulers, and architectures. For instance, in \cite{cucu:2006}, the authors study synchronous task systems, i.e. where the release dates of all tasks are equal to zero, with constrained deadlines, i.e. where the relative deadline of each task is less or equal to its period. They show that the schedule of such task system on uniform multiprocessors reaches a cyclic behavior after one hyperperiod. The length of the schedule interval for co-simulation under real-time constraints cannot be chosen in a straightforward manner to be equal to the hyperperiod. This is because the operation graph features \textit{arbitrary deadlines}, i.e. relative deadlines that are greater than the periods which may result in \textit{hyperperiod spill} \cite{dave:1999}. The latter refers to operations that are not scheduled in their hyperperiod and spill over the next one. In \cite{cucu:2007}, a schedule interval is given for preemptive scheduling of tasks with arbitrary deadlines on uniform multiprocessors. A more general result is given in \cite{grolleau:2013} taking into account different constraints (mutual exclusion, precedence constraints, non-preemptive tasks, etc.) for uniprocessor and multiprocessor scheduling. The authors give an upper bound for the schedule interval when a \textit{deterministic memoryless} scheduler is used. A scheduler is deterministic and memoryless if and only if, when building the schedule, the scheduling decision is the same for any identical configuration encountered. The given bound is:
 
@@ -368,11 +298,11 @@ In the real-time literature, we find contributions regarding the schedule interv
 \prod_{i=1}^n((\max(O_i + D_i - T_i, 0) + 1)) \times H
 \end{equation}
 
-where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (release date), relative deadline, and period of task $\tau_i$ respectively, and $H$ is the hyperperiod. This result is applicable to non-preemptive scheduling with arbitrary deadlines which is the case in out problem. However, the proposed bound is intractable, i.e. as the size of the operation graph grows and depending on the parameters of the operations, it results in very large schedule intervals and we cannot guarantee to compute the schedule within an acceptable time. Therefore, we choose to start with a schedule interval whose length is equal to the hyperperiod and iteratively increase it if we cannot determine the schedulability of the operation graph.
+where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (release date), relative deadline, and period of task $\tau_i$ respectively, and $H$ is the hyperperiod. This result is applicable to non-preemptive scheduling with arbitrary deadlines which is the case in our problem. However, the proposed bound is intractable, i.e. as the size of the operation graph grows and depending on the parameters of the operations, it results in very large schedule intervals and we cannot guarantee to compute the schedule within an acceptable time. Therefore, we choose to start with a schedule interval whose length is equal to the hyperperiod and iteratively increase it if we cannot determine the schedulability of the operation graph.
 
 %Add here how we deal with the problem
 
-As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means that such operations can be executed before launching the co-simulation under real-time constraints. Therefore, they are not scheduled and are removed from the first repetition of the operation graph. See, for example, the operations colored in gray in Figure. But since these operations must appear in the subsequent repetitions of the operation graph and the schedule, we have to add the repetitions of these operations that belong to the second repetition of the operation graph to the operation graph pattern that is scheduled. Figure \ref{fig:schedpattern} shows an example of the operations that belong to the operation graph pattern that is scheduled. The operations that are colored in green belong to this pattern. It can be seen that operations that are assigned negative release dates are not scheduled in the first repetition of the operation graph. Instead their occurrences that belong to the second repetition of the second repetition of the operation graph are added to the pattern.
+As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means that such operations can be executed before launching the co-simulation under real-time constraints. Therefore, they are not scheduled and are removed from the first repetition of the operation graph. See, for example, the operations colored in gray in Figure \ref{fig:rep1}. However, since these operations must appear in the subsequent repetitions of the schedule of the operation graph, we have to add the repetitions of these operations that belong to the second repetition of the operation graph to the operation graph pattern that is scheduled. Figure \ref{fig:schedpattern} shows an example of the operations that belong to the operation graph pattern that is scheduled. The operations that are colored in green belong to this pattern. It can be seen that operations that are assigned negative release dates are not scheduled in the first repetition of the operation graph. Instead, their occurrences that belong to the second repetition of the operation graph are added to the pattern.
 
 \begin{figure}[phtb]
 \centering
@@ -392,6 +322,78 @@ As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constra
 \caption{Example of operation graph pattern for real-time scheduling}
 \label{fig:schedpattern}
 \end{figure}
+  
+
+\subsection{Resolution using Linear Programming}
+
+The ILP formulation that we propose is in most part similar the ILP formulation that we proposed for co-simulation acceleration. The main differences consist, first, in adding the inequalities that express the real-time constraints. Second, we need not set an objective function since the real-time scheduling consists in a satisfaction problem.
+
+The ILP formulation for multi-core scheduling of co-simulation under real-time constraints is given below. We do not explain most of the constraints since these are common with the ILP formulation given in Section \ref{subsec:ilpschedacc} where we explained them in detail. We explain only the following additional constraints. The start date of every operation must be at the earliest equal to its release date. Expression \ref{schedRT:const_01} captures this constraint. The deadline date of every operation is the latest time before which the operation has to finish its execution. Expression \ref{schedRT:const_02} specifies this constraint.
+
+\begin{equation}
+\forall\ o_i \in V, \sum_{p_k \in P}x_{ik}=1
+\label{schedRT:const_1}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, E(o_i) = S(o_i) + C(o_i)
+\label{schedRT:const_2}
+\end{equation}
+
+\begin{equation}
+\forall\ o_i \in V, S(o_i) \geq R(o_i)
+\label{schedRT:const_01}
+\end{equation}
+
+\begin{equation}
+\forall\ o_i \in V, E(o_i) \leq D(o_i)
+\label{schedRT:const_02}
+\end{equation}
+
+\begin{equation}
+\forall p_k \in P, \forall\ o_i, o_j \in V, (o_i,o_j), (o_j,o_i) \notin A, E(o_i) \leq S(o_j) + M \times (3 - x_{ik} - x_{jk} - b_{ij}) 
+\label{schedRT:const_11}
+\end{equation}
+
+\begin{equation}
+\forall p_k \in P, \forall\ o_i, o_j \in V, (o_i,o_j), (o_j,o_i) \notin A, E(o_j) \leq S(o_i) + M \times (2 - x_{ik} - x_{jk} + b_{ij}) 
+\label{schedRT:const_12}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijk}= Q_{ik}
+\label{schedRT:const_3}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jp}: \forall o_i \in V
+\label{schedRT:const_4}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jp} - x_{ik}: \forall o_i \in V
+\label{schedRT:const_5}
+\end{equation}
+
+\begin{equation}
+ \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ik}\big)
+\label{schedRT:const_6}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jp})
+\label{schedRT:const_7}
+\end{equation}
+
+\begin{equation}
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \geq S(o_j) - M \times (1-sync_{ijk})
+\label{schedRT:const_8}
+\end{equation}
+
+\begin{equation}
+\forall o_j \in V, \forall o_i \in pred(o_j), S(o_j) \geq \Big[E(o_i) + \sum_{\forall p_k \in P, \forall o_{i'} \in pred(o_j)}sync_{i'jk}\times synCost\Big]
+\label{schedRT:const_9}
+\end{equation}
 
 \subsection{Multi-core Scheduling Heuristic}
 
@@ -402,45 +404,67 @@ In the following, we propose a heuristic for scheduling operation graphs represe
 We propose to adapt the scheduling heuristic that we use for the acceleration of FMU co-simulation. In particular, we modify the computation of the scheduling priority such that the criticality of a given operation expresses how close it is to miss its deadline if scheduled on a specific processor. The priority of an operation is a dynamic operation as its computation depends on the partial scheduling solution that has already been computed. This priority is given by expression \ref{eq:priority}.
 
 \begin{equation}
-\rho_{i,j} = D(o_i) - E_j(o_i)
+\rho_{i,k} = D(o_i) - E_j(o_i)
 \label{eq:priority}
 \end{equation}
 
-Where $\rho_{i,j}$ and $E_j(o_i)$ are the scheduling priority of operation and the end date of operation $o_i$ respectively, computed when the latter is scheduled on core $j$.
+Where $\rho_{i,k}$ and $E_j(o_i)$ are the scheduling priority and the end date of operation $o_i$ respectively, computed when the latter is scheduled on core $p_k$.
 
-The proposed heuristic is a list scheduling heuristic. It builds the multi-core schedule iteratively. At each iteration, a list of candidate operations is constructed. An operation is added to the list of candidate operation if all its predecessors have been scheduled. The heuristic computes the priority for each candidate operation on every core and selects the one for the which the priority is maximized. After that, a list of pairs operation-best core is obtained. The heuristic selects from this list the operation whose priority is the least among all operation in the list. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:schedRT} lists the proposed real-time multi-core scheduling heuristic. 
+The proposed heuristic is a list scheduling heuristic. It builds the multi-core schedule iteratively. At each iteration, a list of candidate operations is constructed. An operation is added to the list of candidate operation if all its predecessors have been scheduled. The heuristic computes the priority for each candidate operation on every core and selects the core for the which the priority is maximized. After that, a list of operation-best core pairs is obtained. The heuristic selects from this list the operation whose priority is the smallest among all operation in the list. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:schedRT} lists the proposed real-time multi-core scheduling heuristic. 
 
 \begin{algorithm}[!htp]		
-	  Initialization\;
-		Set $\Omega$ the set of all the operations\;  
-		Set $P$ the set of all the available cores\; 
- 		Set $O$ the set of operations without predecessors\;  		
+		\SetKwInOut{Input}{Input}
+		\SetKwInOut{Output}{Output}
+		\Input{Operation graph $G(V,A)$, set of cores $P$\;}
+		\Output{Schedule of operations $o_i \in V$ on cores $p_k \in P$\;}  
+ 		Set $O$ the set of operations without predecessors\;
+		Set $sync$ the cost of one synchronization operation\;
+		Set $L_k: p_k \in P$ the length of schedule of core $p_k$\;
+		\ForEach{$p_k \in P$}
+		{
+			$L_k \leftarrow 0$\;
+		}
  		\While{$O \neq \emptyset$}
 		{
- 			\ForEach{operation $o_i \in O$} 
+ 			\ForEach{$o_i \in O$} 
 			{
- 				Set $\sigma$ to $-\infty$; (cost of $o_i$ is set to the minimum value)\;
- 				\ForEach{$p \in P$}
+ 				$\rho \leftarrow \infty$; \tcp{Initialize the priority of $o_i$}
+				$S(o_i) \leftarrow \max(R(o_i),\max_{o_j \in pred(o_i)}(E(o_j)))$\;
+ 				\ForEach{$p_k \in P$}
 				{
-  				$S'(o_i) \leftarrow max(S(o_i) , L_p)$; (new start time of $o_i$ when executed on $p$)\;
-  				$\sigma' \leftarrow D(o_i) - E(o_i)$; (priority of $o_i$ when executed on $p)$\;
-  				\If{$\sigma' > \sigma$}
+  				$syncCost \leftarrow 0$\;
+				$S(o_i) \leftarrow \max(S(o_i) , L_k)$; \tcp{Start time of $o_i$ if executed on $p_k$}
+				\ForEach{$o_j \in pred(o_i)$}
 					{
-  					Set $\sigma \leftarrow \sigma'$\;
-  					Set $BestCore(o_i) \leftarrow p$\;
+						\If{$o_j$ is scheduled on a core $p_{k'} \neq p_k$}
+						{
+							$syncCost \leftarrow syncCost + sync$\; 
+						}
+					}
+				$S(o_i) \leftarrow S(o_i) + syncCost$\;
+				$E(o_i) \leftarrow S(o_i) + C(o_i)$\;
+  				$\rho' \leftarrow D(o_i) - E(o_i)$; \tcp{priority of $o_i$ if executed on $p_k$}
+  				\If{$\rho' > \rho$}
+					{
+  					Set $\rho \leftarrow \rho'$\;
+  					Set $BestCore(o_i) \leftarrow p_k$\;
   				}
   			}
   		 }
-  		 Find $o_{i'}$ with least priority $\sigma$ in $O$\; 
-  		 Schedule $o_{i'}$ on its core $\mathrm{BestCore}(o_{i'})$\;
-  		 Set $p' := \mathrm{BestCore}(o_{i'})$\;
-  		 $L_{\mathrm{p'}} := L_{\mathrm{p'}} + C(o_{i'})$; (Advance the time of $p'$)\;
+  		 Find $o_{i'}$ with the smalelst priority $\rho$ in $O$\; 
+  		 Schedule $o_{i'}$ on its core $BestCore(o_{i'})$\;
+  		 $p_{best} \leftarrow BestCore(o_{i'})$\;
+  		 $L_{best} \leftarrow L_{best} + C(o_{i'})$\;
   		 Remove $o_{i'}$ from the set $O$\;
   		 Add to the set $O$ all successors of $o_{i'}$ for which all predecessors are already scheduled\;
 		}
 	\caption{Multi-core scheduling heuristic}
 	\label{algo:schedRT}
-\end{algorithm} 
+\end{algorithm}
+
+\subsubsection{Complexity}
+
+Algorithms \ref{algo:sched} and \ref{algo:schedRT} are two variations of the same list scheduling heuristic and have the same complexity as they consist of the same steps. Therefore, the complexity of Algorithm \ref{algo:schedRT} is $\mathcal{O}(mn^2)$.
 
 \section{Code Generation}
 

@@ -105,7 +105,7 @@ For operations that are allocated to the same core and that are completely indep
 \label{sched:const_12}
 \end{equation}
 
-The cost of synchronization is taken into account as follows. A synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor $o_i$ that is allocated to a different core and if its start time is the earliest among the successors of $o_i$ that are allocated to the same core as the operation $o_j$. $sync_{ijk}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p_k$. Therefore, $sync_{ijk} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = \max_{\{o_{j'} \in succ(o_i):\  \alpha(o_{j'}) = p\}}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ik}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors. In other words, if a successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ik}$ denotes the earliest start time among the start times of all the successors of $o_i$ that are allocated to processor $p_k$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
+The cost of synchronization is taken into account as follows. A synchronization cost is introduced in the computation of the start time of an operation $o_j$, if it has a predecessor $o_i$ that is allocated to a different core and if its start time is the earliest among the successors of $o_i$ that are allocated to the same core as the operation $o_j$. $sync_{ijk}$ is a binary variable which indicates whether synchronization is needed between $o_i$ and $o_j$ if $o_j$ is allocated to $p_k$. Therefore, $sync_{ijk} = 1\ \text{iff}\ \alpha(o_j)=p\ \text{and}\ \alpha(o_i)\neq p\  \text{and}\ S(o_j) = \max_{o_{j'} \in succ(o_i):\  \alpha(o_{j'}) = p}(S(o_{j'}))$. Expressions \ref{sched:const_3} and \ref{sched:const_4} capture this constraint. $V_{ik}$ is a binary variable that is set to one only if $\alpha(o_i) \neq p$. It is used to define for which cores a synchronization is needed between $o_i$ and its successors. In other words, if a successor is allocated to the same core as $o_i$, no synchronization is needed. Expressions \ref{sched:const_5} and \ref{sched:const_6} capture this constraint. Variable $Q_{ik}$ denotes the earliest start time among the start times of all the successors of $o_i$ that are allocated to processor $p_k$. It is computed using expressions \ref{sched:const_7} and \ref{sched:const_8}. 
 
 
 \begin{equation}
@@ -241,18 +241,17 @@ The problem of scheduling FMU co-simulation under real-time constraints can be c
 \centering
 \begin{tabular}{l  l}
   \rule{0pt}{5ex}	
-	\textit{Input} & Operation graph $G(V,A)$\\
+	\textbf{Input} & Operation graph $G(V,A)$\\
 	\rule{0pt}{5ex}									  
 	
-  \textit{Output} & Offline Schedule of operations on a multi-core processor\\
+  \textbf{Output} & Offline Schedule of operations on a multi-core processor\\
 	\rule{0pt}{5ex}									  
   
-	\textit{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
-	\rule{0pt}{5ex}
+	\textbf{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
                 & Assignment of start times to operations: $\beta: V \times P \rightarrow \mathbb{N}$\\
 	\rule{0pt}{5ex}								 
 	
-	\textit{Subject to} & Precedence constraints: $\forall (o_i,o_j) \in A, S(o_j) \geq E(o_i)$\\
+	\textbf{Subject to} & Precedence constraints: $\forall (o_i,o_j) \in A, S(o_j) \geq E(o_i)$\\
 											& Release constraints: $\forall o_i \in V, S(o_i) \geq R(o_i)$\\
 											& Deadline constraints: $\forall o_i \in V, E(o_i) \leq D(o_i)$\\
 										 
@@ -262,7 +261,7 @@ The problem of scheduling FMU co-simulation under real-time constraints can be c
 
 \subsection{Accounting for Dependence in Real-time Scheduling}
 
-The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented in Chapter \ref{ch:4-accel} follows this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. Consequently, the execution times of the operations have to be accounted for when assigning release and deadline dates to the operations.
+The model of computation for (co-)simulation is close to the synchronous paradigm \cite{benveniste:1991synchronous,benveniste:2003}. In this paradigm, a program evolves according to a sequence of ticks of logical time at which computations are considered to produce their results instantaneously. The propagation of the release and deadline constraints presented in Chapter \ref{ch:4-accel} follows this model of computation. However, when real-time constraints are involved, co-simulation becomes incompatible with the synchronous paradigm. In fact, each operation takes a certain execution time to run and, therefore, cannot produce the result instantaneously. In order to proceed to scheduling the operation graph, it is necessary to account for the execution times of the operations.
 
 We adopt an approach similar to the one proposed in \cite{chetto:1990} to modify the release and deadline dates assigned to each operation in order to account for execution times. This modification is needed given that:
 
@@ -287,42 +286,6 @@ Consider now two operations $o_i$ and $o_j$ such that $o_j \in succ(o_i)$. For t
 D(o_i) = \min(D(o_i), \min_{o_j \in succ(o_i)}(D(o_j) - C(o_j)))
 \label{eq:modde}
 \end{equation} 
-
-\subsection{Scheduling Interval}
-
-In offline scheduling, the schedule is computed over an interval of time. This schedule is then executed repetitively. For the acceleration of co-simulation, we have seen that the length of the schedule interval is equal to the hyperstep. For co-simulation under real-time constraints, a natural approach is to apply techniques that are used for classical real-time systems (such co-simulation is considered a real-time system after all). For this, we need first to represent the operation graph with a model that involves the parameters that are usually used for classical real-time systems. In particular, we need to define a relative deadline and a period for each operation. Note that so far, we have only spoken about sampling periods of data exchange between the real and the simulated component. Although related to the sampling periods, the periods that we seek to define for each operation are different and correspond to task periods that are found in classical real-time systems. We handle this requirement as follows. We consider that every operation that appears in the hyperperiod pattern of the operation graph is a distinct operation. In other words, occurrences of one operation are not regarded as repetitions of a single operation. Accordingly, we consider that the operation graph is \textit{mono-period}, i.e. all the operations have the same period. The value of this period is equal to the hyperperiod (see Definition\ref{def:hyperperiod}). The relative deadline of each operation can then be defined as the duration between its release and deadline.   
-
-In the real-time literature, we find contributions regarding the schedule interval targeting different kinds of real-time tasks, schedulers, and architectures. For instance, in \cite{cucu:2006}, the authors study synchronous task systems, i.e. where the release dates of all tasks are equal to zero, with constrained deadlines, i.e. where the relative deadline of each task is less or equal to its period. They show that the schedule of such task system on uniform multiprocessors reaches a cyclic behavior after one hyperperiod. The length of the schedule interval for co-simulation under real-time constraints cannot be chosen in a straightforward manner to be equal to the hyperperiod. This is because the operation graph features \textit{arbitrary deadlines}, i.e. relative deadlines that are greater than the periods which may result in \textit{hyperperiod spill} \cite{dave:1999}. The latter refers to operations that are not scheduled in their hyperperiod and spill over the next one. In \cite{cucu:2007}, a schedule interval is given for preemptive scheduling of tasks with arbitrary deadlines on uniform multiprocessors. A more general result is given in \cite{grolleau:2013} taking into account different constraints (mutual exclusion, precedence constraints, non-preemptive tasks, etc.) for uniprocessor and multiprocessor scheduling. The authors give an upper bound for the schedule interval when a \textit{deterministic memoryless} scheduler is used. A scheduler is deterministic and memoryless if and only if, when building the schedule, the scheduling decision is the same for any identical configuration encountered. The given bound is:
-
-\begin{equation} 
-\prod_{i=1}^n((\max(O_i + D_i - T_i, 0) + 1)) \times H
-\end{equation}
-
-where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (release date), relative deadline, and period of task $\tau_i$ respectively, and $H$ is the hyperperiod. This result is applicable to non-preemptive scheduling with arbitrary deadlines which is the case in our problem. However, the proposed bound is intractable, i.e. as the size of the operation graph grows and depending on the parameters of the operations, it results in very large schedule intervals and we cannot guarantee to compute the schedule within an acceptable time. Therefore, we choose to start with a schedule interval whose length is equal to the hyperperiod and iteratively increase it if we cannot determine the schedulability of the operation graph.
-
-%Add here how we deal with the problem
-
-As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means that such operations can be executed before launching the co-simulation under real-time constraints. Therefore, they are not scheduled and are removed from the first repetition of the operation graph. See, for example, the operations colored in gray in Figure \ref{fig:rep1}. However, since these operations must appear in the subsequent repetitions of the schedule of the operation graph, we have to add the repetitions of these operations that belong to the second repetition of the operation graph to the operation graph pattern that is scheduled. Figure \ref{fig:schedpattern} shows an example of the operations that belong to the operation graph pattern that is scheduled. The operations that are colored in green belong to this pattern. It can be seen that operations that are assigned negative release dates are not scheduled in the first repetition of the operation graph. Instead, their occurrences that belong to the second repetition of the operation graph are added to the pattern.
-
-\begin{figure}[phtb]
-\centering
-\begin{subfigure}{\textwidth}
-  \centering
-  \includestandalone{figures/schedpattern}
-  \caption{First repetition of the operation graph}
-  \label{fig:rep1}
-\end{subfigure}
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includestandalone{figures/schedpattern2}
-  \caption{Second repetition of the operation graph}
-  \label{fig:rep2}
-\end{subfigure}
-\caption{Example of operation graph pattern for real-time scheduling}
-\label{fig:schedpattern}
-\end{figure}
-  
 
 \subsection{Resolution using Linear Programming}
 
@@ -404,7 +367,7 @@ In the following, we propose a heuristic for scheduling operation graphs represe
 We propose to adapt the scheduling heuristic that we use for the acceleration of FMU co-simulation. In particular, we modify the computation of the scheduling priority such that the criticality of a given operation expresses how close it is to miss its deadline if scheduled on a specific processor. The priority of an operation is a dynamic operation as its computation depends on the partial scheduling solution that has already been computed. This priority is given by expression \ref{eq:priority}.
 
 \begin{equation}
-\rho_{i,k} = D(o_i) - E_j(o_i)
+\rho_{i,k} = D(o_i) - E(o_i)
 \label{eq:priority}
 \end{equation}
 
@@ -451,7 +414,7 @@ The proposed heuristic is a list scheduling heuristic. It builds the multi-core 
   				}
   			}
   		 }
-  		 Find $o_{i'}$ with the smalelst priority $\rho$ in $O$\; 
+  		 Find $o_{i'}$ with the smallest priority $\rho$ in $O$\; 
   		 Schedule $o_{i'}$ on its core $BestCore(o_{i'})$\;
   		 $p_{best} \leftarrow BestCore(o_{i'})$\;
   		 $L_{best} \leftarrow E(o_{i'})$\;
@@ -465,6 +428,41 @@ The proposed heuristic is a list scheduling heuristic. It builds the multi-core 
 \subsubsection{Complexity}
 
 Algorithms \ref{algo:sched} and \ref{algo:schedRT} are two variations of the same list scheduling heuristic and have the same complexity as they consist of the same steps. Therefore, the complexity of Algorithm \ref{algo:schedRT} is $\mathcal{O}(mn^2)$.
+
+\subsection{Scheduling Interval}
+
+In offline scheduling, the schedule is computed over an interval of time. This schedule is then executed repetitively. For the acceleration of co-simulation, we have seen that the length of the schedule interval is equal to the hyperstep. For co-simulation under real-time constraints, a natural approach is to apply techniques that are used for classical real-time systems (such co-simulation is considered a real-time system after all). For this, we need first to represent the operation graph with a model that involves the parameters that are usually used for classical real-time systems. In particular, we need to define a relative deadline and a period for each operation. Note that so far, we have only spoken about sampling periods of data exchange between the real and the simulated component. Although related to the sampling periods, the periods that we seek to define for each operation are different and correspond to task periods that are found in classical real-time systems. We handle this requirement as follows. We consider that every operation that appears in the hyperperiod pattern of the operation graph is a distinct operation. In other words, occurrences of one operation are not regarded as repetitions of a single operation. Accordingly, we consider that the operation graph is \textit{mono-period}, i.e. all the operations have the same period. The value of this period is equal to the hyperperiod (see Definition\ref{def:hyperperiod}). The relative deadline of each operation can then be defined as the duration between its release and deadline.   
+
+In the real-time literature, we find contributions regarding the schedule interval targeting different kinds of real-time tasks, schedulers, and architectures. For instance, in \cite{cucu:2006}, the authors study synchronous task systems, i.e. where the release dates of all tasks are equal to zero, with constrained deadlines, i.e. where the relative deadline of each task is less or equal to its period. They show that the schedule of such task system on uniform multiprocessors reaches a cyclic behavior after one hyperperiod. The length of the schedule interval for co-simulation under real-time constraints cannot be chosen in a straightforward manner to be equal to the hyperperiod. This is because the operation graph features \textit{arbitrary deadlines}, i.e. relative deadlines that are greater than the periods which may result in \textit{hyperperiod spill} \cite{dave:1999}. The latter refers to operations that are not scheduled in their hyperperiod and spill over the next one. In \cite{cucu:2007}, a schedule interval is given for preemptive scheduling of tasks with arbitrary deadlines on uniform multiprocessors. A more general result is given in \cite{grolleau:2013} taking into account different constraints (mutual exclusion, precedence constraints, non-preemptive tasks, etc.) for uniprocessor and multiprocessor scheduling. The authors give an upper bound for the schedule interval when a \textit{deterministic memoryless} scheduler is used. A scheduler is deterministic and memoryless if and only if, when building the schedule, the scheduling decision is the same for any identical configuration encountered. The given bound is:
+
+\begin{equation} 
+\prod_{i=1}^n((\max(O_i + D_i - T_i, 0) + 1)) \times H
+\end{equation}
+
+where $n$ is the number of tasks, $O_i$, $D_i$, and $T_i$ are the offset (release date), relative deadline, and period of task $\tau_i$ respectively, and $H$ is the hyperperiod. This result is applicable to non-preemptive scheduling with arbitrary deadlines which is the case in our problem. However, the proposed bound is intractable, i.e. as the size of the operation graph grows and depending on the parameters of the operations, it results in very large schedule intervals and we cannot guarantee to compute the schedule within an acceptable time. Therefore, we choose to start with a schedule interval whose length is equal to the hyperperiod and iteratively increase it if we cannot determine the schedulability of the operation graph.
+
+%Add here how we deal with the problem
+
+As shown in Section \ref{sec:grphrtsc}, the propagation of the real-time constraints in an operation graph may lead to assigning negative release dates to some operations. This means that such operations can be executed before launching the co-simulation under real-time constraints. Therefore, they are not scheduled and are removed from the first repetition of the operation graph. See, for example, the operations colored in gray in Figure \ref{fig:rep1}. However, since these operations must appear in the subsequent repetitions of the schedule of the operation graph, we have to add the repetitions of these operations that belong to the second repetition of the operation graph to the operation graph pattern that is scheduled. Figure \ref{fig:schedpattern} shows an example of the operations that belong to the operation graph pattern that is scheduled. The operations that are colored in green belong to this pattern. It can be seen that operations that are assigned negative release dates are not scheduled in the first repetition of the operation graph. Instead, their occurrences that belong to the second repetition of the operation graph are added to the pattern.
+
+\begin{figure}[phtb]
+\centering
+\begin{subfigure}{\textwidth}
+  \centering
+  \includestandalone{figures/schedpattern}
+  \caption{First repetition of the operation graph}
+  \label{fig:rep1}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includestandalone{figures/schedpattern2}
+  \caption{Second repetition of the operation graph}
+  \label{fig:rep2}
+\end{subfigure}
+\caption{Example of operation graph pattern for real-time scheduling}
+\label{fig:schedpattern}
+\end{figure}
 
 \section{Code Generation}
 

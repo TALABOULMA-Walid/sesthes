@@ -64,12 +64,14 @@ In addition to random generation of the dependence graph structure, we need to g
 \item Sampling periods of the real component: In the case of co-simulation under real-time constraints, each input (resp. output) of the real component is assigned a sampling period that is a multiple of the communication step size of the output (resp. input) operation that is connected with it.
 \end{itemize}
 
-\section{Performances of the Heuristics}
+\section{Performances of the Algorithms}
 
 We have carried out different tests in order to evaluate our proposed approach. For both the acyclic orientation and the scheduling for acceleration, we compared the execution time of our proposed heuristic with the execution time of the ILP, and the value of the objective function of the heuristic with the value of the objective function of the ILP. For real-time scheduling we compared the execution time of our proposed heuristic with the execution time of the ILP, and evaluated the schedulability rate of our proposed heuristic. For ILP resolution, we used three solvers: lpsolve \cite{berkelaar:2004}, Gurobi \cite{gurobi:2016}, and CPLEX \cite{cplex:2017}. With lpsolve, we were only able to solve small instances of the scheduling problem. Gurobi was much more efficient but we obtained the best performance using CPLEX. Therefore, the results presented hereafter were obtained using CPLEX. %Tests have been carried out on different multi-core PCs. In the following, we indicate, when necessary, the characteristics of the platform used.  
 Tests were performed on a desktop computer with a 6-core Intel Xeon processor running at 2.7 GH with 16GB RAM.
 
-\subsection{Execution Time of the Acyclic Orientation Algorithms}
+\subsection{Acyclic Orientation Algorithms}
+
+\subsubsection{Comparison of Execution Times}
 
 In order to compare the execution time of our acyclic orientation heuristic with the execution time of the acyclic orientation ILP, we have generated 200 random operation graphs of different sizes between five and $10000$. %First we generated the first operation graph of size $n = 5$. Then, we generated the rest of the graphs by varying the size of the operation graph by different increment values. The size of the graph is increased by five until a size of $100$, i.e. $n = 5, 10, 15, \ldots, 100$.
 We considered $10000$ as the maximum size of the operation graph because it corresponds to the size of typical large industrial applications. 
@@ -83,7 +85,7 @@ We executed the acyclic orientation heuristic and ILP on all of the generated ra
 \label{fig:orient_exec}
 \end{figure} 
  
-\subsection{Critical Path Length}
+\subsubsection{Comparison of Critical Path Lengths}
 
 We compared the values of the critical path length obtained using the acyclic orientation heuristic and ILP. Tests were performed using the same set of operation graphs described in the previous section. However, we consider only graphs for which the ILP was able to return the optimal solution within the resolution time limit that we set, i.e. two days. Thus, we applied our proposed heuristic and ILP on 12 operation graphs of sizes between $20$ and $240$ and saved the obtained length of the critical path. Results are depicted in Figure \ref{fig:orient_critpath}. For most of the operation graphs, our acyclic orientation heuristic produces a length of the critical path that is equal to the length of the critical path produced by the acyclic orientation ILP. The heuristic returns a longer length of the critical path for three graphs but the gap is very small remaining below $8\%$.  
 
@@ -94,7 +96,10 @@ We compared the values of the critical path length obtained using the acyclic or
 \label{fig:orient_critpath}
 \end{figure}
 
-\subsection{Execution Time of the Scheduling Algorithms for Co-simulation Acceleration}
+
+\subsection{Scheduling Algorithms for Co-simulation Acceleration}
+
+\subsubsection{Comparison of Execution Times}
 
 Similarly to the acyclic orientation tests, we compared the execution time of the scheduling heuristic with the execution time of the scheduling ILP using 200 random operation graphs of different sizes between five and $10000$. We set a two day limit for the resolution of the ILP. Tests were run for the scheduling problem with $2$, $4$, and $8$ cores. Execution times were measured by fixing the number of cores and varying the number of operations (graph size). The results are depicted for $2$, $4$, and $8$ cores in Figure \ref{fig:sched_exec_2}, Figure \ref{fig:sched_exec_4}, and Figure \ref{fig:sched_exec_8} respectively. All results are plotted on a logarithmic scale. In these figures, we see that the execution time of the ILP resolution increases exponentially as the graph size increases, and only small instances are resolved within acceptable times. On the other hand, the acyclic orientation heuristic is very fast and produces results in short times and even for very large graphs, the execution times remain within practical bounds.
 
@@ -119,7 +124,7 @@ Similarly to the acyclic orientation tests, we compared the execution time of th
 \label{fig:sched_exec_8}
 \end{figure}
 
-\subsection{Makespan}
+\subsubsection{Comparison of Makespans}
 
 We run tests to compare the value of the makespan obtained using the acyclic orientation heuristic and ILP. For these tests we have generated ten operation graphs of size $n = 15$. We have used graphs of size $15$ because the ILP resolution returns the optimal solution in very short times which is not the case for large graphs. The graphs are different from each other because they are generated randomly which leads to different graph structures and execution times of the operations. We run the scheduling heuristic and ILP on these graphs to obtain the values of the makespan. Results are shown in Figure \ref{fig:sched_mkspan_2}, Figure \ref{fig:sched_mkspan_4}, and Figure\ref{fig:sched_mkspan_8} for $2$, $4$, and $8$ cores respectively. Overall, the results show that the scheduling heuristic produces a makespan which is very close to the makespan produced by the scheduling ILP. The gap between the heuristic and the ILP result lies between $0\%$ and $16\%$. We notice that the gap is smaller when $4$ or $8$ cores are used than when $2$ cores are used. In fact, when $2$ cores are used the maximum gap is $16\%$, whereas when $4$ or $8$ cores are used the maximum gap is $6\%$. This shows that the scheduling heuristic performs better when the effective parallelism is increased. It can be explained by the fact that the scheduling heuristic attempts more allocation possibilities which leads to a better exploitation of the potential parallelism.
 
@@ -148,9 +153,11 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 %
 %The results presented in this section show how the acyclic orientation and the scheduling heuristics perform in terms of execution time and optimality gap. In the next section, we evaluate the runtime performance, i.e. the execution of the co-simulation code that is generated based on the result of the scheduling heuristic. To this end, we applied our proposed heuristics on an industrial use case.
 
-\subsection{Execution Time of the Scheduling Algorithms for Co-simulation under Real-time Constraints}
+\subsection{Scheduling Algorithms for Co-simulation under Real-time Constraints}
 
-\subsection{Schedulability Rate}
+\subsubsection{Comparison of Execution Times}
+
+\subsubsection{Schedulability Rate}
 
 \section{Industrial Use Case} 
 

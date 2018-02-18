@@ -24,6 +24,18 @@ Finally, in Chapter \ref{ch:6-eval}, we evaluate our proposed approach. First, w
 
 We evaluate the performances of our proposed ILP-based exact algorithms and heuristics for the acyclic orientation, scheduling for co-simulation acceleration, and real-time scheduling respectively. The obtained results show the efficiency of our heuristics. While the proposed ILP algorithms give optimal results for small operation graphs they suffer from intractable execution times. Our proposed heuristics, on the other hand, give acceptable results within acceptable execution times.
 
-Last, we validate our approach for co-simulation acceleration against an industrial use case. The obtained results show the improvements made thanks to using multi-rate co-simulation and also using the acyclic orientation to handle mutual exclusion constraints. In addition, we compare our approach with a runtime (online ) scheduling approach. Our approach outperforms it which consolidates our choice of adopting an offline approach.               
+Last, we validate our approach for co-simulation acceleration against an industrial use case. The obtained results show the improvements made thanks to using multi-rate co-simulation and also using the acyclic orientation to handle mutual exclusion constraints. In addition, we compare our approach with a runtime (online) scheduling approach. Our approach outperforms it which consolidates our choice of adopting an offline approach.               
 
 \section{Perspectives}
+
+We present below some possible research directions for future work.
+
+\subsubsection{Grain Size Determination}
+
+Our proposed approach relies on partitioning the co-simulation into operations that are scheduled in parallel. The size of the operations, referred to as \textit{grain size} in parallel computing terminology, may have an important impact on the achievable performance. In fact, there is a tradeoff between the grain size and the overhead of scheduling.
+
+Addressing the problem of grain size determination in operation graphs should strengthen our proposed approach. There exist some approaches in the literature such as \cite{kruatrachue:1988} that can be tested on operation graphs at first. Then, the use of graph clustering algorithms can be explored in order to address this problem. 
+
+\subsubsection{Real-time Schedulability Analysis}
+
+In our proposed approach for scheduling co-simulation under real-time constraints, we used a schedulability analysis based on simulation. In addition, we do not determine the schedulability interval before computing the schedule. Moreover, the existing results on the schedulability interval are very pessimistic. Therefore, it is very important to derive an analytic schedulability condition. Alternatively, finding a more optimistic schedulability interval than the existing results would represent a major enhancement.  

@@ -2233,6 +2233,7 @@
     <bcf:citekey order="99">cplex:2017</bcf:citekey>
     <bcf:citekey order="100">benjelloun:2011</bcf:citekey>
     <bcf:citekey order="101">benkhaled:2014</bcf:citekey>
+    <bcf:citekey order="102">kruatrachue:1988</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

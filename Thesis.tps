@@ -53,8 +53,8 @@ Class=LaTeXView
 Document=text\title-page.tex
 
 [Frame2_View0,0]
-TopLine=18
-Cursor=545
+TopLine=20
+Cursor=981
 
 [Frame3]
 Flags=0
@@ -143,8 +143,8 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame7_View0,0]
-TopLine=692
-Cursor=39898
+TopLine=1226
+Cursor=87920
 
 [Frame8]
 Flags=0
@@ -161,8 +161,8 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame8_View0,0]
-TopLine=315
-Cursor=19146
+TopLine=330
+Cursor=26382
 
 [Frame9]
 Flags=0
@@ -179,8 +179,8 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame9_View0,0]
-TopLine=357
-Cursor=15620
+TopLine=194
+Cursor=15601
 
 [Frame10]
 Flags=0
@@ -238,5 +238,5 @@ Cursor=2662
 
 [SessionInfo]
 FrameCount=13
-ActiveFrame=8
+ActiveFrame=9
 

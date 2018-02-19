@@ -157,6 +157,8 @@ We run tests to compare the value of the makespan obtained using the acyclic ori
 
 \subsubsection{Comparison of Execution Times}
 
+We compared the execution times of the real-time scheduling ILP and heuristic. We ran these tests on a smaller set of operation graphs than the previous ones. In fact, the real-time scheduling heuristic and the scheduling heuristic are two variations of the same list scheduling algorithm and have the same complexity. Therefore, we tested the real-time scheduling heuristic on fewer graphs with a maximum number of operations of $1000$. Tests were performed by fixing the number of cores and varying the number of operations. The obtained results are shown if Figure \ref{fig:RT_sched_exec_2}, Figure \ref{fig:RT_sched_exec_4}, and Figure \ref{fig:RT_sched_exec_8} for $2$, $4$, and $8$ cores respectively. While the real-time scheduling ILP is able to solve larger graphs than the acceleration ILP within acceptable times, the execution time of the resolution still increases exponentially as the graph size increases. On the other hand, the real-time scheduling heuristic produces results in short times keeping the execution times within practical bounds similarly to the acceleration scheduling heuristic.   
+
 \begin{figure}[phbt]
 \centering
 \includestandalone{figures/RT_sched_exec_2}

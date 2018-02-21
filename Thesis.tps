@@ -125,7 +125,7 @@ Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame6_View0,0]
-TopLine=805
+TopLine=1010
 Cursor=55316
 
 [Frame7]
@@ -143,7 +143,7 @@ Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame7_View0,0]
-TopLine=482
+TopLine=549
 Cursor=26121
 
 [Frame8]
@@ -161,7 +161,7 @@ Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame8_View0,0]
-TopLine=209
+TopLine=259
 Cursor=16124
 
 [Frame9]
@@ -182,9 +182,27 @@ Document=text\ch7-concl.tex
 TopLine=0
 Cursor=1081
 
+[Frame10]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=32
+NormalPos.right=1916
+NormalPos.bottom=989
+Class=LaTeXView
+Document=figures\sched_exec_2.tex
+
+[Frame10_View0,0]
+TopLine=0
+Cursor=732
+
 [SessionInfo]
-FrameCount=10
-ActiveFrame=6
+FrameCount=11
+ActiveFrame=10
 
 [Bookmarks]
 figures\sched_exec_2.tex=223 

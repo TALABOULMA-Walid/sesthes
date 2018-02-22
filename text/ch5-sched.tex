@@ -10,7 +10,7 @@ In order to achieve fast execution of the co-simulation on a multi-core processo
 
 \subsection{\label{5:shed-prob}Problem Formulation}
 
-The acceleration of the co-simulation corresponds to the minimization of the makespan of the operation graph. The makespan is the total execution time of the whole graph. The operation graph that is fed as input to the scheduling algorithm is a DAG, therefore, it represents a partial order relationship in the execution of the operations, since two operations connected by an arc must be executed sequentially whereas the other ones can be executed in parallel. A scheduling algorithm makes decisions on allocating the operations to the cores while respecting this partial order and trying to minimize the total execution time of the operation graph. In addition to the execution time of the operations, the scheduling algorithm has to take into consideration, the cost of inter-core synchronization. The set of cores is denoted $P = \{p_1, p_2, \ldots, p_m\}$ where $m$ is the number of cores. The scheduling problem can be stated as an optimization problem as follows:
+The acceleration of the co-simulation corresponds to the minimization of the makespan of the operation graph. The makespan is the total execution time of the whole graph. The operation graph that is fed as input to the scheduling algorithm is a DAG, therefore, it represents a partial order relationship in the execution of the operations, since two operations connected by an arc must be executed sequentially whereas the other ones can be executed in parallel. A scheduling algorithm makes decisions on allocating the operations to the cores while respecting this partial order and trying to minimize the total execution time of the operation graph. In addition to the execution time of the operations, the scheduling algorithm has to take into consideration, the cost of inter-core synchronization. The set of cores is denoted $P = \{p_1, p_2, \ldots, p_m\}$ where $m$ is the number of cores. In this thesis we adopt a non preemptive scheduling solution. The scheduling problem can be stated as an optimization problem as follows:
 
 \begin{table}[H]
 \centering
@@ -235,7 +235,7 @@ In this section, we are interested in multi-core scheduling of FMU co-simulation
 
 \subsection{Problem Formulation}
 
-The problem of scheduling FMU co-simulation under real-time constraints can be considered as a satisfaction problem instead of an optimization problem. In fact, in its basic form, the problem does not involve an objective function to be optimized, the goal being to ensure the real-time constraints are satisfied. More precisely, the problem consists in scheduling the operations of the operation graph such that each operation starts its execution no earlier than its release date and finishes its execution by its deadline date. There are other constraints that are common with the problem of scheduling for co-simulation acceleration, namely, respecting the partial order of the operation graph. Also, the cost of inter-core synchronization is taken into account in computing the schedule in the same way. The scheduling of FMU co-simulation under real-time constraints can be stated as a satisfaction problem as follows:
+The problem of scheduling FMU co-simulation under real-time constraints can be considered as a satisfaction problem instead of an optimization problem. In fact, in its basic form, the problem does not involve an objective function to be optimized, the goal being to ensure the real-time constraints are satisfied. More precisely, the problem consists in scheduling the operations of the operation graph such that each operation starts its execution no earlier than its release date and finishes its execution by its deadline date. There are other constraints that are common with the problem of scheduling for co-simulation acceleration, namely, respecting the partial order of the operation graph. Also, the cost of inter-core synchronization is taken into account in computing the schedule in the same way. Finally, the computed schedule is non preemptive. The scheduling of FMU co-simulation under real-time constraints can be stated as a satisfaction problem as follows:
 
 \begin{table}[H]
 \centering
@@ -475,7 +475,7 @@ The orchestration of the co-simulation is ensured by a \textit{master} thread wh
 \begin{figure}[phbt]
 \centering
 \includestandalone{figures/codegen}
-\caption{Illustration of generated code.}
+\caption{Illustration of the execution of generated code.}
 \label{fig:codegen}
 \end{figure}   
 

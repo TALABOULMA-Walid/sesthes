@@ -2196,7 +2196,7 @@
     <bcf:citekey order="69">benkhaled:2014</bcf:citekey>
     <bcf:citekey order="70">benkhaled:2014</bcf:citekey>
     <bcf:citekey order="71">kohler:1975</bcf:citekey>
-    <bcf:citekey order="72">kermia:2009</bcf:citekey>
+    <bcf:citekey order="72">kermia:2007</bcf:citekey>
     <bcf:citekey order="72">ramamritham:1995</bcf:citekey>
     <bcf:citekey order="73">benkhaled:2014</bcf:citekey>
     <bcf:citekey order="74">balas:1969</bcf:citekey>
@@ -2234,6 +2234,8 @@
     <bcf:citekey order="100">benjelloun:2011</bcf:citekey>
     <bcf:citekey order="101">benkhaled:2014</bcf:citekey>
     <bcf:citekey order="102">kruatrachue:1988</bcf:citekey>
+    <bcf:citekey order="103">migoni:2012</bcf:citekey>
+    <bcf:citekey order="104">kermia:2009</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

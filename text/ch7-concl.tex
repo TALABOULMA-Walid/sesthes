@@ -4,7 +4,7 @@
 
 This chapter concludes the thesis. First we give a summary of the work presented in the previous chapters. Second, we give some perspectives for future work.
 
-\section{Summary}
+\section{Summary of contributions}
 
 The complexity of CPS is steadily increasing due to several factors. A lot of efforts is being made in industry as well as in academia in order to implement technologies and methods that respond to the requirements and challenges in the design of complex CPS. Co-simulation is increasingly being adopted as a system-level simulation approach in the context of CPS design thanks to its advantages over monolithic simulation. Strengths of co-simulation include easy upgrade, reuse, and exchange of models, improved computational performance compared to monolithic simulation, and allowing better intervention of experts at the subsystem level in multi-domain design projects. This being said, co-simulation faces a number of challenges that have to be addressed. This thesis constitutes a contribution towards solving some of these challenges.   
 
@@ -34,8 +34,21 @@ We present below some possible research directions for future work.
 
 Our proposed approach relies on partitioning the co-simulation into operations that are scheduled in parallel. The size of the operations, referred to as \textit{grain size} in parallel computing terminology, may have an important impact on the achievable performance. In fact, there is a tradeoff between the grain size and the overhead of scheduling.
 
-Addressing the problem of grain size determination in operation graphs should strengthen our proposed approach. There exist some approaches in the literature such as \cite{kruatrachue:1988} that can be tested on operation graphs at first. Then, the use of graph clustering algorithms can be explored in order to address this problem. 
+Addressing the problem of grain size determination in operation graphs should strengthen our proposed approach. There exist some approaches in the literature such as \cite{kruatrachue:1988} that can be tested on operation graphs at first. Then, the use of graph clustering algorithms can be explored in order to address this problem.
+
+\subsubsection{Quantized State Systems}
+
+In this thesis we were interested only in co-simulation using solvers based on time discretization. A interesting alternative to such solvers are QSS solvers. The latter are known for performing well especially for solving ODEs with discontinuities \cite{migoni:2012}. Therefore, it is worth investigating the impact of using QSS solvers on the acceleration and the execution under real-time constraints of co-simulation  
 
 \subsubsection{Real-time Schedulability Analysis}
 
-In our proposed approach for scheduling co-simulation under real-time constraints, we used a schedulability analysis based on simulation. In addition, we do not determine the schedulability interval before computing the schedule. Moreover, the existing results on the schedulability interval are very pessimistic. Therefore, it is very important to derive an analytic schedulability condition. Alternatively, finding a more optimistic schedulability interval than the existing results would represent a major enhancement.  
+In our proposed approach for scheduling co-simulation under real-time constraints, we used a schedulability analysis based on simulation. In addition, we do not determine the schedulability interval before computing the schedule. Moreover, the existing results on the schedulability interval are very pessimistic. Therefore, it is very important to derive an analytic schedulability condition. Alternatively, finding a more optimistic schedulability interval than the existing results would represent a major enhancement.
+
+\subsubsection{Latency}
+
+In our work, we enabled the execution of co-simulation under real-time constraints by first propagating these constraints to all the operations of the graph. We made this choice in order to be able to apply real-time scheduling algorithms which require that each operation be characterized by classical real-time parameters. We briefly explored an alternative to our method which consists in defining latency constraints on gate operations only. By using such technique, scheduling algorithms suitable for latency constraints can be applied. For example, in future work, the algorithms proposed in \cite{kermia:2009} can be tested for this purpose.  
+
+\subsubsection{Preemptive Scheduling} 
+In this thesis, we adopted a non preemptive scheduling policy for both the acceleration and the execution under real-time constraints of co-simulation. In future work, it is worth investigating preemptive scheduling policies. This may be related the grain size determination question. In fact, preemption may be beneficial only if it does not introduce an overhead more costly than the execution of the operations.
+
+% say non preemptive: absract, intro, problem 

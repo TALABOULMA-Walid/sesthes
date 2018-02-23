@@ -37,7 +37,7 @@ The contributions of this thesis are the following:
 \item We extend the mono-rate dependence graph model to handle multi-rate FMI co-simulation. Such co-simulation involves FMUs that are assigned different communication step
 sizes which define the data exchange rates of the FMUs. Such co-simulations cannot be handeled by RCOSIM because the dependence graph model fails to represent the different communication step sizes. We propose a transformation algorithm that transforms the dependence graph of a multi-rate FMI co-simulation. The result is a new graph that represents well the data exchange rates of the different FMUs.
 
-\item We propose a method for handling mutual exclusion constraints between functions of a same FMU.  It is not possible to execute such functions in parallel because they share some resource, e.g. variables. The RCOSIM approach handles these constraints in a way that limits the attainable acceleration of the co-simulation. Our proposed solution results in a new graph that defines an order of execution for functions that are mutually exclusive. In order to obtain this new graph, we propose an acyclic orientation ILP formulation and heuristic. Our proposed solution outperforms RCOSIM.
+\item We propose a method for handling mutual exclusion constraints between functions of a same FMU.  It is not possible to execute such functions in parallel because they share resources, e.g. variables. The RCOSIM approach handles these constraints in a way that limits the attainable acceleration of the co-simulation. Our proposed solution results in a new graph that defines an order of execution for functions that are mutually exclusive. In order to obtain this new graph, we propose an acyclic orientation ILP formulation and heuristic.
 
 \item We add to the dependence graph model real-time constraints to perform HiL FMI co-simulation when some models are replaced by there real counterparts that are physically available. Since real-time constraints are  imposed by the real parts on some inputs and outputs of the simulated models, we propose propagation algorithms that assign, according to the dependence, real-time constraints (release and deadline dates) to the nodes of the dependence graph. 
 
@@ -46,17 +46,17 @@ sizes which define the data exchange rates of the FMUs. Such co-simulations cann
 
 \end{enumerate}
 
-\item \textbf{Multi-core scheduling of FMI co-simulations:} We improve the nscheduling heuristic used in the RCOSIM approach and propose other algorithms as follows:
+\item \textbf{Multi-core scheduling of FMI co-simulations:} We improve the scheduling heuristic used in the RCOSIM approach and propose other algorithms as follows:
 
 \begin{enumerate}
 
 \setcounter{enumi}{\theenumTemp}
 
-\item We propose non preemptive multi-core scheduling algorithms for the problem of co-simulation acceleration. We improve the multi-core scheduling heuristic used in RCOSIM by using profiled execution times and accounting for synchronization cost. Also, we propose an Integer Linear Programming (ILP) formulation. We compare the performances of the two algorithms for different sizes of dependence graphs and architectures.
+\item We propose non preemptive multi-core scheduling algorithms for the problem of co-simulation acceleration. We improve the multi-core scheduling heuristic used in RCOSIM by using profiled execution times and accounting for synchronization cost. Also, we propose an Integer Linear Programming (ILP) formulation.
 
-\item We implemented a runtime scheduling solution using the Intel TBB library \cite{reinders:2007} for the acceleration of FMI co-simulation. We compared the performance of this solution with that of our proposed heuristic by applying both on an industrial use case.
+\item We present our implementation of a runtime non preemptive scheduling solution using the Intel TBB library \cite{reinders:2007} for the acceleration of FMI co-simulation.
 
-\item We propose non preemptive multi-core scheduling algorithms for the problem of HiL FMI co-simulations under real-time constraints. These algorithms consist in an ILP formulation and a heuristic. We compare the performances of the two algorithms for different sizes of dependence graphs and architectures.   
+\item We propose non preemptive multi-core scheduling algorithms for the problem of HiL FMI co-simulation under real-time constraints. These algorithms consist in an ILP formulation and a heuristic.   
 
 \end{enumerate}
 

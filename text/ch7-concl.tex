@@ -42,13 +42,13 @@ In this thesis we were interested only in co-simulation using solvers based on t
 
 \subsubsection{Real-time Schedulability Analysis}
 
-In our proposed approach for scheduling co-simulation under real-time constraints, we used a schedulability analysis based on simulation. In addition, we do not determine the schedulability interval before computing the schedule. Moreover, the existing results on the schedulability interval are very pessimistic. Therefore, it is very important to derive an analytic schedulability condition. Alternatively, finding a more optimistic schedulability interval than the existing results would represent a major enhancement.
+In our proposed approach for scheduling co-simulation under real-time constraints, we used a schedulability analysis based on simulation. In addition, we do not determine the schedulability interval before computing the schedule. Moreover, the existing results on the schedulability interval for real-time systems with arbitrary deadlines are very pessimistic. Therefore, it is very important to derive an analytic schedulability condition. Alternatively, finding a more optimistic schedulability interval than the existing results would represent a major enhancement.
 
 \subsubsection{Latency}
 
 In our work, we enabled the execution of co-simulation under real-time constraints by first propagating these constraints to all the operations of the graph. We made this choice in order to be able to apply real-time scheduling algorithms which require that each operation be characterized by classical real-time parameters. We briefly explored an alternative to our method which consists in defining latency constraints on gate operations only. By using such technique, scheduling algorithms suitable for latency constraints can be applied. For example, in future work, the algorithms proposed in \cite{kermia:2009} can be tested for this purpose.  
 
 \subsubsection{Preemptive Scheduling} 
-In this thesis, we adopted a non preemptive scheduling policy for both the acceleration and the execution under real-time constraints of co-simulation. In future work, it is worth investigating preemptive scheduling policies. This may be related the grain size determination question. In fact, preemption may be beneficial only if it does not introduce an overhead more costly than the execution of the operations.
+In this thesis, we adopted a non preemptive scheduling policy for both the acceleration and the execution under real-time constraints of co-simulation. In future work, it is worth investigating preemptive scheduling policies. This may be related to the grain size determination question. In fact, preemption may be beneficial only if it does not introduce an overhead more costly than the execution of the operations.
 
 % say non preemptive: absract, intro, problem 

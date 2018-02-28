@@ -83,17 +83,17 @@ The latest end time from end denoted $\overline{E}(o_i)$ and the latest start ti
 	\label{eq:sfe}
 \end{equation}
 
-The critical path of the graph is the longest path in the graph. The length of a path is computed by accumulating the execution times of the operations that belong to it. The length of the critical path of the operation graph denoted by $R$ is defined by equation \ref{eq:crit}. The critical path is a very important characteristic of the operation graph. It defines a lower bound on the execution time of the graph, i.e. in the best case, the time needed to execute the whole graph is equal to the length of the critical path. 
+The critical path of the graph is the longest path in the graph. The length of a path is computed by accumulating the execution times of the operations that belong to it. The length of the critical path of the operation graph denoted by $CP$ is defined by equation \ref{eq:crit}. The critical path is a very important characteristic of the operation graph. It defines a lower bound on the execution time of the graph, i.e. in the best case, the time needed to execute the whole graph is equal to the length of the critical path. 
 
 \begin{equation}
-	R = \max_{o_i \in V}(E(o_i)) 
+	CP = \max_{o_i \in V}(E(o_i)) 
 	\label{eq:crit}
 \end{equation}
  
 The flexibility $F(o_i)$ is defined by equation \ref{eq:flex}. It expresses the length of a time interval within which operation $o_i$ can be executed without increasing the total execution time of the graph.
 
 \begin{equation}
-	F(o_i) = R - S(o_i) - C(o_i) - \overline{E}(o_i) 
+	F(o_i) = CP - S(o_i) - C(o_i) - \overline{E}(o_i) 
 	\label{eq:flex}
 \end{equation}
 
@@ -176,8 +176,8 @@ The multi-rate graph transformation is detailed in Algorithm \ref{algo:mr}. The 
 		%Initialization\;
 		\SetKwInOut{Input}{Input}
     \SetKwInOut{Output}{Output}
-		\Input{Initial operation operation graph $G(V,A)$\;}
-		\Output{Transformed operation operation graph $G(V,A)$\;}
+		\Input{Initial operation graph $G(V,A)$\;}
+		\Output{Transformed operation graph $G(V,A)$\;}
 		\ForEach{$o_i \in V$}
 		{
 			Compute the repetition factor of $o_i$: $r(o_i) \leftarrow \frac{HS}{H(o_i)}$\;

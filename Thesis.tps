@@ -17,8 +17,8 @@ Class=LaTeXView
 Document=Thesis.tex
 
 [Frame0_View0,0]
-TopLine=12
-Cursor=2900
+TopLine=39
+Cursor=3268
 
 [Frame1]
 Flags=0
@@ -71,8 +71,8 @@ Class=LaTeXView
 Document=text\ch1-intro.tex
 
 [Frame3_View0,0]
-TopLine=111
-Cursor=14540
+TopLine=110
+Cursor=11397
 
 [Frame4]
 Flags=0
@@ -86,11 +86,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch2-bkgnd.tex
+Document=text\ch3-state.tex
 
 [Frame4_View0,0]
-TopLine=1016
-Cursor=75338
+TopLine=64
+Cursor=8392
 
 [Frame5]
 Flags=0
@@ -104,11 +104,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch3-state.tex
+Document=text\ch4-model.tex
 
 [Frame5_View0,0]
-TopLine=64
-Cursor=8392
+TopLine=144
+Cursor=14375
 
 [Frame6]
 Flags=0
@@ -122,11 +122,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch4-model.tex
+Document=text\ch5-sched.tex
 
 [Frame6_View0,0]
-TopLine=205
-Cursor=14383
+TopLine=0
+Cursor=73
 
 [Frame7]
 Flags=0
@@ -140,11 +140,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch5-sched.tex
+Document=text\ch6-eval.tex
 
 [Frame7_View0,0]
-TopLine=268
-Cursor=14137
+TopLine=0
+Cursor=18008
 
 [Frame8]
 Flags=0
@@ -158,11 +158,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch6-eval.tex
+Document=text\ch7-concl.tex
 
 [Frame8_View0,0]
-TopLine=264
-Cursor=16741
+TopLine=0
+Cursor=53
 
 [Frame9]
 Flags=0
@@ -176,11 +176,11 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=text\ch7-concl.tex
+Document=figures\schedrate.tex
 
 [Frame9_View0,0]
-TopLine=51
-Cursor=8464
+TopLine=0
+Cursor=163
 
 [Frame10]
 Flags=0
@@ -194,33 +194,15 @@ NormalPos.top=32
 NormalPos.right=1916
 NormalPos.bottom=989
 Class=LaTeXView
-Document=figures\RT_sched_exec_8.tex
+Document=ociamthesis.cls
 
 [Frame10_View0,0]
-TopLine=0
-Cursor=372
-
-[Frame11]
-Flags=0
-ShowCmd=1
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-1
-MaxPos.y=-1
-NormalPos.left=4
-NormalPos.top=32
-NormalPos.right=1916
-NormalPos.bottom=989
-Class=LaTeXView
-Document=figures\RT_sched_exec_4.tex
-
-[Frame11_View0,0]
-TopLine=0
-Cursor=297
+TopLine=12
+Cursor=2998
 
 [SessionInfo]
-FrameCount=12
-ActiveFrame=7
+FrameCount=11
+ActiveFrame=5
 
 [Bookmarks]
 figures\sched_exec_2.tex=223 

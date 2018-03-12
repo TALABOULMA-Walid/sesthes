@@ -456,7 +456,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 The objective of this linear program is to minimize the length of the critical path of the operation graph (expression \ref{orient:obj}).
 
 \begin{equation}
-min(P)
+min(CP)
 \label{orient:obj}
 \end{equation}
 
@@ -772,11 +772,11 @@ The process of propagating a release constraint can be summarized as follows:
 
 \subsubsection{Propagation of Deadline Constraints}
 
-Now let a deadline constraint of period $T_x$ be applied on an output gate operation $o_j$ of the operation graph. Occurrences of this deadline constraint are applied on a subset of the occurrences of operation $o_j$, $o_j^q: 0 \leq q < r(o_j)$ that appear in the operation graph. The $w^{th}$ occurrence of the deadline constraint $w \times T_x = t_k$ is applied on the occurrence $o^{q,t_k}_j $, i.e. the occurrence $q$ of operation $o_j$ executed at time step $t_k$, where $0 \leq q < r(o_j)$ and $t_k \in \mathbb{R}^+$. The deadline constraint is a multiple of the communication step size of $o_j$, hence, we can compute which occurrences of $o_j$ are subject to occurrences of the deadline constraint. The occurrence $w \times T_x = t_k$ of the deadline constraint is applied on occurrence $o_j^q:\ q = w \times \frac{T_x}{H(o_j)}$. Each occurrence of the operation $o_j$ that is subject to an occurrence of the deadline constraint $w \times \frac{T_x}{H(o_j)}$ is assigned a deadline $D(o_j^q) = w \times \frac{T_x}{H(o_j)}$. This constraint is, then, propagated towards all the predecessors of $o_j^q$. The propagation of a deadline constraint is given by Expression \ref{eq:release}.
+Now let a deadline constraint of period $T_x$ be applied on an output gate operation $o_j$ of the operation graph. Occurrences of this deadline constraint are applied on a subset of the occurrences of operation $o_j$, $o_j^q: 0 \leq q < r(o_j)$ that appear in the operation graph. The $w^{th}$ occurrence of the deadline constraint $w \times T_x = t_k$ is applied on the occurrence $o^{q,t_k}_j $, i.e. the occurrence $q$ of operation $o_j$ executed at time step $t_k$, where $0 \leq q < r(o_j)$ and $t_k \in \mathbb{R}^+$. The deadline constraint is a multiple of the communication step size of $o_j$, hence, we can compute which occurrences of $o_j$ are subject to occurrences of the deadline constraint. The occurrence $w \times T_x = t_k$ of the deadline constraint is applied on occurrence $o_j^q:\ q = w \times \frac{T_x}{H(o_j)}$. Each occurrence of the operation $o_j$ that is subject to an occurrence of the deadline constraint $w \times \frac{T_x}{H(o_j)}$ is assigned a deadline $D(o_j^q) = w \times \frac{T_x}{H(o_j)}$. This constraint is, then, propagated towards all the predecessors of $o_j^q$. The propagation of a deadline constraint is given by Expression \ref{eq:deadline}.
 
 \begin{equation}
 \forall o_{j'} \in pred(o_j): D(o_{j'}) = D(o_j)
-\label{eq:release}
+\label{eq:deadline}
 \end{equation}
 
 Figure \ref{fig:dpropagation} illustrates the propagation of the deadline constraint in the operation graph. The sampling period of the input of the real component is $T_{in} = 4$. We recall that the execution of the co-simulation consists in running the operation graph repeatedly. Therefore, each run corresponds to a pattern that involves specific occurrences of the operations. While in the pattern of the operation graph that is shown previously, operation $o_5^p$ does not have a predecessor, the state operation $o_{10}^{p-1}$ belonging to the preceding pattern is a predecessor of $o_5^{p}$. The operations that are assigned a deadline are colored in red. The deadline assigned to each operation is shown above the corresponding operation. The dashed red arrow indicates the direction of the propagation which is from a successor to a predecessor. The propagation of the deadline constraint is performed iteratively. Starting from the output gate operation $o_5^q$, for each operation that is assigned a deadline constraint, this constraint is propagated towards all its predecessors. The values of deadline that are shown correspond to the second occurrence of the release constraint $w \times T_{in} = 1 \times 4 = 4$. In order to find the occurrence of the output gate operation $o_5$ that is subject to this occurrence of the release constraint, we use the formula given previously: $q = w \times \frac{T_{in}}{H(o_5)} = 1 \times \frac{4}{2} = 2$. Therefore, in Figure \ref{fig:dpropagation}, $q = 2$.
@@ -799,7 +799,7 @@ The process of propagating a deadline constraint can be summarized in the follow
 
 \subsubsection{Propagation of Real-time Constraints through Looping}
 
-It can be seen that the propagation of the real-time constraints is based on graph traversal. The Breadth First Search (BFS) or the DFS (Depth First Search) graph traversal algorithms can be used to perform this propagation. On the one hand, the release constraints are propagated following the topological ordering of the graph since the constraint is always propagated from a predecessor to a successor. We refer to such propagation as \textit{forward propagation}. On the other hand, the deadline constraint is propagated in reverse topological ordering of the graph because the constraint is always propagated from a successor to a predecessor. We refer to such propagation as \textit{backward propagation}. This means that the release (resp. deadline) constraint cannot propagate towards the operations that come before (resp. after) the input (resp. output) gate operation that is subject to this constraint.
+It can be seen that the propagation of the real-time constraints is based on graph traversal. The Breadth First Search (BFS) or the Depth First Search (DFS) graph traversal algorithms can be used to perform this propagation. On the one hand, the release constraints are propagated following the topological ordering of the graph since the constraint is always propagated from a predecessor to a successor. We refer to such propagation as \textit{forward propagation}. On the other hand, the deadline constraint is propagated in reverse topological ordering of the graph because the constraint is always propagated from a successor to a predecessor. We refer to such propagation as \textit{backward propagation}. This means that the release (resp. deadline) constraint cannot propagate towards the operations that come before (resp. after) the input (resp. output) gate operation that is subject to this constraint.
 
 For the operation graph to be scheduled by a real-time multi-core scheduling algorithm, it has to satisfy Property \ref{prop:constr}. Below, we propose a method to assign release and deadline constraints to operations that are not traversed in the forward and backward propagation phases respectively. This method is based on \textit{looping} the propagation. In other words, a release (resp. deadline) constraint is propagated in a reverse order of the forward (resp. backward) propagation phase. Such looping is possible because we can define a pattern of the operation graph that is repeated periodically in runtime.
 
@@ -814,14 +814,14 @@ Given the periodic pattern of the operation graph, a release constraint can be w
 
 \begin{equation}
 \forall o_i^p, o_i^{p'}: p' = p - \frac{HP}{H(o_i)},\ R(o_i^{p'}) = R(o_i^p) - HP
-\label{eq:release}
+\label{eq:releaseloop}
 \end{equation}
 
 Similarly, a deadline constraint can be written as follows:
 
 \begin{equation}
 \forall o_j^q, o_j^{q'}: q' = q + \frac{HP}{H(o_j)},\ D(o_j^{q'}) = R(o_j^u) + HP
-\label{eq:release}
+\label{eq:deqdlineloop}
 \end{equation}
 
 Let's consider that a release constraint is propagated in the operation graph $G(V,A)$ starting from the gate operation $o_i$.  Also, consider that the multi-rate transformation algorithm has been applied on the operation graph over the hyperperiod $HP$. Then, $o_{i'}^p$, the last occurrence of the state operation $o_{i'}: f_m(o_{i'}^p) = f_m(o_i)$ that is assigned a release constraint during the forward propagation phase corresponds to the time step that is equal to the hyperperiod, i.e. it can be written $o_{i',HP}^p$. In order to propagate the release constraint to the operations that come before $o_i$ in the graph, we loop back to the occurrence $o_{i'}^{p'}$ of the state operation $o_{i'}$ by performing a negative shift of the release constraint whose length is equal to the hyperperiod. The occurrence $o_{i'}^{p'}$ is a predecessor of the first occurrence of the gate operation $o_i$ that appear in the periodic pattern of the operation graph. This is done for every FMU, for which the state operation is assigned a release. An example is shown in Figure \ref{fig:rloop}.
@@ -843,7 +843,7 @@ Afterward, starting from the operations that are newly assigned release constrai
 \label{fig:rpropagation2}
 \end{figure}
 
-Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. Let $o_{j'}^{q'}$ be the occurrence of the state operation $o_{j': f_m(o_{j'}^p) = f_m(o_j)}$ that is a predecessor of the first occurrence of the gate operation $o_j$ that appear in the periodic pattern of the operation graph. Also, let and $o_{j'}^q$ be the last occurrence of the state operation $o_{j'}$ that appear in the periodic pattern of the operation graph. Like for the release constraint, the operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to $o_{j'}^{q'}$ towards $o_{j'}^q$. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation $o_{j'}^q$. This is performed for every FMU whose state operation was assigned a deadline date. Figure \ref{fig:dloop} shows an example of such looping. 
+Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. Let $o_{j'}^{q'}$ be the occurrence of the state operation $o_{j': f_m(o_{j'}^p) = f_m(o_j)}$ that is a predecessor of the first occurrence of the gate operation $o_j$ that appear in the periodic pattern of the operation graph. Also, let $o_{j'}^q$ be the last occurrence of the state operation $o_{j'}$ that appear in the periodic pattern of the operation graph. Like for the release constraint, the operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to $o_{j'}^{q'}$ towards $o_{j'}^q$. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation $o_{j'}^q$. This is performed for every FMU whose state operation was assigned a deadline date. Figure \ref{fig:dloop} shows an example of such looping. 
 
 \begin{figure}[phbt]
 \centering

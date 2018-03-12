@@ -12,13 +12,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=Thesis.tex
 
 [Frame0_View0,0]
-TopLine=39
-Cursor=3268
+TopLine=13
+Cursor=8756
 
 [Frame1]
 Flags=0
@@ -30,7 +30,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\title-page.tex
 
@@ -48,7 +48,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\abstract.tex
 
@@ -66,12 +66,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch1-intro.tex
 
 [Frame3_View0,0]
-TopLine=110
+TopLine=114
 Cursor=11397
 
 [Frame4]
@@ -84,12 +84,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch3-state.tex
 
 [Frame4_View0,0]
-TopLine=64
+TopLine=68
 Cursor=8392
 
 [Frame5]
@@ -102,13 +102,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame5_View0,0]
-TopLine=144
-Cursor=14375
+TopLine=1449
+Cursor=93432
 
 [Frame6]
 Flags=0
@@ -120,13 +120,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame6_View0,0]
-TopLine=0
-Cursor=73
+TopLine=576
+Cursor=31161
 
 [Frame7]
 Flags=0
@@ -138,13 +138,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame7_View0,0]
-TopLine=0
-Cursor=18008
+TopLine=428
+Cursor=36516
 
 [Frame8]
 Flags=0
@@ -156,13 +156,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=text\ch7-concl.tex
 
 [Frame8_View0,0]
-TopLine=0
-Cursor=53
+TopLine=56
+Cursor=6326
 
 [Frame9]
 Flags=0
@@ -174,13 +174,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=figures\schedrate.tex
 
 [Frame9_View0,0]
 TopLine=0
-Cursor=163
+Cursor=469
 
 [Frame10]
 Flags=0
@@ -192,7 +192,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=989
+NormalPos.bottom=903
 Class=LaTeXView
 Document=ociamthesis.cls
 
@@ -200,9 +200,27 @@ Document=ociamthesis.cls
 TopLine=12
 Cursor=2998
 
+[Frame11]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=32
+NormalPos.right=1916
+NormalPos.bottom=903
+Class=LaTeXView
+Document=figures\mbd.tex
+
+[Frame11_View0,0]
+TopLine=6
+Cursor=1129
+
 [SessionInfo]
-FrameCount=11
-ActiveFrame=5
+FrameCount=12
+ActiveFrame=8
 
 [Bookmarks]
 figures\sched_exec_2.tex=223 

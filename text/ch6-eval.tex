@@ -16,7 +16,7 @@ The random generator that we have implemented is inspired by the random generato
 \item The graph size $n$: the number of operations;
 \item The number of FMUs $m$;
 \item The graph height $h$: the maximum number of levels in the graph;
-\item The graph width $w$: the maximum number of nodes on one level
+\item The graph width $w$: the maximum number of nodes on one level.
 \end{itemize}
 
 Note that parameters $n$ and $m$ are related. In other words, for a given size of a graph $n$, an adequate number of FMUs $m$ has to be chosen. 
@@ -101,7 +101,7 @@ We compared the values of the critical path length obtained using the acyclic or
 
 \subsubsection{Comparison of Execution Times}
 
-Similarly to the acyclic orientation tests, we compared the execution time of the scheduling heuristic with the execution time of the scheduling ILP using 200 random operation graphs of different sizes between five and $10000$. We set a two day limit for the resolution of the ILP. Tests were run for the scheduling problem with $2$, $4$, and $8$ cores. Execution times were measured by fixing the number of cores and varying the number of operations (graph size). The results are depicted for $2$, $4$, and $8$ cores in Figure \ref{fig:sched_exec_2}, Figure \ref{fig:sched_exec_4}, and Figure \ref{fig:sched_exec_8} respectively. All results are plotted on a logarithmic scale. In these figures, we see that the execution time of the ILP resolution increases exponentially as the graph size increases, and only small instances are resolved within acceptable times. On the other hand, the acyclic orientation heuristic is very fast and produces results in short times and even for very large graphs, the execution times remain within practical bounds.
+Similarly to the acyclic orientation tests, we compared the execution time of the scheduling heuristic with the execution time of the scheduling ILP using 200 random operation graphs of different sizes between five and $10000$. We set a two day limit for the resolution of the ILP. Tests were run for the scheduling problem with $2$, $4$, and $8$ cores. Execution times were measured by fixing the number of cores and varying the number of operations (graph size). The results are depicted for $2$, $4$, and $8$ cores in Figure \ref{fig:sched_exec_2}, Figure \ref{fig:sched_exec_4}, and Figure \ref{fig:sched_exec_8} respectively. All results are plotted on a logarithmic scale. In these figures, we see that the execution time of the ILP resolution increases exponentially as the graph size increases, and only small instances are resolved within acceptable times. On the other hand, the scheduling heuristic is very fast and produces results in short times and even for very large graphs, the execution times remain within practical bounds.
 
 \begin{figure}[phbt]
 \centering
@@ -182,7 +182,7 @@ We compared the execution times of the real-time scheduling ILP and heuristic. W
 
 \subsubsection{Schedulability}
 We run tests in order to measure the rate of schedulability of our proposed heuristic. Because the execution of the ILP takes long times, we limited these tests to operation graphs of small sizes. We generated five sets of operation graphs containing each $10$ graphs of sizes between five and $50$. We make sure that all the generated operation graphs are schedulable by applying the ILP. Then, we apply our heuristic and save the number of schedulable operation graphs for which the heuristic is able to find a solution. Figure \ref{fig:scehdrate} shows the obtained rates of schedulability for different numbers of cores. It can be seen the application of the heuristic results in interesting  schedulability rates, especially when considering its very fast execution time compared to the ILP algorithm. 
-As expected, the rate of schedulability increases as the number of cores increases. Indeed, the more there are cores, the more chances the heuristic has to find a solution as. Moreover, 
+As expected, the rate of schedulability increases as the number of cores increases. Indeed, the more there are cores, the more chances the heuristic has to find a solution. 
 
 \begin{figure}[phbt]
 \centering
@@ -289,7 +289,7 @@ We implemented a parallelization approach of FMI co-simulations using Intel TBB 
 \label{fig:tbbvsrcosim}
 \end{figure}
 
-We ran the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}. The obtained speedup obtained using offline scheduling is better than the one obtained using online scheduling which confirms our assumption. The decision overhead of online scheduling is very costly compared to the execution times of operations which decreases the performance. 
+We ran the co-simulation of the use case on an 8-core Intel core i7 processor running at 2.7 GH with 16GB RAM. The results are shown in table \ref{table:spdup_compr}. The speedup obtained using offline scheduling is better than the one obtained using online scheduling which confirms our assumption. The decision overhead of online scheduling is very costly compared to the execution times of operations which decreases the performance. 
 
 \begin{table}[phbt]
 \caption{Comparison of speedup obtained using offline and online scheduling}

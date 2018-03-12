@@ -399,7 +399,7 @@ Removing the objective function from the scheduling problem might indicate that 
 
 In the following, we propose a heuristic for scheduling operation graphs representing FMU co-simulations under real-time constraints. There are some considerations that are common with the scheduling problem for co-simulation acceleration. Mainly, we propose an offline heuristic which we consider to be more suitable given the fine granularity of the operations and since information about the execution times of the operations and the dependence between them is available before runtime.
 
-We propose to adapt the scheduling heuristic that we use for the acceleration of FMU co-simulation. In particular, we modify the computation of the scheduling priority such that the criticality of a given operation expresses how close it is to miss its deadline if scheduled on a specific processor. The priority of an operation is a dynamic operation as its computation depends on the partial scheduling solution that has already been computed. This priority is given by expression \ref{eq:priority}.
+We propose to adapt the scheduling heuristic that we use for the acceleration of FMU co-simulation. In particular, we modify the computation of the scheduling priority such that the criticality of a given operation expresses how close it is to miss its deadline if scheduled on a specific processor. The priority of an operation is a dynamic priority as its computation depends on the partial scheduling solution that has already been computed. This priority is given by expression \ref{eq:priority}.
 
 \begin{equation}
 \rho_{i,k} = D(o_i) - E(o_i)

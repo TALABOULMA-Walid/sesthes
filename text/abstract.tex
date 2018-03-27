@@ -14,7 +14,7 @@ of numerical models%, by enabling intra-model parallelization
 . One goal of this thesis is the extraction of potential parallelism in a set of interconnected multi-rate models. We build on the RCOSIM approach that has been previously developed at IFP Energies nouvelles and which allows the parallelization of FMI models on multi-core processors. It is based on representing the co-simulation by a dependence graph model. In the first part of the thesis, improvements have been proposed to overcome the limitations of RCOSIM. In particular, we propose new algorithms in order to allow
 handling models that exchange data at different
 rates and schedule them on multi-core processors. Also, the improvements allow handling specific constraints such as mutual exclusion and real-time constraints. 
-Second, we propose algorithms for the allocation and non preemptive scheduling of the dependence graphs, taking % cosimulation: accleration et depasser les limites, garantir le temps réel pour le HiL
+Second, we propose algorithms for the allocation and non preemptive scheduling of the dependence graphs, taking
 into account their real-time, data dependence and allocation constraints. These algorithms aim at accelerating the execution of the co-simulation or ensuring its real-time execution in a HiL approach.
 The proposed solutions have been tested on randomly generated dependence graphs and validated against an industrial use case which is an internal combustion engine co-simulation.
 This thesis is part of a joint action IFP Energies nouvelles - Inria in which Inria brings its real-time systems experience to the numerical simulation challenges of IFP Energies nouvelles.

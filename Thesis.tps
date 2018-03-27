@@ -12,7 +12,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=Thesis.tex
 
@@ -30,7 +30,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\title-page.tex
 
@@ -48,13 +48,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\abstract.tex
 
 [Frame2_View0,0]
 TopLine=0
-Cursor=1830
+Cursor=2441
 
 [Frame3]
 Flags=0
@@ -66,12 +66,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch1-intro.tex
 
 [Frame3_View0,0]
-TopLine=114
+TopLine=110
 Cursor=11397
 
 [Frame4]
@@ -84,12 +84,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch3-state.tex
 
 [Frame4_View0,0]
-TopLine=68
+TopLine=64
 Cursor=8392
 
 [Frame5]
@@ -102,12 +102,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch4-model.tex
 
 [Frame5_View0,0]
-TopLine=1449
+TopLine=1445
 Cursor=93432
 
 [Frame6]
@@ -120,12 +120,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch5-sched.tex
 
 [Frame6_View0,0]
-TopLine=576
+TopLine=572
 Cursor=31161
 
 [Frame7]
@@ -138,12 +138,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch6-eval.tex
 
 [Frame7_View0,0]
-TopLine=428
+TopLine=424
 Cursor=36516
 
 [Frame8]
@@ -156,12 +156,12 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=text\ch7-concl.tex
 
 [Frame8_View0,0]
-TopLine=56
+TopLine=51
 Cursor=6326
 
 [Frame9]
@@ -174,7 +174,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=figures\schedrate.tex
 
@@ -192,7 +192,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=ociamthesis.cls
 
@@ -210,17 +210,17 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=32
 NormalPos.right=1916
-NormalPos.bottom=903
+NormalPos.bottom=989
 Class=LaTeXView
 Document=figures\mbd.tex
 
 [Frame11_View0,0]
-TopLine=6
+TopLine=0
 Cursor=1129
 
 [SessionInfo]
 FrameCount=12
-ActiveFrame=8
+ActiveFrame=11
 
 [Bookmarks]
 figures\sched_exec_2.tex=223 

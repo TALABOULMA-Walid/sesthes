@@ -43,7 +43,7 @@ As a first attempt to solve the problem of scheduling the operation graph, we de
 Tables \ref{tab:varilpsched} and \ref{tab:consilpsched} summarize respectively the variables and the constants that are used in the ILP formulation of the scheduling problem for co-simulation acceleration.
 
 \begin{table}[!htbp]
-\caption{Variables used in the ILP formulation of the acyclic orientation problem}
+\caption{Variables used in the ILP formulation of the scheduling problem}
 \centering
 \label{tab:varilpsched}
 \begin{tabular}{l l l}
@@ -63,7 +63,7 @@ Variable & Type & Description  \\
 \end{table}
 
 \begin{table}[!htbp]
-\caption{Constants used in the ILP formulation of acyclic orientation problem}
+\caption{Constants used in the ILP formulation of the scheduling problem}
 \centering
 \label{tab:consilpsched}
 \begin{tabular}{l l l}
@@ -109,27 +109,27 @@ The cost of synchronization is taken into account as follows. A synchronization 
 
 
 \begin{equation}
-\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijk}= Q_{ik}
+\forall o_i \in V, \sum_{\forall p_k \in P, \forall o_j \in pred(o_i)}sync_{ijk}= V_{ik}
 \label{sched:const_3}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jp}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jk}
 \label{sched:const_4}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jp} - x_{ik}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jk} - x_{ik}
 \label{sched:const_5}
 \end{equation}
 
 \begin{equation}
- \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ik}\big)
+ \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jk} - x_{ik}\big)
 \label{sched:const_6}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jp})
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jk})
 \label{sched:const_7}
 \end{equation}
 
@@ -227,7 +227,7 @@ The heuristic updates the set of candidate operations to be scheduled at each it
 
 \subsubsection{Complexity}
 
-The scheduling heuristic contains three nested loops. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times where $n$ is the number of operation in the operation graph. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(nm)$, where $m$ is the number of cores. From the foregoing, the complexity of the heuristic is evaluated to $\mathcal{O}(mn^2)$.
+The scheduling heuristic contains three nested loops. The outermost loop is executed until all the operations are scheduled. At each iteration, one operation is scheduled. Therefore, the outermost loop is executed $n$ times where $n$ is the number of operations in the operation graph. In the inner loops, the heuristic attempts to schedule all the ready operations on all the available cores. As such, the inner loops execute in $\mathcal{O}(nm)$, where $m$ is the number of cores. From the foregoing, the complexity of the heuristic is evaluated to $\mathcal{O}(mn^2)$.
 
 \section{Scheduling of FMU Co-simulation under Real-time Constraints}
 
@@ -244,7 +244,7 @@ The problem of scheduling FMU co-simulation under real-time constraints can be c
 	\textbf{Input} & Operation graph $G(V,A)$\\
 	\rule{0pt}{5ex}									  
 	
-  \textbf{Output} & Offline Schedule of operations on a multi-core processor\\
+  \textbf{Output} & Offline schedule of operations on a multi-core processor\\
 	\rule{0pt}{5ex}									  
   
 	\textbf{Find} & Allocation of operations to cores: $\alpha: V \rightarrow P$\\
@@ -359,27 +359,27 @@ The ILP formulation for multi-core scheduling of co-simulation under real-time c
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \sum_{\forall p \in P, \forall o_j \in pred(o_i)}sync_{ijk}= Q_{ik}
+\forall o_i \in V, \sum_{\forall p_k \in P, \forall o_j \in pred(o_i)}sync_{ijk}= V_{ik}
 \label{schedRT:const_3}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jp}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), sync_{ijk} \leq x_{jk}
 \label{schedRT:const_4}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jp} - x_{ik}: \forall o_i \in V
+\forall o_i \in V, \forall o_j \in succ(o_i), V_{ik} \geq x_{jk} - x_{ik}
 \label{schedRT:const_5}
 \end{equation}
 
 \begin{equation}
- \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jp} - x_{ik}\big)
+ \forall o_i \in V, V_{ik} \leq \sum_{\forall o_j \in succ(o_i)}\big(x_{jk} - x_{ik}\big)
 \label{schedRT:const_6}
 \end{equation}
 
 \begin{equation}
-\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jp})
+\forall o_i \in V, \forall o_j \in succ(o_i), Q_{ik} \leq S(o_j) + M \times (1-x_{jk})
 \label{schedRT:const_7}
 \end{equation}
 
@@ -408,7 +408,7 @@ We propose to adapt the scheduling heuristic that we use for the acceleration of
 
 Where $\rho_{i,k}$ and $E_j(o_i)$ are the scheduling priority and the end date of operation $o_i$ respectively, computed when the latter is scheduled on core $p_k$.
 
-The proposed heuristic is a list scheduling heuristic. It builds the multi-core schedule iteratively. At each iteration, a list of candidate operations is constructed. An operation is added to the list of candidate operation if all its predecessors have been scheduled. The heuristic computes the priority for each candidate operation on every core and selects the core for the which the priority is maximized. After that, a list of operation-best core pairs is obtained. The heuristic selects from this list the operation whose priority is the smallest among all operation in the list. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:schedRT} lists the proposed real-time multi-core scheduling heuristic. 
+The proposed heuristic is a list scheduling heuristic. It builds the multi-core schedule iteratively. At each iteration, a list of candidate operations is constructed. An operation is added to the list of candidate operation if all its predecessors have been scheduled. The heuristic computes the priority for each candidate operation on every core and selects the core for the which the priority is maximized. After that, a list of operation-best core pairs is obtained. The heuristic selects from this list the operation whose priority is the smallest among all the operations in the list. Synchronization operations are added between the scheduled operation and all its predecessors that were allocated to different cores. The heuristic repeats this procedure and finally stops when all the operations have been scheduled. Algorithm \ref{algo:schedRT} lists the proposed real-time multi-core scheduling heuristic. 
 
 \begin{algorithm}[!htp]		
 		\SetKwInOut{Input}{Input}

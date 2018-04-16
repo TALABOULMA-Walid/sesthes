@@ -445,7 +445,7 @@ The following set of constraints is used in the ILP formulation of the acyclic o
 \item \textit{Length of the critical path:} The critical path $CP$ is equal to the maximum of the end times of all the operations as stated by expression \ref{orient:const_5}.
 
 \begin{equation}
-\forall o_i \in V, P \geq E(o_i)
+\forall o_i \in V, CP \geq E(o_i)
 \label{orient:const_5}
 \end{equation}
 
@@ -477,7 +477,7 @@ We know that edges in the set $D$ exist only between operations that belong to t
 
 \begin{equation}
 D = \bigcup_{k=1}^s D_k,\ \forall\ [o_i^p, o_j^q] \in D_k,\ k \in \{0, 1, \ldots, s\},\ f_m(o_i^p)=f_m(o_j^q)\ \text{and}\ p = q
-\label{eq:opsubset}
+\label{eq:edsubset}
 \end{equation}
 
 In view of the above, we define the set of subgraphs which constitute the graph $G(V,\emptyset,D) = \bigcup_{k=1}^s G(V_k,D_k)$. Theorem \ref{theorem:orient} states the relationship between the acyclic orientations of the subgraphs $G(V_k,D_k)$ and the acyclic orientation of the mixed graph $G(V,A,D)$.
@@ -707,7 +707,7 @@ The propagation of real-time constraints loosens the constraints imposed on the 
 
 \subsection{Definition of Real-time Constraints}
 
-Real-time systems are based on real-time tasks which represent the elementary units of execution. These tasks are characterized by a number of parameters such as periods, Worst Case Execution Times (WCET), deadlines, and release dates. Such parameters constitute an abstract model of the tasks that is used for the design and the analysis of real-time systems. We consider co-simulation under real-time constraints to be a real-time system where the operations of the co-simulation represent the real-time tasks. Therefore, the operation graph model presented in \ref{sec:4-depgrph} has to be completed with real-time parameters that will allow the design and the analysis of real-time multi-core scheduling algorithms for co-simulation under real-time constraints. Hereinafter, we define real-time constraints that are assigned to operations, necessary for performing HiL co-simulation.
+Real-time systems are based on real-time tasks which represent the elementary units of execution. These tasks are characterized by a number of parameters such as periods, Worst Case Execution Times (WCET), deadlines, and release dates. Such parameters constitute an abstract model of the tasks that is used for the design and the analysis of real-time systems. We consider co-simulation under real-time constraints to be a real-time system where the operations of the co-simulation represent the real-time tasks. Therefore, the operation graph model presented in Section \ref{sec:4-depgrph} has to be completed with real-time parameters that will allow the design and the analysis of real-time multi-core scheduling algorithms for co-simulation under real-time constraints. Hereinafter, we define real-time constraints that are assigned to operations, necessary for performing HiL co-simulation.
 
 Let the inputs and the outputs of the real component be sampled with sampling periods $T_{x}$  and $T_{y}$ respectively where $x$ and $y$ denote the numbers of the corresponding input and output respectively. In other words, an input (resp. output) of the real component is periodically activated every $T_{x}$ (resp. $T_{y}$) units of time. The sampling periods of the different inputs and outputs of the real component can be identical or different.% In this work, we assume that every sampling period is a multiple of the communication step sizes of the simulated FMUs. Otherwise, the hardware may miss some of the values provided by the simulated part and vice versa.
  We refer to operations of the simulated component that are directly connected to the real component as \textit{gate operations}, e.g. operations $o_4$ and $o_5$ in Figure \ref{fig:hilSetup}.  
@@ -719,7 +719,7 @@ A \textit{release} is a real-time constraint applied on an input gate operation 
 \label{def:release}
 \end{definition}
 
-Similarly, the periodic activation of an input of the real component requires data produced by an output gate operation $o_j$ of the simulated component to be available. This output gate operation periodically produces data that is consumed by the input of the real component following a sampling period $T_{x}$. Therefore, before the $w^{th}$ sample $w \times T_{x}$, the output gate operation $o_j$ has to produce its value corresponding to simulated time $w \times T_{x}$. This defines a periodic deadline for this output gate operation, i.e. it has to periodically produce its updated value to be consumed by the real component before a specific periodic dates.
+Similarly, the periodic activation of an input of the real component requires data produced by an output gate operation $o_j$ of the simulated component to be available. This output gate operation periodically produces data that is consumed by the input of the real component following a sampling period $T_{x}$. Therefore, before the $w^{th}$ sample $w \times T_{x}$, the output gate operation $o_j$ has to produce its value corresponding to simulated time $w \times T_{x}$. This defines a periodic deadline for this output gate operation, i.e. it has to periodically produce its updated value to be consumed by the real component before specific periodic dates.
 
 \begin{definition}
 A \textit{deadline} is a real-time constraint applied on an output gate $o_j$ of the simulated component in a HiL co-simulation. Such constraint is defined by its period $D(o_j) = T_{x}$ where $T_{x}$ is the sampling period of the input of the real component that is connected with $o_j$. The occurrences of a deadline constraint are written $w \times T_x, w \in \mathbb{N}$. This means that the value of $o_j$ for simulated time $w \times T_x$ has to be available at the latest by real time $w \times T_x$.
@@ -728,7 +728,7 @@ A \textit{deadline} is a real-time constraint applied on an output gate $o_j$ of
 
 %During the execution of the co-simulation, operations are executed repetitively according to their communication steps. If a real-time constraint is applied on an operation,
 
-The aforementioned definitions specify real-time constraints for the operations that are directly connected with the real component. These operations being dependent on other operations and vice versa, it becomes necessary to define the impact of the real-time constraints on the rest of the operations. 
+The aforementioned definitions specify real-time constraints for gate operations that are directly connected with the real component. These operations being dependent on other operations and vice versa, it becomes necessary to define the impact of the real-time constraints on the rest of the operations. 
 
 \subsection{Propagation of a Single Real-time Constraint}
 
@@ -745,7 +745,7 @@ The final goal is to apply real-time multi-core scheduling algorithm on the oper
 
 \subsubsection{Propagation of Release Constraints}
 
-Let a release constraint of period $T_y$ be applied on an input gate operation $o_i \in V$. A subset of the occurrences of $o_i$, $o^s_i, 0 \leq s < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $z^{th}$ occurrence of the release constraint $z \times T_y = t_k$ is applied on the occurrence $o^{s, t_k}_i $, i.e. the occurrence $p$ of operation $o_i$ executed at time step $t_k$, where $0 \leq p < r(o_i)$ and $t_k \in \mathbb{R}^+$. Since we consider the release constraint period to be a multiple of the communication step size of ${o_i}$, we can determine which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $z \times T_y$ of the release constraint is applied on occurrence $o_i^p:\ p = z \times \frac{T_y}{H(o_i)}$. Therefore $o_i^p$ is assigned a release $R(o_i^p) = z \times T_y$. Once $o_i^p$ is released and executed, the operations that depend on $o_i^p$ can be released. Therefore, the release constraint $R(o_i^p)$ is propagated towards all the successors of $o_i^p$. This propagation is given by expression \ref{eq:release}.
+Let a release constraint of period $T_y$ be applied on an input gate operation $o_i \in V$. A subset of the occurrences of $o_i$, $o^p_i, 0 \leq p < r(o_i)$ that appear in the operation graph are subject to occurrences of the release constraint. The $z^{th}$ occurrence of the release constraint $z \times T_y = t_k$ is applied on the occurrence $o^{p, t_k}_i $, i.e. the occurrence $p$ of operation $o_i$ executed at time step $t_k$, where $0 \leq p < r(o_i)$ and $t_k \in \mathbb{R}^+$. Since we consider the release constraint period to be a multiple of the communication step size of ${o_i}$, we can determine which occurrences of $o_i$ are subject to occurrences of the release constraint. More specifically, the occurrence $z \times T_y$ of the release constraint is applied on occurrence $o_i^p:\ p = z \times \frac{T_y}{H(o_i)}$. Therefore $o_i^p$ is assigned a release $R(o_i^p) = z \times T_y$. Once $o_i^p$ is released and executed, the operations that depend on $o_i^p$ can be released. Therefore, the release constraint $R(o_i^p)$ is propagated towards all the successors of $o_i^p$. This propagation is given by expression \ref{eq:release}.
 
 \begin{equation}
 \forall o_{i'} \in succ(o_i): R(o_{i'}) = R(o_i)
@@ -820,11 +820,11 @@ Given the periodic pattern of the operation graph, a release constraint can be w
 Similarly, a deadline constraint can be written as follows:
 
 \begin{equation}
-\forall o_j^q, o_j^{q'}: q' = q + \frac{HP}{H(o_j)},\ D(o_j^{q'}) = R(o_j^u) + HP
+\forall o_j^q, o_j^{q'}: q' = q + \frac{HP}{H(o_j)},\ D(o_j^{q'}) = D(o_j^q) + HP
 \label{eq:deqdlineloop}
 \end{equation}
 
-Let's consider that a release constraint is propagated in the operation graph $G(V,A)$ starting from the gate operation $o_i$.  Also, consider that the multi-rate transformation algorithm has been applied on the operation graph over the hyperperiod $HP$. Then, $o_{i'}^p$, the last occurrence of the state operation $o_{i'}: f_m(o_{i'}^p) = f_m(o_i)$ that is assigned a release constraint during the forward propagation phase corresponds to the time step that is equal to the hyperperiod, i.e. it can be written $o_{i',HP}^p$. In order to propagate the release constraint to the operations that come before $o_i$ in the graph, we loop back to the occurrence $o_{i'}^{p'}$ of the state operation $o_{i'}$ by performing a negative shift of the release constraint whose length is equal to the hyperperiod. The occurrence $o_{i'}^{p'}$ is a predecessor of the first occurrence of the gate operation $o_i$ that appear in the periodic pattern of the operation graph. This is done for every FMU, for which the state operation is assigned a release. An example is shown in Figure \ref{fig:rloop}.
+Let's consider that a release constraint is propagated in the operation graph $G(V,A)$ starting from the gate operation $o_i$.  Also, consider that the multi-rate transformation algorithm has been applied on the operation graph over the hyperperiod $HP$. Then, $o_{i'}^p$, the last occurrence of the state operation $o_{i'}: f_m(o_{i'}^p) = f_m(o_i)$ that is assigned a release constraint during the forward propagation phase corresponds to the time step that is equal to the hyperperiod, i.e. it can be written $o_{i'}^{p,HP}$. In order to propagate the release constraint to the operations that come before $o_i$ in the graph, we loop back to the occurrence $o_{i'}^{p'}$ of the state operation $o_{i'}$ by performing a negative shift of the release constraint whose length is equal to the hyperperiod. The occurrence $o_{i'}^{p'}$ is a predecessor of the first occurrence of the gate operation $o_i$ that appear in the periodic pattern of the operation graph. This is done for every FMU, for which the state operation is assigned a release. An example is shown in Figure \ref{fig:rloop}.
 
 \begin{figure}[phbt]
 \centering
@@ -843,7 +843,7 @@ Afterward, starting from the operations that are newly assigned release constrai
 \label{fig:rpropagation2}
 \end{figure}
 
-Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. Let $o_{j'}^{q'}$ be the occurrence of the state operation $o_{j': f_m(o_{j'}^p) = f_m(o_j)}$ that is a predecessor of the first occurrence of the gate operation $o_j$ that appear in the periodic pattern of the operation graph. Also, let $o_{j'}^q$ be the last occurrence of the state operation $o_{j'}$ that appear in the periodic pattern of the operation graph. Like for the release constraint, the operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to $o_{j'}^{q'}$ towards $o_{j'}^q$. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation $o_{j'}^q$. This is performed for every FMU whose state operation was assigned a deadline date. Figure \ref{fig:dloop} shows an example of such looping. 
+Now consider that a deadline constraint is propagated in the graph $G(V,A)$ starting from the gate operation $o_j$. Let $o_{j'}^{q'}$ be the occurrence of the state operation $o_{j'}: f_m(o_{j'}^p) = f_m(o_j)$ that is a predecessor of the first occurrence of the gate operation $o_j$ that appear in the periodic pattern of the operation graph. Also, let $o_{j'}^q$ be the last occurrence of the state operation $o_{j'}$ that appear in the periodic pattern of the operation graph. Like for the release constraint, the operations that come after $o_j$ in the operation graph can be assigned deadline constraints by looping forward the deadline constraint that is assigned to $o_{j'}^{q'}$ towards $o_{j'}^q$. In other words, a positive shift equal to the length of the hyperperiod is applied by looping forward to the last occurrence of the state operation $o_{j'}^q$. This is performed for every FMU whose state operation was assigned a deadline date. Figure \ref{fig:dloop} shows an example of such looping. 
 
 \begin{figure}[phbt]
 \centering
